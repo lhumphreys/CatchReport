@@ -25,6 +25,11 @@
         </activity>
         <activity android:name=".Menu" >
         </activity>
+        <activity
+            android:name=".TripInfoPage"
+            android:label="@string/title_activity_trip_info_page"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
