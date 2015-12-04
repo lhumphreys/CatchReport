@@ -9,12 +9,22 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main" tools:context=".MainActivity"
     android:id="@+id/MainLayout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="visible">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Fish"
+        android:text="Start!"
         android:id="@+id/addFishButton"
         android:layout_gravity="center_horizontal" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible" />
 </LinearLayout>
