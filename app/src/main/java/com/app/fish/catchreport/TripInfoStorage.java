@@ -1,5 +1,7 @@
 package com.app.fish.catchreport;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Date;
 public class TripInfoStorage {
     private Date date;
     private Lake lake;
+    private ArrayList<Fish> fish;
 
     /**
      * Creates blank TripInfoStorage
@@ -17,6 +20,7 @@ public class TripInfoStorage {
     {
         date = null;
         lake = null;
+        fish = null;
     }
 
     /**
@@ -41,6 +45,11 @@ public class TripInfoStorage {
         lake = s;
     }
 
+    public void setFish(ArrayList<Fish> f)
+    {
+        fish = f;
+    }
+
     public Date getDate()
     {
         return date;
@@ -50,4 +59,5 @@ public class TripInfoStorage {
     {
         return lake;
     }
+
 }
