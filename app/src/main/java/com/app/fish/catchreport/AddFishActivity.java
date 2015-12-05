@@ -1,7 +1,9 @@
 package com.app.fish.catchreport;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
@@ -85,6 +87,38 @@ public class AddFishActivity extends AppCompatActivity {
             }
         });
 
+        Button deleteButton = (Button) findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Delete?")
+                        .setMessage("Are you sure you want to remove this fish? This cannot be undone.")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                fishArrayList.remove(cur);
+                                Fish f;
+                                if (fishArrayList.size() > 0) {
+                                    if (!(cur < fishArrayList.size())) {
+                                        cur--;
+                                    }
+                                    f = fishArrayList.get(cur);
+                                } else {
+                                    f = new Fish();
+                                    fishArrayList.add(f);
+                                    cur = fishArrayList.indexOf(f);
+                                }
+                                switchFish(f);
+                                checkButtons();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .setCancelable(true)
+                        .create()
+                        .show();
+            }
+        });
     }
 
     private void switchFish(Fish f){
@@ -95,6 +129,23 @@ public class AddFishActivity extends AppCompatActivity {
         trans.commit();
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Caution")
+                .setMessage("Are you sure you want to return without submitting? Changes will not be saved.")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No",null)
+                .setCancelable(true)
+                .create()
+                .show();
+    }
 
     private void checkButtons(){
         if(this.cur > 0){
