@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //
         final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
 
         if(prefs.contains("FishAppAuth") == false)
@@ -37,10 +38,14 @@ public class MainActivity extends AppCompatActivity{
             Button logout = (Button) findViewById(R.id.logoutbutton);
             TextView status = (TextView) findViewById(R.id.textView6);
             TextView id = (TextView) findViewById(R.id.textView7);
+            //
+
             Button addFishButton = (Button) findViewById(R.id.addFishButton);
 
+            //
             status.setText("Logged In: "+prefs.getBoolean("FishAppAuth",false));
             id.setText("User ID: "+prefs.getString("FishAppID", "Not Found"));
+            //
 
             addFishButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
 
+            //
             logout.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity{
             });
 
         }
+        //
     }
 
     @Override

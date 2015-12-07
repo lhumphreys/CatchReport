@@ -63,17 +63,20 @@ public class RegisterUser extends AppCompatActivity {
         else {
 
             boolean exists = false;
+            DatabaseHandler auth = new DatabaseHandler(this, "Users.db");
 
             try {
-                DatabaseHandler auth = new DatabaseHandler(this, "Users.db");
+
                 auth.createDatabase();
                 auth.openDatabase();
 
                 SQLiteCursor curs = auth.runQuery("SELECT * FROM UserInfo WHERE Email = ?", new String[]{semail});
                 while(curs.moveToNext()) {
                     exists = true;
-                    auth.close();
                 }
+
+                auth.close();
+
             } catch (Exception e) {
 
             }
@@ -99,17 +102,16 @@ public class RegisterUser extends AppCompatActivity {
                 String hashpass = sb.toString();
 
                 try {
-                    DatabaseHandler auth = new DatabaseHandler(this, "Users.db");
-                    auth.createDatabase();
+
                     auth.openDatabase();
-                    auth.getWritableDatabase().execSQL("INSERT INTO UserInfo(Email,Pass) Values(\'" + semail + "\',\'" + hashpass + "\')"); //replace with bound data
+                    auth.getWritableDatabase().execSQL("INSERT INTO UserInfo(Email,Pass) Values(?,?)",new String[]{semail,hashpass});
                     auth.close();
                     Intent intent = new Intent(this,Login.class);
                     startActivity(intent);
 
                 } catch (Exception e)
                 {
-                    //registration was not successful for some reason
+
                 }
             }
         }
