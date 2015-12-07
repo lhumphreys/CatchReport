@@ -30,6 +30,14 @@
             android:label="@string/title_activity_trip_info_page"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".Login"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name=".RegisterUser"
+            android:label="@string/title_activity_register_user" >
+        </activity>
     </application>
 
 </manifest>
