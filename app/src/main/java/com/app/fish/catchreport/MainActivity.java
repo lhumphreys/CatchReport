@@ -10,9 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ProgressBar;
 
 public class MainActivity extends AppCompatActivity{
 
+    ProgressBar spin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +24,20 @@ public class MainActivity extends AppCompatActivity{
 
         //
         final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
+        spin = (ProgressBar) findViewById(R.id.progressBar1);
+        spin.setIndeterminate(true);
+
+        Button addFishButton = (Button) findViewById(R.id.addFishButton);
+        addFishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spin.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(v.getContext(), TripInfoPage.class);
+                startActivity(intent);
+
+            }
+        });
+    }
 
         if(prefs.contains("FishAppAuth") == false)
         {
