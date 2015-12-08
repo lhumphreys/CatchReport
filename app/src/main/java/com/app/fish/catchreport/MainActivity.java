@@ -27,18 +27,6 @@ public class MainActivity extends AppCompatActivity{
         spin = (ProgressBar) findViewById(R.id.progressBar1);
         spin.setIndeterminate(true);
 
-        Button addFishButton = (Button) findViewById(R.id.addFishButton);
-        addFishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                spin.setVisibility(View.VISIBLE);
-                Intent intent = new Intent(v.getContext(), TripInfoPage.class);
-                startActivity(intent);
-
-            }
-        });
-    }
-
         if(prefs.contains("FishAppAuth") == false)
         {
             Intent intent = new Intent(this.getBaseContext(),Login.class);
@@ -84,8 +72,12 @@ public class MainActivity extends AppCompatActivity{
             });
 
         }
-        //
     }
+
+
+
+        //
+
 
     @Override
     public void onBackPressed() {

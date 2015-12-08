@@ -20,7 +20,7 @@ import java.util.LinkedList;
 public class AddFishActivity extends AppCompatActivity {
 
     private static final String FISH_LAKES_DB = "FishAndLakes.db";
-    private ArrayList<Fish> fishArrayList;
+    private TripInfoStorage info;
     private int cur;
     private Button addButton;
     private Button prevButton;
@@ -32,10 +32,10 @@ public class AddFishActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.fishArrayList = new ArrayList<Fish>();
+        info = getTripInfo();
         this.cur = 0;
-        this.fishArrayList.add(this.cur, new Fish());
-        AddFishFragment fishFragment = AddFishFragment.newInstance(this.fishArrayList.get(this.cur));
+        info.addFish(this.cur, new Fish());
+        AddFishFragment fishFragment = AddFishFragment.newInstance(info.getFish(this.cur));
         FragmentManager fragmentManager = this.getFragmentManager();
         FragmentTransaction trans = fragmentManager.beginTransaction();
         trans.add(R.id.fragHolder, fishFragment, "FISH_FRAGMENT");
@@ -48,7 +48,7 @@ public class AddFishActivity extends AppCompatActivity {
                 cur--;
                 Fish f = null;
                 if(cur>0){
-                    f = fishArrayList.get(cur);
+                    f = info.getFish(cur);
                 }
 
                 switchFish(f);
@@ -63,14 +63,14 @@ public class AddFishActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Fish f;
                 cur++;
-                if(cur == fishArrayList.size())
+                if(cur == info.numFish())
                 {
                     f = new Fish();
-                    fishArrayList.add(cur,f);
+                    info.addFish(cur,f);
                 }
                 else
                 {
-                    f = fishArrayList.get(cur);
+                    f = info.getFish(cur);
                 }
 
                 switchFish(f);
@@ -82,7 +82,13 @@ public class AddFishActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MainActivity.class);
+                Intent intent = new Intent(v.getContext(), DisplayTripInfo.class);
+                //updateFishInfoDatabase(info);
+
+                //**//To be Removed
+                    intent.putExtra("TripInfo", info);
+                //**//To be Removed
+
                 startActivity(intent);
             }
         });
@@ -97,17 +103,17 @@ public class AddFishActivity extends AppCompatActivity {
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                fishArrayList.remove(cur);
+                                info.removeFish(cur);
                                 Fish f;
-                                if (fishArrayList.size() > 0) {
-                                    if (!(cur < fishArrayList.size())) {
+                                if (info.numFish() > 0) {
+                                    if (!(cur < info.numFish())) {
                                         cur--;
                                     }
-                                    f = fishArrayList.get(cur);
+                                    f = info.getFish(cur);
                                 } else {
                                     f = new Fish();
-                                    fishArrayList.add(f);
-                                    cur = fishArrayList.indexOf(f);
+                                    info.addFish(f);
+                                    cur = info.indexOf(f);
                                 }
                                 switchFish(f);
                                 checkButtons();
@@ -122,7 +128,7 @@ public class AddFishActivity extends AppCompatActivity {
     }
 
     private void switchFish(Fish f){
-        AddFishFragment fishFragment = AddFishFragment.newInstance(this.fishArrayList.get(this.cur));
+        AddFishFragment fishFragment = AddFishFragment.newInstance(info.getFish(this.cur));
         FragmentManager fragmentManager = this.getFragmentManager();
         FragmentTransaction trans = fragmentManager.beginTransaction();
         trans.replace(R.id.fragHolder, fishFragment, "FISH_FRAGMENT");
@@ -155,7 +161,7 @@ public class AddFishActivity extends AppCompatActivity {
         {
             this.prevButton.setVisibility(View.INVISIBLE);
         }
-        if(this.cur < this.fishArrayList.size() - 1)
+        if(this.cur < info.numFish() - 1)
         {
             this.addButton.setText("Next");
         }
@@ -165,5 +171,26 @@ public class AddFishActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    This method is used to get the TripInfoStorage object from the TripInfoPage containing
+    the location, date and time of the trip.
+
+    The fish objects created are added to the fish list in the TripInfoStorage object.
+
+    The TripInfoStorage object is passed from the TripInfoPage by the Intent.
+     */
+    private TripInfoStorage getTripInfo()
+    {
+        Intent i = this.getIntent();
+        TripInfoStorage info = (TripInfoStorage)i.getSerializableExtra("TripInfo");
+        return info;
+    }
+
+    /*
+    private void updateFishInfoDatabase(TripInfoStorage info)
+    {
+
+    }
+    */
 
 }

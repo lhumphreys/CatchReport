@@ -38,6 +38,11 @@
             android:name=".RegisterUser"
             android:label="@string/title_activity_register_user" >
         </activity>
+        <activity
+            android:name=".DisplayTripInfo"
+            android:label="@string/title_activity_display_trip_info"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

@@ -209,7 +209,7 @@ public class TripInfoPage extends AppCompatActivity {
                     db.close();
                     info.setLake(lake);
                     Intent intent = new Intent(v.getContext(), AddFishActivity.class);
-                    intent.putExtra("TripInfo", TripInfoStorage.class);
+                    intent.putExtra("TripInfo", info);
                     startActivity(intent);
                 } catch (Exception e) {
                     Toast t = Toast.makeText(getApplicationContext(), "Database Read Error", Toast.LENGTH_LONG);

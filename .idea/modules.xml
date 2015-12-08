@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CatchReport.iml" filepath="$PROJECT_DIR$/CatchReport.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CatchReportProto.iml" filepath="$PROJECT_DIR$/CatchReportProto.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CatchReportUpdated.iml" filepath="$PROJECT_DIR$/CatchReportUpdated.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -66,4 +66,14 @@ public class Fish implements Serializable{
         return this.tagged;
     }
 
+    public String displayWeight()
+    {
+        return weight + " lbs";
+    }
+
+    public String displayLength()
+    {
+        return length + " in";
+    }
+
 }

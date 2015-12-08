@@ -41,4 +41,16 @@ public class Lake implements Serializable {
     {
         return name;
     }
+
+    public String getCounty()
+    {
+        return county;
+    }
+
+    public String getAbbreviation(){return abbreviation;}
+
+    public boolean getRestriction()
+    {
+        return restrictions.equalsIgnoreCase("restricted");
+    }
 }
