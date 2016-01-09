@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.fish.catchreport" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -32,11 +34,13 @@
         </activity>
         <activity
             android:name=".Login"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".RegisterUser"
-            android:label="@string/title_activity_register_user" >
+            android:label="@string/title_activity_register_user"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".DisplayTripInfo"

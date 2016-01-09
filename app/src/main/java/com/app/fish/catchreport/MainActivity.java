@@ -22,12 +22,11 @@ public class MainActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //
         final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
         spin = (ProgressBar) findViewById(R.id.progressBar1);
         spin.setIndeterminate(true);
 
-        if(prefs.contains("FishAppAuth") == false)
+        if(prefs.contains("FishAppAuth")==false)
         {
             Intent intent = new Intent(this.getBaseContext(),Login.class);
             startActivity(intent);
