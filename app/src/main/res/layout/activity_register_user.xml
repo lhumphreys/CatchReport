@@ -100,7 +100,7 @@
         android:layout_below="@+id/editText3"
         android:layout_alignLeft="@+id/editText3"
         android:layout_alignStart="@+id/editText3"
-        android:background="#6DC0D5"
+        android:background="#E84D3C"
         android:textColor="#ffffff"
         android:textSize="18dp"/>
 

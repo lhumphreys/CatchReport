@@ -52,13 +52,11 @@ public class TripInfoPage extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        info = new TripInfoStorage();
-        info.setDate(new Date());
-
         initializeList();
         initializeCalendar();
         initializeClock();
         initializeSubmit();
+
     }
 
     /**

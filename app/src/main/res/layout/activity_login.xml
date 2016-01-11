@@ -48,7 +48,7 @@
         android:width="150dp"
         android:layout_below="@+id/editText2"
         android:layout_marginTop="36dp"
-        android:background="#6DC0D5"
+        android:background="#E84D3C"
         android:textColor="#ffffff"
         android:textSize="18dp"/>
 
@@ -70,7 +70,7 @@
         android:layout_alignTop="@+id/button"
         android:layout_alignLeft="@+id/editText"
         android:width="150dp"
-        android:background="#6DC0D5"
+        android:background="#E84D3C"
         android:textColor="#ffffff"
         android:textSize="18dp"/>
 
