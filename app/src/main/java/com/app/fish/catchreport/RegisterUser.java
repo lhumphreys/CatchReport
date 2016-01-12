@@ -28,6 +28,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterUser extends AppCompatActivity {
 
@@ -37,7 +39,13 @@ public class RegisterUser extends AppCompatActivity {
     private EditText Email;
     private EditText Password;
     private EditText PasswordConfirm;
+    private Pattern pattern;
+    private Matcher matcher;
+
+    private final String EMAIL_VALIDATION = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private final String PASS_VALIDATION = "^([a-zA-Z0-9@*#!$%^&+]{8,15})$";
     String URL_Register = "http://zoebaker.name/android_login_api/Register.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +94,26 @@ public class RegisterUser extends AppCompatActivity {
         if(!firstname.isEmpty() && !lastname.isEmpty() && !email.isEmpty() && !password.isEmpty() && !passwordconfirm.isEmpty())
         {
             if(password.equals(passwordconfirm)) {
-                registerUser(firstname, lastname, email, password);
+
+                pattern = pattern.compile(EMAIL_VALIDATION);
+                matcher = pattern.matcher(email);
+                if(matcher.matches())
+                {
+                    pattern = pattern.compile(PASS_VALIDATION);
+                    matcher = pattern.matcher(password);
+                    if(matcher.matches())
+                    {
+                        registerUser(firstname, lastname, email, password);
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),"Password must be at least 8 characters and can only contain the special characters:   @ * # ! $ % ^ & +", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Please Enter A Valid Email", Toast.LENGTH_LONG).show();
+                }
             }
             else
             {
@@ -98,68 +125,6 @@ public class RegisterUser extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Please fill in all information", Toast.LENGTH_LONG).show();
         }
 
-
-        /**
-        if(!spass.equals(spassconfirm))
-        {
-            errmsg.setText("*Passwords must match");
-        }
-        else {
-
-            boolean exists = false;
-            DatabaseHandler auth = new DatabaseHandler(this, "Users.db");
-
-            try {
-
-                auth.createDatabase();
-                auth.openDatabase();
-
-                SQLiteCursor curs = auth.runQuery("SELECT * FROM UserInfo WHERE Email = ?", new String[]{semail});
-                while(curs.moveToNext()) {
-                    exists = true;
-                }
-
-                auth.close();
-
-            } catch (Exception e) {
-
-            }
-
-            if(exists == true)
-            {
-                errmsg.setText("*This Email is taken!");
-            }
-            else {
-                MessageDigest mydigest = null;
-                try {
-                    mydigest = MessageDigest.getInstance("SHA-1");
-                } catch (NoSuchAlgorithmException e) {
-                    //algorithm not found
-                }
-                mydigest.update(spass.getBytes());
-                byte[] data = mydigest.digest();
-                StringBuffer sb = new StringBuffer();
-                String hex = null;
-
-                hex = Base64.encodeToString(data, data.length);
-                sb.append(hex);
-                String hashpass = sb.toString();
-
-                try {
-
-                    auth.openDatabase();
-                    auth.getWritableDatabase().execSQL("INSERT INTO UserInfo(Email,Pass) Values(?,?)",new String[]{semail,hashpass});
-                    auth.close();
-                    Intent intent = new Intent(this,Login.class);
-                    startActivity(intent);
-
-                } catch (Exception e)
-                {
-
-                }
-            }
-        }
-         **/
     }
 
     private void registerUser(final String firstname, final String lastname, final String email, final String password)
