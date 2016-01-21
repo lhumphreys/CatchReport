@@ -39,12 +39,10 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
         }
         else{
-
-            Button logout = (Button) findViewById(R.id.logoutbutton);
             //
-
             Button addFishButton = (Button) findViewById(R.id.addFishButton);
-
+            Button askBiologist = (Button) findViewById(R.id.askBiologist);
+            Button logout = (Button) findViewById(R.id.logoutbutton);
             //
             //
 
@@ -56,6 +54,13 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
 
+            askBiologist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), AskBiologist.class);
+                    startActivity(intent);
+                }
+            });
             //
             logout.setOnClickListener(new View.OnClickListener()
             {
@@ -67,6 +72,8 @@ public class MainActivity extends AppCompatActivity{
                     startActivity(intent);
                 }
             });
+
+
 
         }
     }
