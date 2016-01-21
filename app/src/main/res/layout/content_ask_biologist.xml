@@ -21,7 +21,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="5dp"
-        android:hint="   Subject"
+        android:paddingLeft="15dp"
+        android:hint="Subject"
         android:textColorHint="#44000000"
         android:background="#ffffff"/>
 
@@ -36,10 +37,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/askBioBod"
-            android:hint="   Ask Your Question Here!"
+            android:hint="Ask Your Question Here!"
             android:textColorHint="#44000000"
             android:background="#ffffffff"
             android:layout_marginBottom="5dp"
+            android:paddingLeft="15dp"
             android:paddingTop="15dp"/>
     </ScrollView>
 
@@ -49,7 +51,7 @@
         android:id="@+id/submitAskBio"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="53dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:text="Send Question"
         android:textColor="#ffffff"

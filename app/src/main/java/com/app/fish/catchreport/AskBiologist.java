@@ -25,8 +25,8 @@ public class AskBiologist extends AppCompatActivity {
     {
         TextView sub = (TextView) findViewById(R.id.askBioSub);
         TextView bod = (TextView) findViewById(R.id.askBioBod);
-        String subject = sub.toString();
-        String body = bod.toString();
+        String subject = sub.getText().toString();
+        String body = bod.getText().toString();
 
         if(subject.isEmpty() || body.isEmpty())
         {

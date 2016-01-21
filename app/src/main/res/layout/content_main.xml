@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ACF0F2"
+    android:background="#ffffff"
     android:id="@+id/myscrollview">
 
     <LinearLayout  android:layout_width="match_parent"
