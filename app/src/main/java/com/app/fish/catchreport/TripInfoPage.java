@@ -37,7 +37,7 @@ import java.util.Date;
  *
  * Page used for 'Start Trip' feature. Stores TripInfoStorage object.
  */
-public class TripInfoPage extends AppCompatActivity {
+public class TripInfoPage extends BaseDrawerActivity {
 
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
 
@@ -49,11 +49,12 @@ public class TripInfoPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_info_page);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        super.makeDrawer();
+
 
         info = new TripInfoStorage();
-        info.setDate(new Date());
+        info.setStartDate(new Date());
+        info.setEndDate(new Date());
 
         initializeList();
         initializeCalendar();
@@ -84,8 +85,8 @@ public class TripInfoPage extends AppCompatActivity {
 
                 lakes.setVisibility(Spinner.VISIBLE);
                 title.setVisibility(TextView.VISIBLE);
-                ArrayList<String> lakeList = fillLakes((String) parent.getItemAtPosition(position));
-                ArrayAdapter<String> lakeAdapt = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_item, lakeList);
+                ArrayList<LakeEntry> lakeList = fillLakes((String) parent.getItemAtPosition(position));
+                ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), android.R.layout.simple_spinner_item, lakeList);
                 lakes.setAdapter(lakeAdapt);
             }
 
@@ -135,15 +136,15 @@ public class TripInfoPage extends AppCompatActivity {
      * @param county County which lakes must be contained in to be added to list
      * @return Array of Strings containing all Lake names in given county
      */
-    public ArrayList<String> fillLakes(String county)
+    public ArrayList<LakeEntry> fillLakes(String county)
     {
-        ArrayList<String> lakeNames = new ArrayList<String>();
+        ArrayList<LakeEntry> lakeNames = new ArrayList<LakeEntry>();
         DatabaseHandler db = new DatabaseHandler(this, FISH_LAKES_DB);
         db.openDatabase();
-        SQLiteCursor cur = db.runQuery("SELECT WaterBodyName FROM Lakes WHERE County=?", new String[]{county});
+        SQLiteCursor cur = db.runQuery("SELECT WaterBodyName, _id FROM Lakes WHERE County=?", new String[]{county});
         while(cur.moveToNext())
         {
-            lakeNames.add(cur.getString(0));
+            lakeNames.add(new LakeEntry(cur.getString(0), cur.getInt(1)));
         }
         cur.close();
         db.close();
@@ -159,9 +160,12 @@ public class TripInfoPage extends AppCompatActivity {
         cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                info.getDate().setYear(year);
-                info.getDate().setMonth(month);
-                info.getDate().setDate(dayOfMonth);
+                info.getStartDate().setYear(year);
+                info.getStartDate().setMonth(month);
+                info.getStartDate().setDate(dayOfMonth);
+                info.getEndDate().setYear(year);
+                info.getEndDate().setMonth(month);
+                info.getEndDate().setDate(dayOfMonth);
             }
         });
     }
@@ -171,12 +175,20 @@ public class TripInfoPage extends AppCompatActivity {
      */
     private void initializeClock()
     {
-        TimePicker tp = (TimePicker)findViewById(R.id.timePicker);
+        TimePicker tp = (TimePicker)findViewById(R.id.timePicker1);
         tp.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                info.getDate().setHours(hourOfDay);
-                info.getDate().setMinutes(minute);
+                info.getStartDate().setHours(hourOfDay);
+                info.getStartDate().setMinutes(minute);
+            }
+        });
+        TimePicker tp2 = (TimePicker)findViewById(R.id.timePicker2);
+        tp2.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                info.getEndDate().setHours(hourOfDay);
+                info.getEndDate().setMinutes(minute);
             }
         });
     }
@@ -198,13 +210,12 @@ public class TripInfoPage extends AppCompatActivity {
                 try {
                     DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
                     db.openDatabase();
-                    String lakeName = (String) ((Spinner) findViewById(R.id.lakeSpinner)).getSelectedItem();
+                    LakeEntry lakeEntry = (LakeEntry) ((Spinner)findViewById(R.id.lakeSpinner)).getSelectedItem();
                     String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
-                    String q = "SELECT _id,WaterBodyName,County,Abbreviation,Restrictions FROM Lakes WHERE WaterBodyName=? AND County=?";
-                    SQLiteCursor cur = db.runQuery(q, new String[]{lakeName, county});
-                    //CHANGE TO QUERY BY PRIMARY KEY, CHANGE HOW THEY ARE STORED IN MEMORY TO ALLOW FOR _id
+                    String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
+                    SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
                     cur.moveToFirst();
-                    lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getString(4));
+                    lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getDouble(4), cur.getDouble(5));
                     cur.close();
                     db.close();
                     info.setLake(lake);
@@ -218,4 +229,29 @@ public class TripInfoPage extends AppCompatActivity {
             }
         });
     }
+
+    /*
+    Private class used to just store lake name and id
+
+    id is used for database query after submit, so that correct lake is assured
+
+    name is used for display in spinner
+     */
+    private class LakeEntry
+    {
+        public String name;
+        public int id;
+
+        public LakeEntry(String n, int i)
+        {
+            name = n;
+            id = i;
+        }
+
+        public String toString()
+        {
+            return name;
+        }
+    }
+
 }

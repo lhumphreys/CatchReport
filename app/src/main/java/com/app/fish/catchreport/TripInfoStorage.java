@@ -10,7 +10,7 @@ import java.util.Date;
  * @version 1.0
  */
 public class TripInfoStorage implements Serializable{
-    private Date date;
+    private Date startDate, endDate;
     private Lake lake;
     private ArrayList<Fish> fish;
 
@@ -19,7 +19,8 @@ public class TripInfoStorage implements Serializable{
      */
     public TripInfoStorage()
     {
-        date = null;
+        startDate = null;
+        endDate = null;
         lake = null;
         fish = new ArrayList<Fish>();
     }
@@ -32,16 +33,19 @@ public class TripInfoStorage implements Serializable{
      */
     public TripInfoStorage(Date d, Lake s)
     {
-        date = d;
+        startDate = d;
+        endDate = d;
         lake = s;
         fish = new ArrayList<Fish>();
     }
 
 
-    public void setDate(Date d)
+    public void setStartDate(Date d)
     {
-        date = d;
+        startDate = d;
     }
+
+    public void setEndDate(Date d) { endDate = d;}
 
     public void setLake(Lake s)
     {
@@ -53,10 +57,12 @@ public class TripInfoStorage implements Serializable{
         fish = f;
     }
 
-    public Date getDate()
+    public Date getStartDate()
     {
-        return date;
+        return startDate;
     }
+
+    public Date getEndDate() { return endDate; }
 
     public Lake getLake()
     {
@@ -92,5 +98,15 @@ public class TripInfoStorage implements Serializable{
     {
         fish.add(f);
     }
+
+    public double getLat() {
+        return lake.getLat();
+    }
+
+    public double getLong()
+    {
+        return lake.getLong();
+    }
+
 
 }

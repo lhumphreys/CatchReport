@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.fish.catchreport" >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,6 +43,11 @@
         <activity
             android:name=".DisplayTripInfo"
             android:label="@string/title_activity_display_trip_info"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".BaseDrawerActivity"
+            android:label="@string/title_activity_base_drawer"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

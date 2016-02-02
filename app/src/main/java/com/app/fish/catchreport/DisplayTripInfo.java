@@ -1,6 +1,8 @@
 package com.app.fish.catchreport;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteCursor;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,38 +11,61 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class DisplayTripInfo extends AppCompatActivity {
+import java.io.IOException;
+import java.util.ArrayList;
 
-    private TripInfoStorage info;
+public class DisplayTripInfo extends BaseDrawerActivity {
+
+    public static final String CATCH_DATA_DB = "CatchDatabase.db";
+    private ArrayList<Displayer> reportList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_trip_info);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        super.makeDrawer();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         getInfo();
         displayInfo();
         setDoneButton();
     }
 
-    private void getInfo()
-    {
-        //WILL READ FROM DATABASE
-        Intent intent = getIntent();
-        TripInfoStorage i = (TripInfoStorage)intent.getSerializableExtra("TripInfo");
-        info = i;
+    private void getInfo() {
+        reportList = new ArrayList<Displayer>();
+        DatabaseHandler help = new DatabaseHandler(this, CATCH_DATA_DB);
+        help.openDatabase();
+        try{
+            String q = "SELECT location,county,tripdate,starttime,endtime,reportid FROM MainCatch";
+            SQLiteCursor cursor = help.runQuery(q, null);
+            while(cursor.moveToNext()) {
+                Displayer temp = new Displayer(
+                        cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        (cursor.getInt(4) - cursor.getInt(3)) + "");
+                q = "SELECT species,weight,length,harvest,tags FROM FishCaught WHERE reportid=?";
+                SQLiteCursor otherCursor = help.runQuery(q, new String[]{cursor.getString(5)});
+                while (otherCursor.moveToNext()) {
+                    FishDisplayer tempFish = new FishDisplayer(
+                            otherCursor.getString(0),
+                            otherCursor.getString(1),
+                            otherCursor.getString(2),
+                            otherCursor.getString(3),
+                            otherCursor.getString(4));
+                    temp.fishlist.add(tempFish);
+                }
+                reportList.add(temp);
+            }
+            help.close();
+        }
+        catch(SQLiteException e)
+        {
+            Toast.makeText(this, "Database Error", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /*
@@ -49,25 +74,38 @@ public class DisplayTripInfo extends AppCompatActivity {
     private void displayInfo()
 
     {
-        TextView title = (TextView)findViewById(R.id.DisplayTitle);
-        Lake lake = info.getLake();
-        String word = lake.getName() + ", " + lake.getAbbreviation();
-        if(lake.getRestriction())
-            word += " (R)";
-        title.setText(word);
 
-        TextView body = (TextView)findViewById(R.id.DisplayBody);
-        body.setText("");
-        for(int i = 0; i < info.numFish(); i++)
-        {
-            String newWord = "";
-            Fish curFish = info.getFish(i);
-            newWord += curFish.getSpecies() + "\n\tWeight: " +curFish.displayWeight() +
-                    "\n\tLength: "+curFish.displayLength() + "\n\tReleased: ";
-            newWord += curFish.isReleased() ? "Yes\n\tTagged" : "No\n\tTagged";
-            newWord += curFish.isTagged() ? "Yes\n\n" : "No\n\n";
-            body.setText(body.getText() + newWord);
+        TextView title = (TextView) findViewById(R.id.DisplayTitle);
+        if(reportList.size() > 0) {
+            for(Displayer each : reportList)
+            {
+                title.setText(title.getText()+"\n"+each.lake+", "+each.county+"\n"+each.date+", "+each.time+" hours long");
+                for(FishDisplayer fd : each.fishlist)
+                {
+                    title.setText(title.getText()+"\n\n\t"+fd.species+"\n\t"+fd.length+" inches\n\t"+fd.weight+" pounds\n\n");
+                }
+            }
+            /*Lake lake = info.getLake();
+            String word = lake.getName() + ", " + lake.getAbbreviation();
+            word += "\n" + info.getStartDate().toString();   //////FORMAT BETTER JODA OR JAVA 8 LOCAL TIME OBJECT IN TRIP STORAGE
+            word += "\n" + info.getStartDate().getHours() + "  -  " + info.getEndDate().getHours();
+            word += "\n" + info.getLat() + ", " + info.getLong();
+            title.setText(word);
+
+            TextView body = (TextView) findViewById(R.id.DisplayBody);
+            body.setText("");
+            for (int i = 0; i < info.numFish(); i++) {
+                String newWord = "";
+                Fish curFish = info.getFish(i);
+                newWord += curFish.getSpecies() + "\n\tWeight: " + curFish.displayWeight() +
+                        "\n\tLength: " + curFish.displayLength() + "\n\tReleased: ";
+                newWord += curFish.isReleased() ? "Yes\n\tTagged" : "No\n\tTagged";
+                newWord += curFish.isTagged() ? "Yes\n\n" : "No\n\n";
+                body.setText(body.getText() + newWord);
+            }*/
         }
+        else
+            title.setText("Nothing to display");
     }
 
     /*
@@ -87,4 +125,31 @@ public class DisplayTripInfo extends AppCompatActivity {
         );
     }
 
+    private class Displayer
+    {
+        String lake, county, date, time;
+        ArrayList<FishDisplayer> fishlist;
+
+        public Displayer(String la, String c, String d, String t) {
+            lake = la;
+            county = c;
+            date = d;
+            time = t;
+            fishlist = new ArrayList<FishDisplayer>();
+        }
+    }
+
+    private class FishDisplayer
+    {
+        String species, weight, length, harvest, tags;
+
+        public FishDisplayer(String s, String w, String l, String h, String t)
+        {
+            species = s;
+            weight = w;
+            length = l;
+            harvest = h;
+            tags = t;
+        }
+    }
 }

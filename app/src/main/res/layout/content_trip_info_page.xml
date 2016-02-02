@@ -102,7 +102,13 @@
             <TimePicker
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/timePicker"
+                android:id="@+id/timePicker1"
+                android:timePickerMode="spinner"/>
+
+            <TimePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/timePicker2"
                 android:timePickerMode="spinner"/>
 
 

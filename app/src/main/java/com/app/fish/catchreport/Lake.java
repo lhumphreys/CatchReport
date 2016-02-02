@@ -9,10 +9,10 @@ import java.io.Serializable;
 public class Lake implements Serializable {
 
     private int id;
+    private double lat, lon;
     private String name;
     private String county;
     private String abbreviation;
-    private String restrictions;
 
     /**
      * Lake object set with attributes
@@ -21,15 +21,15 @@ public class Lake implements Serializable {
      * @param n Name of lake
      * @param c County of lake
      * @param a Abbreviation of County
-     * @param r Restrictions
      */
-    public Lake(int i, String n, String c, String a, String r)
+    public Lake(int i, String n, String c, String a, double la, double lo)
     {
         id = i;
         name = n;
         county = c;
         abbreviation = a;
-        restrictions = r;
+        lat = la;
+        lon = lo;
     }
 
     public int getId()
@@ -49,8 +49,14 @@ public class Lake implements Serializable {
 
     public String getAbbreviation(){return abbreviation;}
 
-    public boolean getRestriction()
+    public double getLat()
     {
-        return restrictions.equalsIgnoreCase("restricted");
+        return lat;
     }
+
+    public double getLong()
+    {
+        return lon;
+    }
+
 }

@@ -20,7 +20,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_trip_info_page" />
+        <include layout="@layout/content_base_drawer" />
 
     </LinearLayout>
 
