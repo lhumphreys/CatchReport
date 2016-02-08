@@ -60,6 +60,7 @@ public class TripInfoPage extends BaseDrawerActivity {
         initializeCalendar();
         initializeClock();
         initializeSubmit();
+
     }
 
     /**

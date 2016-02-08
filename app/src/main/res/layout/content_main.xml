@@ -1,55 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main" tools:context=".MainActivity"
-    android:id="@+id/MainLayout"
-    android:orientation="vertical"
-    android:visibility="visible">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:id="@+id/myscrollview">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start!"
-        android:id="@+id/addFishButton"
-        android:layout_gravity="center_horizontal" />
+    <LinearLayout  android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_main"
+        tools:context=".MainActivity"
+        android:id="@+id/MainLayout"
+        android:orientation="vertical"
+        android:visibility="visible"
+        >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView6"
-        android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:text="Submit Report"
+            android:id="@+id/addFishButton"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:background="#E84D3C"
+            android:drawableLeft="@drawable/ic_action_submit"
+            android:paddingLeft="30dp"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView7"
-        android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:text="Start Report"
+            android:id="@+id/liveReport"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:background="#1595A3"
+            android:drawableLeft="@drawable/ic_action_start"
+            android:paddingLeft="30dp"
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log Out"
-        android:id="@+id/logoutbutton"
-        android:layout_gravity="center_horizontal" />
-
-
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        <Button
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:text="My Reports"
+        android:id="@+id/myReports"
         android:layout_gravity="center_horizontal"
-        android:visibility="invisible" />
-</LinearLayout>
+        android:layout_marginTop="8dp"
+        android:textSize="20dp"
+        android:textColor="#ffffff"
+        android:background="#1595A3"
+        android:drawableLeft="@drawable/ic_action_myreports"
+        android:paddingLeft="30dp"
+        />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:text="Weekly Statistics"
+            android:id="@+id/weeklyStats"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:background="#1595A3"
+            android:drawableLeft="@drawable/ic_action_line_chart"
+            android:paddingLeft="30dp"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:text="Ask A Biologist"
+            android:id="@+id/askBiologist"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:background="#1595A3"
+            android:drawableLeft="@drawable/ic_action_mail"
+            android:paddingLeft="30dp"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:text="Log Out"
+            android:id="@+id/logoutbutton"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp"
+            android:layout_marginTop="8dp"
+            android:textColor="#ffffff"
+            android:background="#1595A3"
+            android:drawableLeft="@drawable/ic_action_logout"
+            android:paddingLeft="30dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

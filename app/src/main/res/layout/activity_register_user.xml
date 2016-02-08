@@ -1,42 +1,67 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.app.fish.catchreport.RegisterUser">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.app.fish.catchreport.RegisterUser"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Register"
-        android:id="@+id/textView4"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp" />
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/firstname"
+        android:width = "320dp"
+        android:hint = "First Name"
+        android:gravity="center"
+        android:layout_alignLeft="@+id/editText2"
+        android:layout_alignStart="@+id/editText2"
+        android:layout_marginTop="76dp"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/lastname"
+        android:width = "320dp"
+        android:hint = "Last Name"
+        android:gravity="center"
+        android:layout_below="@+id/firstname"
+        android:layout_alignLeft="@+id/editText2"
+        android:layout_alignStart="@+id/editText2"
+        android:layout_marginTop="36dp"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/editText"
         android:width="320dp"
-        android:hint="Enter An E-mail"
+        android:hint="Email"
         android:gravity="center"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/lastname"
         android:layout_alignLeft="@+id/editText2"
         android:layout_alignStart="@+id/editText2"
         android:layout_marginTop="36dp" />
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/editText2"
         android:width="320dp"
-        android:hint="Choose A Password"
+        android:hint="Password"
         android:gravity="center"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true"
@@ -44,7 +69,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/editText3"
@@ -58,23 +83,26 @@
 
     <ProgressBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/progressBar"
         android:visibility="invisible"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="90dp" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Register"
         android:id="@+id/button8"
         android:onClick="buttonOnClick2"
         android:visibility="visible"
-        android:width="125dp"
-        android:layout_alignTop="@+id/progressBar"
-        android:layout_centerHorizontal="true" />
+        android:width="320dp"
+        android:layout_marginTop="36dp"
+        android:layout_below="@+id/editText3"
+        android:layout_alignLeft="@+id/editText3"
+        android:layout_alignStart="@+id/editText3"
+        android:background="#E84D3C"
+        android:textColor="#ffffff"
+        android:textSize="18dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -87,3 +115,4 @@
         android:textColor="#FF0000" />
 
 </RelativeLayout>
+</ScrollView>

@@ -9,24 +9,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 
 public class MainActivity extends BaseDrawerActivity{
 
     ProgressBar spin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         super.makeDrawer();
 
-        //
         final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
-        spin = (ProgressBar) findViewById(R.id.progressBar1);
-        spin.setIndeterminate(true);
+        ScrollView sv = (ScrollView)findViewById(R.id.myscrollview);
+        sv.fling(10);
 
-        if(prefs.contains("FishAppAuth") == false)
+        if(prefs.contains("FishAppAuth")==false)
         {
             Intent intent = new Intent(this.getBaseContext(),Login.class);
             startActivity(intent);
@@ -37,17 +38,11 @@ public class MainActivity extends BaseDrawerActivity{
             startActivity(intent);
         }
         else{
-
-            Button logout = (Button) findViewById(R.id.logoutbutton);
-            TextView status = (TextView) findViewById(R.id.textView6);
-            TextView id = (TextView) findViewById(R.id.textView7);
             //
-
             Button addFishButton = (Button) findViewById(R.id.addFishButton);
-
+            Button askBiologist = (Button) findViewById(R.id.askBiologist);
+            Button logout = (Button) findViewById(R.id.logoutbutton);
             //
-            status.setText("Logged In: "+prefs.getBoolean("FishAppAuth",false));
-            id.setText("User ID: "+prefs.getString("FishAppID", "Not Found"));
             //
 
             addFishButton.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +53,13 @@ public class MainActivity extends BaseDrawerActivity{
                 }
             });
 
+            askBiologist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), AskBiologist.class);
+                    startActivity(intent);
+                }
+            });
             //
             logout.setOnClickListener(new View.OnClickListener()
             {
@@ -70,13 +72,10 @@ public class MainActivity extends BaseDrawerActivity{
                 }
             });
 
+
+
         }
     }
-
-
-
-        //
-
 
     @Override
     public void onBackPressed() {
