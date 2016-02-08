@@ -40,6 +40,7 @@ public class MainActivity extends BaseDrawerActivity{
         else{
             //
             Button addFishButton = (Button) findViewById(R.id.addFishButton);
+            Button myReportsButton = (Button) findViewById(R.id.myReports);
             Button askBiologist = (Button) findViewById(R.id.askBiologist);
             Button logout = (Button) findViewById(R.id.logoutbutton);
             //
@@ -49,6 +50,14 @@ public class MainActivity extends BaseDrawerActivity{
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), TripInfoPage.class);
+                    startActivity(intent);
+                }
+            });
+
+            myReportsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), DisplayTripInfo.class);
                     startActivity(intent);
                 }
             });

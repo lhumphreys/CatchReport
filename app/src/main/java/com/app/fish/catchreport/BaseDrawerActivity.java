@@ -79,6 +79,8 @@ public class BaseDrawerActivity extends AppCompatActivity
             Intent i = new Intent(this, DisplayTripInfo.class);
             startActivity(i);
         } else if (id == R.id.nav_slideshow) {
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_manage) {
 
