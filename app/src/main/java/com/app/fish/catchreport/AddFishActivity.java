@@ -9,10 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,11 +22,17 @@ import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Node;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,10 +44,8 @@ public class AddFishActivity extends BaseDrawerActivity {
     private static final String FISH_LAKES_DB = "FishAndLakes.db";
     private static final String WRITE_DATA_DB = "CatchDatabase.db";
     private static final String WRITE_CATCH_PHP = "http://zoebaker.name/android_write_catch/addTripInfo.php";
-    private static final String WRITE_FISH_PHP = "http://zoebaker.name/android_write_catch/addFishInfo.php";
     private TripInfoStorage info;
-    private Fish currentFish;
-    private int cur, tripNum, fishNum;
+    private int cur, tripNum;
     private Button addButton;
     private Button prevButton;
 
@@ -221,11 +227,51 @@ public class AddFishActivity extends BaseDrawerActivity {
         }
     }
 
+
     private void updateOnlineDatabase()
     {
-        writeOnline(WRITE_CATCH_PHP);
-        //for fish in info, currentFish=fish, writeonline
-        //use for(fishNum = 1; fishNum <= info.numFish(); fishNum++)
+        /*
+        Creates new instance of FishPoster, which runs in the background to prevent freezing when
+        attempting to post to server when out of service
+         */
+        new FishPoster().execute();
+    }
+
+    public String makeJString()
+    {
+        String word = "{\"upload_fishes\":[";
+        try {
+            JSONObject job = new JSONObject();
+            Date date = info.getStartDate();
+            job.put("reportid", tripNum+"");
+            job.put("userid", "0");
+            job.put("numfish", info.numFish()+"");
+            job.put("location", info.getLake().getName());
+            job.put("date", date.getYear()+"/"+date.getMonth()+"/"+date.getDay());
+            job.put("starttime", date.getHours()+"");
+            job.put("endtime", info.getEndDate().getHours()+"");
+            job.put("weather", "none");
+            job.put("temp", "0");
+            word += job.toString()+",";
+            for(int i = 0; i < info.numFish(); i++)
+            {
+                JSONObject job2 = new JSONObject();
+                Fish cur = info.getFish(i);
+                job2.put("fishnum["+i+"]", (i+1)+"");
+                job2.put("species["+i+"]", cur.getSpecies());
+                job2.put("weight["+i+"]", cur.getWeight()+"");
+                job2.put("length["+i+"]", cur.getLength()+"");
+                job2.put("harvest["+i+"]", cur.isReleased() ? "0" : "1");
+                job2.put("tags["+i+"]", cur.isTagged() ? "1" : "0");
+                job2.put("finclip["+i+"]", "0");
+                job2.put("method["+i+"]", "none");
+                job2.put("timecaught["+i+"]", "0");
+                word += job2.toString() + ",";
+            }
+            word = word.substring(0, word.length()-1);
+            word += "]}";
+        }catch(JSONException e){}
+        return word;
     }
 
     private void switchFish(Fish f){
@@ -287,80 +333,36 @@ public class AddFishActivity extends BaseDrawerActivity {
         return info;
     }
 
-    private void writeOnline(String phpName)
+    private class FishPoster extends AsyncTask<String, Void, String>
     {
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                phpName, new Response.Listener<String>(){
-            public void onResponse(String response)
-            {
-                try{
-                    JSONObject job = new JSONObject(response);
-                    boolean error = job.getBoolean("error");
-                    if(!error){
-                        Toast.makeText(getApplicationContext(), "Data posted!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(AddFishActivity.this, DisplayTripInfo.class);
-                        startActivity(intent);
-                        finish();
-                    }else{
-                        String errorMessage = job.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMessage, Toast.LENGTH_LONG).show();
-                    }
-                }catch(JSONException e){
-                    e.printStackTrace();
+        protected String doInBackground(String[] urls)
+        {
+            String jstring = makeJString();
+            try {
+                URL url = new URL(WRITE_CATCH_PHP);
+                HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                con.setRequestMethod("POST");
+                con.setDoOutput(true);
+                OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
+                out.write(jstring);
+                out.flush();
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String line;
+                line=in.readLine();
+                if(line != null){
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+
+                            Toast.makeText(AddFishActivity.this, "Data posted!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
+                in.close();
+            }catch(Exception e){
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }){
-            protected Map<String, String> getParams(){
-                Map<String, String> params = null;
-                if(getUrl().equals(WRITE_CATCH_PHP))
-                    params = makeCatchParams();
-                else if(getUrl().equals(WRITE_FISH_PHP))
-                    params = makeFishParams();
-                return params;
-            }
-        };
-        RequestQueue mRequestQueue = Volley.newRequestQueue(getApplicationContext());
-        mRequestQueue.add(strReq);
-    }
-
-    private Map<String, String> makeCatchParams()
-    {
-        Map<String, String> params = new HashMap<>();
-        Date start = info.getStartDate();
-        Date end = info.getEndDate();
-        params.put("reportid", tripNum+"");
-        params.put("userid", "0");
-        params.put("numfish", info.numFish()+"");
-        params.put("location", info.getLake().getName());
-        params.put("date", start.getYear()+"/"+start.getMonth()+"/"+start.getDay());
-        params.put("starttime", start.getHours()+"");
-        params.put("endtime", end.getHours()+"");
-        params.put("weather", "none");
-        params.put("temp", "none");
-        return params;
-    }
-
-    private Map<String, String> makeFishParams()
-    {
-        Map<String, String> params = new HashMap<>();
-        params.put("reportid", tripNum+"");
-        params.put("fishnum", fishNum+"");
-        params.put("species", currentFish.getSpecies());
-        params.put("weight", currentFish.getWeight()+"");
-        params.put("length", currentFish.getLength()+"");
-        params.put("harvest", currentFish.isReleased() ? "0" : "1");
-        params.put("tags", currentFish.isTagged() ? "1" : "0");
-        params.put("finclip", "0");
-        params.put("method", "none");
-        params.put("timecaught", "0");
-        return params;
+            return null;
+        }
     }
 
 }
