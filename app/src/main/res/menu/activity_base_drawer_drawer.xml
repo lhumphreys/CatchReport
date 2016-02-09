@@ -9,10 +9,10 @@
               android:icon="@drawable/ic_action_myreports"
               android:title="View Trips" />
         <item android:id="@+id/nav_slideshow"
-              android:icon="@drawable/ic_action_list"
+              android:icon="@drawable/ic_action_home"
               android:title="Main Menu" />
         <item android:id="@+id/nav_manage"
-              android:icon="@drawable/ic_action_home"
+              android:icon="@android:drawable/ic_menu_manage"
               android:title="Tools" />
     </group>
 
