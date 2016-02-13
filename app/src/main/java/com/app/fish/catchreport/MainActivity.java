@@ -17,9 +17,9 @@ public class MainActivity extends BaseDrawerActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Fish N' Trips");
         setContentView(R.layout.activity_main);
         super.makeDrawer();
-
         final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
         ScrollView sv = (ScrollView)findViewById(R.id.myscrollview);
         sv.fling(10);
@@ -124,7 +124,7 @@ public class MainActivity extends BaseDrawerActivity{
                         public void onAnimationStart(Animation animation) {}
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            Intent intent = new Intent(getApplicationContext(), WeeklyStats.class);
+                            Intent intent = new Intent(getApplicationContext(), WeeklyStatsInput.class);
                             startActivity(intent);
                         }
                         @Override
