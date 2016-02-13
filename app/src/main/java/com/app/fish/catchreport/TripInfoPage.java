@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -29,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -157,10 +159,15 @@ public class TripInfoPage extends BaseDrawerActivity {
      */
     private void initializeCalendar()
     {
-        CalendarView cv = (CalendarView)findViewById(R.id.calendarView);
-        cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        //CalendarView cv = (CalendarView)findViewById(R.id.calendarView);
+        DatePicker dp = (DatePicker)findViewById(R.id.datePicker);
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        dp.init(mYear, mMonth, mDay, new DatePicker.OnDateChangedListener() {
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+            public void onDateChanged(DatePicker view, int year, int month, int dayOfMonth) {
                 info.getStartDate().setYear(year);
                 info.getStartDate().setMonth(month);
                 info.getStartDate().setDate(dayOfMonth);

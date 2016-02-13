@@ -32,6 +32,7 @@ public class AddFishFragment extends Fragment {
     private EditText lengthEditText;
     private CheckBox releasedCheckBox;
     private CheckBox taggedCheckBox;
+    private String currentLake;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,7 +72,7 @@ public class AddFishFragment extends Fragment {
             mFish = new Fish();
         }
 
-
+        currentLake = getArguments().getString("lakeID");
 
     }
 
@@ -170,7 +171,11 @@ public class AddFishFragment extends Fragment {
         ArrayList<String> lakeNames = new ArrayList<String>();
         DatabaseHandler db = new DatabaseHandler(this.getActivity(), FISH_LAKES_DB);
         db.openDatabase();
-        SQLiteCursor cur = db.runQuery("SELECT Species FROM Fish",null);
+        SQLiteCursor cur;
+
+        cur = db.runQuery("SELECT Species FROM FoundIn JOIN Fish ON FoundIn.FishID=Fish._id WHERE WaterBodyID=?",
+                new String[]{currentLake});
+
         while(cur.moveToNext())
         {
             lakeNames.add(cur.getString(0));

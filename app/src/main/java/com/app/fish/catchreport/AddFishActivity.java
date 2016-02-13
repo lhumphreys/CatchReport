@@ -58,7 +58,14 @@ public class AddFishActivity extends BaseDrawerActivity {
         info = getTripInfo();
         this.cur = 0;
         info.addFish(this.cur, new Fish());
+
+        Bundle b = new Bundle();
+        b.putString("lakeID", info.getLake().getId()+"");
+
         AddFishFragment fishFragment = AddFishFragment.newInstance(info.getFish(this.cur));
+
+        fishFragment.setArguments(b);
+
         FragmentManager fragmentManager = this.getFragmentManager();
         FragmentTransaction trans = fragmentManager.beginTransaction();
         trans.add(R.id.fragHolder, fishFragment, "FISH_FRAGMENT");

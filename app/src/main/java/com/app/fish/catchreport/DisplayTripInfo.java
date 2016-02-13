@@ -37,8 +37,9 @@ public class DisplayTripInfo extends BaseDrawerActivity {
     private void getInfo() {
         reportList = new ArrayList<Displayer>();
         DatabaseHandler help = new DatabaseHandler(this, CATCH_DATA_DB);
-        help.openDatabase();
         try{
+            help.createDatabase();
+            help.openDatabase();
             String q = "SELECT location,county,tripdate,starttime,endtime,reportid FROM MainCatch";
             SQLiteCursor cursor = help.runQuery(q, null);
             while(cursor.moveToNext()) {
@@ -66,6 +67,10 @@ public class DisplayTripInfo extends BaseDrawerActivity {
         {
             Toast.makeText(this, "Database Error", Toast.LENGTH_SHORT).show();
         }
+        catch(IOException e)
+        {
+            Toast.makeText(this, "Error Creating Database", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /*
@@ -77,32 +82,12 @@ public class DisplayTripInfo extends BaseDrawerActivity {
 
         TextView title = (TextView) findViewById(R.id.DisplayTitle);
         if(reportList.size() > 0) {
-            for(Displayer each : reportList)
-            {
-                title.setText(title.getText()+"\n"+each.lake+", "+each.county+"\n"+each.date+", "+each.time+" hours long");
-                for(FishDisplayer fd : each.fishlist)
-                {
-                    title.setText(title.getText()+"\n\n\t"+fd.species+"\n\t"+fd.length+" inches\n\t"+fd.weight+" pounds\n\n");
+            for(Displayer each : reportList) {
+                title.setText(title.getText() + "\n" + each.lake + ", " + each.county + "\n" + each.date + ", " + each.time + " hours long");
+                for (FishDisplayer fd : each.fishlist) {
+                    title.setText(title.getText() + "\n\n\t" + fd.species + "\n\t" + fd.length + " inches\n\t" + fd.weight + " pounds\n\n");
                 }
             }
-            /*Lake lake = info.getLake();
-            String word = lake.getName() + ", " + lake.getAbbreviation();
-            word += "\n" + info.getStartDate().toString();   //////FORMAT BETTER JODA OR JAVA 8 LOCAL TIME OBJECT IN TRIP STORAGE
-            word += "\n" + info.getStartDate().getHours() + "  -  " + info.getEndDate().getHours();
-            word += "\n" + info.getLat() + ", " + info.getLong();
-            title.setText(word);
-
-            TextView body = (TextView) findViewById(R.id.DisplayBody);
-            body.setText("");
-            for (int i = 0; i < info.numFish(); i++) {
-                String newWord = "";
-                Fish curFish = info.getFish(i);
-                newWord += curFish.getSpecies() + "\n\tWeight: " + curFish.displayWeight() +
-                        "\n\tLength: " + curFish.displayLength() + "\n\tReleased: ";
-                newWord += curFish.isReleased() ? "Yes\n\tTagged" : "No\n\tTagged";
-                newWord += curFish.isTagged() ? "Yes\n\n" : "No\n\n";
-                body.setText(body.getText() + newWord);
-            }*/
         }
         else
             title.setText("Nothing to display");
