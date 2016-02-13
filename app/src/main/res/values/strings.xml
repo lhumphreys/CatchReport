@@ -14,4 +14,6 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_weekly_stats">WeeklyStats</string>
+    <string name="title_activity_weekly_stats_input">WeeklyStatsInput</string>
 </resources>

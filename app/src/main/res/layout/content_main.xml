@@ -21,33 +21,34 @@
         android:orientation="vertical"
         android:visibility="visible"
         >
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:text="Submit Report"
-            android:id="@+id/addFishButton"
-            android:layout_gravity="center_horizontal"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:background="#E84D3C"
-            android:drawableLeft="@drawable/ic_action_submit"
-            android:paddingLeft="30dp"
-            />
-
         <Button
             android:layout_width="fill_parent"
             android:layout_height="100dp"
             android:text="Start Report"
             android:id="@+id/liveReport"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
             android:textSize="20dp"
             android:textColor="#ffffff"
-            android:background="#1595A3"
+            android:background="#E84D3C"
             android:drawableLeft="@drawable/ic_action_start"
             android:paddingLeft="30dp"
             />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:text="Submit Report"
+            android:id="@+id/addFishButton"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:background="#1595A3"
+            android:drawableLeft="@drawable/ic_action_submit"
+            android:paddingLeft="30dp"
+            />
+
+
 
         <Button
         android:layout_width="fill_parent"

@@ -2,22 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_camara" android:icon="@android:drawable/ic_menu_camera"
-            android:title="Start Trip" />
-        <item android:id="@+id/nav_gallery" android:icon="@android:drawable/ic_menu_gallery"
-            android:title="View Trips" />
-        <item android:id="@+id/nav_slideshow" android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="Main Menu" />
-        <item android:id="@+id/nav_manage" android:icon="@android:drawable/ic_menu_manage"
-            android:title="Tools" />
+        <item android:id="@+id/nav_camara"
+              android:icon="@drawable/ic_action_start"
+              android:title="Start Trip" />
+        <item android:id="@+id/nav_gallery"
+              android:icon="@drawable/ic_action_myreports"
+              android:title="View Trips" />
+        <item android:id="@+id/nav_slideshow"
+              android:icon="@drawable/ic_action_home"
+              android:title="Main Menu" />
+        <item android:id="@+id/nav_manage"
+              android:icon="@android:drawable/ic_menu_manage"
+              android:title="Tools" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Options">
         <menu>
-            <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
-                android:title="Share" />
-            <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"
-                android:title="Account Info" />
+            <item android:id="@+id/nav_send"
+                  android:icon="@drawable/ic_action_gear"
+                  android:title="Account Settings" />
+            <item android:id="@+id/nav_share"
+                  android:icon="@drawable/ic_action_rocket"
+                  android:title="About" />
         </menu>
     </item>
 

@@ -3,14 +3,11 @@ package com.app.fish.catchreport;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.ProgressBar;
 
 public class MainActivity extends BaseDrawerActivity{
@@ -20,9 +17,9 @@ public class MainActivity extends BaseDrawerActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Fish N' Trips");
         setContentView(R.layout.activity_main);
         super.makeDrawer();
-
         final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
         ScrollView sv = (ScrollView)findViewById(R.id.myscrollview);
         sv.fling(10);
@@ -39,34 +36,122 @@ public class MainActivity extends BaseDrawerActivity{
         }
         else{
             //
+            Button startReport = (Button) findViewById(R.id.liveReport);
             Button addFishButton = (Button) findViewById(R.id.addFishButton);
             Button myReportsButton = (Button) findViewById(R.id.myReports);
+            Button weeklyStats = (Button) findViewById(R.id.weeklyStats);
             Button askBiologist = (Button) findViewById(R.id.askBiologist);
             Button logout = (Button) findViewById(R.id.logoutbutton);
             //
             //
+            startReport.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+
+                    Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce);
+                    v.startAnimation(anim);
+
+                    /** new intent will be called on animation completion**/
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+
+                            /**intent will go here**/
+
+                        }
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
+                }
+            });
 
             addFishButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), TripInfoPage.class);
-                    startActivity(intent);
+
+                    Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce);
+                    v.startAnimation(anim);
+
+                    /** new intent will be called on animation completion**/
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            Intent intent = new Intent(getApplicationContext(), TripInfoPage.class);
+                            startActivity(intent);
+                        }
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
                 }
             });
 
             myReportsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), DisplayTripInfo.class);
-                    startActivity(intent);
+
+                    Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce);
+                    v.startAnimation(anim);
+
+                    /** new intent will be called on animation completion**/
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            Intent intent = new Intent(getApplicationContext(), DisplayTripInfo.class);
+                            startActivity(intent);
+                        }
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
+                }
+            });
+
+            weeklyStats.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce);
+                    v.startAnimation(anim);
+
+                    /** new intent will be called on animation completion**/
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            Intent intent = new Intent(getApplicationContext(), WeeklyStatsInput.class);
+                            startActivity(intent);
+                        }
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
                 }
             });
 
             askBiologist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), AskBiologist.class);
-                    startActivity(intent);
+
+                    Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce);
+                    v.startAnimation(anim);
+
+                    /** new intent will be called on animation completion**/
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            Intent intent = new Intent(getApplicationContext(), AskBiologist.class);
+                            startActivity(intent);
+                        }
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
                 }
             });
             //
@@ -74,10 +159,23 @@ public class MainActivity extends BaseDrawerActivity{
             {
                 @Override
                 public void onClick(View v) {
-                    prefs.edit().putBoolean("FishAppAuth", false).commit();
-                    prefs.edit().putString("FishAppID","").commit();
-                    Intent intent = new Intent(v.getContext(),MainActivity.class);
-                    startActivity(intent);
+
+                    Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce);
+                    v.startAnimation(anim);
+
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            prefs.edit().putBoolean("FishAppAuth", false).commit();
+                            prefs.edit().putString("FishAppID", "").commit();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
                 }
             });
 

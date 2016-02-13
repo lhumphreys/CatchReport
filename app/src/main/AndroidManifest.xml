@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.fish.catchreport">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -23,33 +23,39 @@
         <activity
             android:name=".AddFishActivity"
             android:label="@string/title_activity_add_fish"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Menu"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Menu" />
         <activity
             android:name=".TripInfoPage"
             android:label="@string/title_activity_trip_info_page"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RegisterUser"
             android:label="@string/title_activity_register_user"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DisplayTripInfo"
             android:label="@string/title_activity_display_trip_info"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BaseDrawerActivity"
             android:label="@string/title_activity_base_drawer"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AskBiologist"
             android:label="@string/title_activity_ask_biologist"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WeeklyStats"
+            android:label="@string/title_activity_weekly_stats"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WeeklyStatsInput"
+            android:label="@string/title_activity_weekly_stats_input"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
