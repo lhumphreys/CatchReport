@@ -60,7 +60,7 @@
                     android:text="County"
                     android:id="@+id/textViewCounty"
                     android:textColor="#ffffff"
-                    android:background="@color/fishNTripRed"
+                    android:background="@drawable/selector_background_red"
                     android:layout_marginRight="5dp"/>
 
                 <RelativeLayout
@@ -97,7 +97,7 @@
                     android:text="Lake"
                     android:id="@+id/textViewLake"
                     android:textColor="#ffffff"
-                    android:background="@color/fishNTripRed"
+                    android:background="@drawable/selector_background_red"
                     android:layout_marginRight="5dp"/>
 
                 <RelativeLayout
@@ -231,7 +231,7 @@
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:background="@color/fishNTripRed"
+                        android:background="@drawable/submit_button_rounded"
                         android:text="Submit"
                         android:textColor="#FFFFFFFF"
                         android:textSize="20sp"

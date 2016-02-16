@@ -18,40 +18,64 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Previous"
-            android:id="@+id/prevButton"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:visibility="gone" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete"
-            android:id="@+id/deleteButton"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp" />
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:text="Previous"
+                    android:id="@+id/prevButton"
+                    android:visibility="gone"
+                    android:background="@drawable/left_small_button_drawable_red"
+                    android:textColor="#FFFFFFFF"
+                    android:drawableLeft="@drawable/ic_action_goleft"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginRight="5dp"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Fish"
-            android:id="@+id/addButton"
-            android:layout_gravity="center_horizontal" />
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:text="Delete"
+                    android:id="@+id/deleteButton"
+                    android:background="@color/fishNTripRed"
+                    android:textColor="#FFFFFFFF"
+                    android:layout_marginRight="5dp"/>
+
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:text="Add Fish"
+                    android:id="@+id/addButton"
+                    android:background="@drawable/right_small_button_drawable_red"
+                    android:textColor="#FFFFFFFF"
+                    android:drawableRight="@drawable/ic_action_goright"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"/>
+
     </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="5dp"
         android:text="Submit"
         android:id="@+id/submitButton"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFFFF"
+        android:textSize="20sp"
+        android:background="@drawable/submit_button_rounded"/>
 
 </LinearLayout>

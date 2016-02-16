@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class AddFishFragment extends Fragment {
     private EditText lengthEditText;
     private CheckBox releasedCheckBox;
     private CheckBox taggedCheckBox;
-    private String currentLake;
+    private static String currentLake;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,6 +54,7 @@ public class AddFishFragment extends Fragment {
         AddFishFragment fragment = new AddFishFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, fish);
+        args.putString("lakeID",currentLake);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,7 +75,6 @@ public class AddFishFragment extends Fragment {
         }
 
         currentLake = getArguments().getString("lakeID");
-
     }
 
     @Override
@@ -85,8 +86,8 @@ public class AddFishFragment extends Fragment {
         final ArrayList<String> species = fillFishList();
 
         speciesSpin = (Spinner) v.findViewById(R.id.speciesSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, species);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.spinner_layout_ws, species);
+        adapter.setDropDownViewResource(R.layout.spinner_layout_ws);
 
         speciesSpin.setAdapter(adapter);
 
@@ -106,9 +107,11 @@ public class AddFishFragment extends Fragment {
         });
 
         weightEditText = (EditText) v.findViewById(R.id.weightEditText);
+
         if(mFish.getWeight() > 0){
-            weightEditText.setText(mFish.getWeight() + "");
+            weightEditText.setHint(mFish.getWeight() + "");
         }
+
         weightEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -127,8 +130,9 @@ public class AddFishFragment extends Fragment {
 
 
         lengthEditText = (EditText) v.findViewById(R.id.lengthEditText);
+
         if(mFish.getLength() > 0) {
-            lengthEditText.setText(mFish.getLength() + "");
+            lengthEditText.setHint(mFish.getLength() + "");
         }
         lengthEditText.addTextChangedListener(new TextWatcher() {
             @Override
