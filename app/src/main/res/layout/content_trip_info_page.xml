@@ -2,10 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_trip_info_page"
     tools:context="com.app.fish.catchreport.TripInfoPage">
@@ -17,6 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -26,14 +25,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:background="@drawable/header_bar_blue">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Location"
-                    android:id="@+id/textView" />
+                    android:gravity="center_horizontal"
+                    android:id="@+id/textView"
+                    android:textColor="#ffffff"
+                    android:textSize="25sp"/>
 
             </LinearLayout>
 
@@ -41,49 +45,96 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="25dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="20sp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="County"
-                    android:id="@+id/textViewCounty"/>
+                    android:id="@+id/textViewCounty"
+                    android:textColor="#ffffff"
+                    android:background="@color/fishNTripRed"
+                    android:layout_marginRight="5dp"/>
 
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:id="@+id/countySpinner"/>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/selector_background_blue">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:id="@+id/countySpinner"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="20sp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Lake"
-                    android:id="@+id/textViewLake"/>
+                    android:id="@+id/textViewLake"
+                    android:textColor="#ffffff"
+                    android:background="@color/fishNTripRed"
+                    android:layout_marginRight="5dp"/>
 
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:id="@+id/lakeSpinner"/>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/selector_background_blue">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:id="@+id/lakeSpinner"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Date"
-                android:id="@+id/textView2" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/header_bar_blue">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:gravity="center_horizontal"
+                    android:text="Date"
+                    android:id="@+id/textView2"
+                    android:textColor="#ffffff"
+                    android:textSize="25sp" />
+
+            </LinearLayout>
 
 
             <DatePicker
@@ -91,34 +142,103 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/datePicker"
                 android:datePickerMode="spinner"
-                android:calendarViewShown="false"/>
+                android:calendarViewShown="false"
+                android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/header_bar_blue">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Time"
-                android:id="@+id/textViewTime"/>
+                android:text="Start Time"
+                android:textColor = "#ffffff"
+                android:textSize = "25sp"
+                android:id="@+id/textViewStartTime"/>
 
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal">
+
+                <TimePicker
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/timePicker1"
+                    android:timePickerMode="spinner"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/header_bar_blue">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="End Time"
+                    android:textColor = "#ffffff"
+                    android:textSize = "25sp"
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/textViewEndTime"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
 
             <TimePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/timePicker1"
-                android:timePickerMode="spinner"/>
-
-            <TimePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/timePicker2"
                 android:timePickerMode="spinner"/>
 
+        </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Submit"
-                android:id="@+id/button" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/submit_button"
+                    android:layout_marginBottom="10dp">
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/fishNTripRed"
+                        android:text="Submit"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="20sp"
+                        android:id="@+id/button" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"

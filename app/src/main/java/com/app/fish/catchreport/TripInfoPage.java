@@ -74,8 +74,8 @@ public class TripInfoPage extends BaseDrawerActivity {
     {
         ArrayList<String> counties;
         counties = fillCounties();
-        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, counties);
-        adapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, R.layout.spinner_layout_ws, counties);
+        adapt.setDropDownViewResource(R.layout.spinner_layout_ws);
         Spinner spin = (Spinner)findViewById(R.id.countySpinner);
         spin.setAdapter(adapt);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -89,7 +89,7 @@ public class TripInfoPage extends BaseDrawerActivity {
                 lakes.setVisibility(Spinner.VISIBLE);
                 title.setVisibility(TextView.VISIBLE);
                 ArrayList<LakeEntry> lakeList = fillLakes((String) parent.getItemAtPosition(position));
-                ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), android.R.layout.simple_spinner_item, lakeList);
+                ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
                 lakes.setAdapter(lakeAdapt);
             }
 
