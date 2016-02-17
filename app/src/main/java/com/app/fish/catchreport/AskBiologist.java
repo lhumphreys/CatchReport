@@ -35,7 +35,7 @@ public class AskBiologist extends AppCompatActivity {
         else {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"jacobegwin@gmail.com"});
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"ewufisheriesresearchcenter@gmail.com"});
             i.putExtra(Intent.EXTRA_SUBJECT, subject);
             i.putExtra(Intent.EXTRA_TEXT, body);
             try {

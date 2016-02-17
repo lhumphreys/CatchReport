@@ -11,7 +11,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/editText"
@@ -20,11 +20,12 @@
         android:gravity="center"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp" />
+        android:layout_marginTop="150dp"
+        android:background="@drawable/background_rounded_corners_blue"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/editText2"
@@ -35,7 +36,8 @@
         android:layout_below="@+id/editText"
         android:layout_alignLeft="@+id/editText"
         android:layout_alignStart="@+id/editText"
-        android:layout_marginTop="36dp"/>
+        android:layout_marginTop="36dp"
+        android:background="@drawable/background_rounded_corners_blue"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -48,7 +50,7 @@
         android:width="150dp"
         android:layout_below="@+id/editText2"
         android:layout_marginTop="36dp"
-        android:background="#E84D3C"
+        android:background="@drawable/submit_button_rounded"
         android:textColor="#ffffff"
         android:textSize="18dp"/>
 
@@ -70,7 +72,7 @@
         android:layout_alignTop="@+id/button"
         android:layout_alignLeft="@+id/editText"
         android:width="150dp"
-        android:background="#E84D3C"
+        android:background="@drawable/submit_button_rounded"
         android:textColor="#ffffff"
         android:textSize="18dp"/>
 

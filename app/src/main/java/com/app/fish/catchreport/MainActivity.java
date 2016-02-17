@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.ProgressBar;
 
-public class MainActivity extends BaseDrawerActivity{
+public class MainActivity extends BaseDrawerActivity {
 
     ProgressBar spin;
 
@@ -187,4 +187,5 @@ public class MainActivity extends BaseDrawerActivity{
     @Override
     public void onBackPressed() {
     }
+
 }
