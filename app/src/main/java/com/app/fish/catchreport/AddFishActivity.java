@@ -62,9 +62,9 @@ public class AddFishActivity extends BaseDrawerActivity {
         Bundle b = new Bundle();
         b.putString("lakeID", info.getLake().getId()+"");
 
-        AddFishFragment fishFragment = AddFishFragment.newInstance(info.getFish(this.cur));
+        AddFishFragment fishFragment = AddFishFragment.newInstance(info, cur);
 
-        fishFragment.setArguments(b);
+        //fishFragment.setArguments(b);
 
         FragmentManager fragmentManager = this.getFragmentManager();
         FragmentTransaction trans = fragmentManager.beginTransaction();
@@ -113,6 +113,7 @@ public class AddFishActivity extends BaseDrawerActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DisplayTripInfo.class);
+                info.removeFish(info.numFish()-1);
                 updateFishInfoDatabase(info);
                 updateOnlineDatabase();
                 startActivity(intent);
@@ -282,7 +283,7 @@ public class AddFishActivity extends BaseDrawerActivity {
     }
 
     private void switchFish(Fish f){
-        AddFishFragment fishFragment = AddFishFragment.newInstance(info.getFish(this.cur));
+        AddFishFragment fishFragment = AddFishFragment.newInstance(info, cur);
         FragmentManager fragmentManager = this.getFragmentManager();
         FragmentTransaction trans = fragmentManager.beginTransaction();
         trans.replace(R.id.fragHolder, fishFragment, "FISH_FRAGMENT");

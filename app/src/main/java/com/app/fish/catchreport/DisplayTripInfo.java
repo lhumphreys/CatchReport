@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,17 +81,23 @@ public class DisplayTripInfo extends BaseDrawerActivity {
 
     {
 
-        TextView title = (TextView) findViewById(R.id.DisplayTitle);
+        LinearLayout displayLayout = (LinearLayout) findViewById(R.id.DisplayLayout);
         if(reportList.size() > 0) {
-            for(Displayer each : reportList) {
-                title.setText(title.getText() + "\n" + each.lake + ", " + each.county + "\n" + each.date + ", " + each.time + " hours long");
+            for (Displayer each : reportList) {
+                String tripString = each.lake + ", " + each.county + "\n" + each.date + ", " + each.time + " hours long";
+                TextView tripText = new TextView(this);
+                tripText.setText(tripString);
+                TextView fishText = new TextView(this);
                 for (FishDisplayer fd : each.fishlist) {
-                    title.setText(title.getText() + "\n\n\t" + fd.species + "\n\t" + fd.length + " inches\n\t" + fd.weight + " pounds\n\n");
+                    String fishString = "\t" + fd.species + "\n\t" + fd.length + " inches\n\t" + fd.weight + " pounds\n\n";
+                    fishText.setText(fishText.getText() + fishString);
                 }
+                tripText.setTextSize(24);
+                fishText.setTextSize(20);
+                displayLayout.addView(tripText, 0);
+                displayLayout.addView(fishText, 1);
             }
         }
-        else
-            title.setText("Nothing to display");
     }
 
     /*

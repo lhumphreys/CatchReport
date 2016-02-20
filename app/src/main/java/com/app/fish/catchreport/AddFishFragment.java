@@ -46,15 +46,16 @@ public class AddFishFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param fish Parameter 1.
+     * @param info Parameter 1. Contains fish and lake data.
      * @return A new instance of fragment AddFishFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddFishFragment newInstance(Fish fish) {
+    public static AddFishFragment newInstance(TripInfoStorage info, int cur) {
         AddFishFragment fragment = new AddFishFragment();
         Bundle args = new Bundle();
+        Fish fish = info.getFish(cur);
         args.putSerializable(ARG_PARAM1, fish);
-        args.putString("lakeID",currentLake);
+        args.putString("lakeID",info.getLake().getId()+"");
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,6 +93,10 @@ public class AddFishFragment extends Fragment {
         speciesSpin.setAdapter(adapter);
 
         int pos = species.indexOf(mFish.getSpecies());
+        if(pos<0) {
+            pos = 0;
+            mFish.setSpecies((String)speciesSpin.getSelectedItem());
+        }
         speciesSpin.setSelection(pos, true);
         speciesSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -102,6 +107,8 @@ public class AddFishFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 int pos = species.indexOf(mFish.getSpecies());
+                if(pos < 0)
+                    pos = 0;
                 speciesSpin.setSelection(pos, true);
             }
         });
