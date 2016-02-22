@@ -48,7 +48,8 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                         cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        (cursor.getInt(4) - cursor.getInt(3)) + "");
+                        (cursor.getInt(4) - cursor.getInt(3)) + "",
+                        cursor.getString(5));
                 q = "SELECT species,weight,length,harvest,tags FROM FishCaught WHERE reportid=?";
                 SQLiteCursor otherCursor = help.runQuery(q, new String[]{cursor.getString(5)});
                 while (otherCursor.moveToNext()) {
@@ -84,7 +85,7 @@ public class DisplayTripInfo extends BaseDrawerActivity {
         LinearLayout displayLayout = (LinearLayout) findViewById(R.id.DisplayLayout);
         if(reportList.size() > 0) {
             for (Displayer each : reportList) {
-                String tripString = each.lake + ", " + each.county + "\n" + each.date + ", " + each.time + " hours long";
+                String tripString = each.reportId + ": " + each.lake + ", " + each.county + "\n" + each.date + ", " + each.time + " hours long";
                 TextView tripText = new TextView(this);
                 tripText.setText(tripString);
                 TextView fishText = new TextView(this);
@@ -94,10 +95,45 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                 }
                 tripText.setTextSize(24);
                 fishText.setTextSize(20);
-                displayLayout.addView(tripText, 0);
+                //button to delete trip
+                Button delete = new Button(this);
+                delete.setText("-");
+                delete.setTextSize(24);
+                delete.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                LinearLayout row = (LinearLayout) view.getParent();
+                                String entry = (String) ((TextView) row.getChildAt(0)).getText();
+                                String[] vals = entry.split(":");
+                                String id = vals[0].trim();
+                                databaseDelete(id);
+                                //THEN RELOAD PAGE
+                                Intent i = new Intent(view.getContext(), DisplayTripInfo.class);
+                                startActivity(i);
+                            }
+                        }
+                );
+                LinearLayout row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.addView(tripText, 0);
+                row.addView(delete, 1);
+                displayLayout.addView(row, 0);
                 displayLayout.addView(fishText, 1);
             }
         }
+    }
+
+    private void databaseDelete(String reportID)
+    {
+        DatabaseHandler handler = new DatabaseHandler(this, CATCH_DATA_DB);
+        handler.openDatabase();
+        String query = "DELETE FROM MainCatch WHERE reportid=?";
+        String args[] = new String[]{reportID};
+        handler.getWritableDatabase().execSQL(query, args);
+        query = "DELETE FROM FishCaught WHERE reportid=?";
+        handler.getWritableDatabase().execSQL(query, args);
+        handler.close();
     }
 
     /*
@@ -119,14 +155,15 @@ public class DisplayTripInfo extends BaseDrawerActivity {
 
     private class Displayer
     {
-        String lake, county, date, time;
+        String lake, county, date, time, reportId;
         ArrayList<FishDisplayer> fishlist;
 
-        public Displayer(String la, String c, String d, String t) {
+        public Displayer(String la, String c, String d, String t, String id) {
             lake = la;
             county = c;
             date = d;
             time = t;
+            reportId = id;
             fishlist = new ArrayList<FishDisplayer>();
         }
     }
