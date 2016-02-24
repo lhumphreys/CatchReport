@@ -113,7 +113,7 @@ public class AddFishActivity extends BaseDrawerActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DisplayTripInfo.class);
-                info.removeFish(info.numFish()-1);
+                //info.removeFish(info.numFish()-1);
                 updateFishInfoDatabase(info);
                 updateOnlineDatabase();
                 startActivity(intent);
@@ -193,8 +193,14 @@ public class AddFishActivity extends BaseDrawerActivity {
             vals[11] = lake.getLat()+"";
             vals[12]= lake.getLong()+"";
             handler.getWritableDatabase().execSQL(q, vals);
+
             for(int i = 0; i < info.numFish(); i++)
             {
+                Fish f = info.getFish(i);
+                int qty = info.getFish(i).getQuantity();
+
+                for(int j=0; j<qty; j++) {
+
                 SQLiteCursor c2 = handler.runQuery("SELECT MAX(_id) FROM FishCaught", null);
                 int num2 = 1;
                 if(c2.getCount()<=0)
@@ -204,22 +210,23 @@ public class AddFishActivity extends BaseDrawerActivity {
                     num2 = c2.getInt(0)+1;
                     c2.close();
                 }
-                Fish f = info.getFish(i);
-                String fq = "INSERT INTO FishCaught (_id,reportid,fishnum,species,weight,length,harvest,tags,finclip,method,userid) ";
-                fq+="VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-                String[] fvals = new String[11];
-                fvals[0] = num2+"";
-                fvals[1] = tripNum+"";
-                fvals[2] = i+1+"";
-                fvals[3] = f.getSpecies();
-                fvals[4] = f.getWeight()+"";
-                fvals[5] = f.getLength()+"";
-                fvals[6] = f.isReleased() ? "0" : "1";
-                fvals[7] = f.isTagged() ? "1" : "0";
-                fvals[8] = "0";
-                fvals[9] = "none";
-                fvals[10] = "0";
-                handler.getWritableDatabase().execSQL(fq, fvals);
+
+                    String fq = "INSERT INTO FishCaught (_id,reportid,fishnum,species,weight,length,harvest,tags,finclip,method,userid) ";
+                    fq += "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                    String[] fvals = new String[11];
+                    fvals[0] = num2 + "";
+                    fvals[1] = tripNum + "";
+                    fvals[2] = i + 1 + "";
+                    fvals[3] = f.getSpecies();
+                    fvals[4] = f.getWeight() + "";
+                    fvals[5] = f.getLength() + "";
+                    fvals[6] = f.isReleased() ? "0" : "1";
+                    fvals[7] = f.isTagged() ? "1" : "0";
+                    fvals[8] = "0";
+                    fvals[9] = "none";
+                    fvals[10] = "0";
+                    handler.getWritableDatabase().execSQL(fq, fvals);
+                }
             }
             handler.close();
         }

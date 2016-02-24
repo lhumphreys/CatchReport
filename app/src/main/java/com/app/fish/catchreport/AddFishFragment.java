@@ -33,6 +33,7 @@ public class AddFishFragment extends Fragment {
     private EditText lengthEditText;
     private CheckBox releasedCheckBox;
     private CheckBox taggedCheckBox;
+    private EditText quantity;
     private static String currentLake;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -130,8 +131,14 @@ public class AddFishFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                double w = Double.parseDouble(weightEditText.getText().toString());
-                mFish.setWeight(w);
+                try {
+                    double w = Double.parseDouble(weightEditText.getText().toString());
+                    mFish.setWeight(w);
+                }catch(Exception e)
+                {
+                    mFish.setWeight(0);
+                    weightEditText.setHint("Weight");
+                }
             }
         });
 
@@ -150,8 +157,14 @@ public class AddFishFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                double l = Double.parseDouble(lengthEditText.getText().toString());
-                mFish.setLength(l);
+                try {
+                    double l = Double.parseDouble(lengthEditText.getText().toString());
+                    mFish.setLength(l);
+                }catch(Exception e)
+                {
+                    mFish.setLength(0);
+                    lengthEditText.setHint("Length");
+                }
             }
         });
 
@@ -170,6 +183,35 @@ public class AddFishFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mFish.setTagged(isChecked);
+            }
+        });
+
+        quantity = (EditText) v.findViewById(R.id.quantityEditText);
+
+        if(mFish.getQuantity() > 1) {
+            quantity.setText(mFish.getQuantity() + "");
+        }
+
+        quantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try
+                {
+                    int qty = Integer.parseInt(quantity.getText().toString());
+                    mFish.setQuantity(qty);
+                }catch(Exception e)
+                {
+                    mFish.setQuantity(1);
+                    quantity.setHint("1");
+                }
             }
         });
 
