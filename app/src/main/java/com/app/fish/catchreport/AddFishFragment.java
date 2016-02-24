@@ -132,7 +132,7 @@ public class AddFishFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    double w = Double.parseDouble(weightEditText.getText().toString());
+                    double w = Double.parseDouble("0"+weightEditText.getText().toString());
                     mFish.setWeight(w);
                 }catch(Exception e)
                 {
@@ -158,7 +158,7 @@ public class AddFishFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    double l = Double.parseDouble(lengthEditText.getText().toString());
+                    double l = Double.parseDouble("0"+lengthEditText.getText().toString());
                     mFish.setLength(l);
                 }catch(Exception e)
                 {
