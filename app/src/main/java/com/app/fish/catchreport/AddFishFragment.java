@@ -33,7 +33,6 @@ public class AddFishFragment extends Fragment {
     private EditText lengthEditText;
     private CheckBox releasedCheckBox;
     private CheckBox taggedCheckBox;
-    private EditText quantity;
     private static String currentLake;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -76,6 +75,7 @@ public class AddFishFragment extends Fragment {
             mFish = new Fish();
         }
 
+
         currentLake = getArguments().getString("lakeID");
     }
 
@@ -96,7 +96,7 @@ public class AddFishFragment extends Fragment {
         int pos = species.indexOf(mFish.getSpecies());
         if(pos<0) {
             pos = 0;
-            mFish.setSpecies((String)speciesSpin.getSelectedItem());
+            mFish.setSpecies((String) speciesSpin.getSelectedItem());
         }
         speciesSpin.setSelection(pos, true);
         speciesSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -108,7 +108,7 @@ public class AddFishFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 int pos = species.indexOf(mFish.getSpecies());
-                if(pos < 0)
+                if (pos < 0)
                     pos = 0;
                 speciesSpin.setSelection(pos, true);
             }
@@ -117,7 +117,8 @@ public class AddFishFragment extends Fragment {
         weightEditText = (EditText) v.findViewById(R.id.weightEditText);
 
         if(mFish.getWeight() > 0){
-            weightEditText.setHint(mFish.getWeight() + "");
+            weightEditText.setText(mFish.getWeight() + "");
+            mFish.setWeight(Double.parseDouble(lengthEditText.getText().toString()));
         }
 
         weightEditText.addTextChangedListener(new TextWatcher() {
@@ -131,14 +132,8 @@ public class AddFishFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                try {
-                    double w = Double.parseDouble("0"+weightEditText.getText().toString());
-                    mFish.setWeight(w);
-                }catch(Exception e)
-                {
-                    mFish.setWeight(0);
-                    weightEditText.setHint("Weight");
-                }
+                double w = Double.parseDouble(weightEditText.getText().toString());
+                mFish.setWeight(w);
             }
         });
 
@@ -146,27 +141,25 @@ public class AddFishFragment extends Fragment {
         lengthEditText = (EditText) v.findViewById(R.id.lengthEditText);
 
         if(mFish.getLength() > 0) {
-            lengthEditText.setHint(mFish.getLength() + "");
+            lengthEditText.setText(mFish.getLength() + "");
+            mFish.setLength(Double.parseDouble(lengthEditText.getText().toString()));
         }
         lengthEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                try {
-                    double l = Double.parseDouble("0"+lengthEditText.getText().toString());
-                    mFish.setLength(l);
-                }catch(Exception e)
-                {
-                    mFish.setLength(0);
-                    lengthEditText.setHint("Length");
-                }
+                double l = Double.parseDouble(lengthEditText.getText().toString());
+                mFish.setLength(l);
             }
         });
+
 
         releasedCheckBox = (CheckBox) v.findViewById(R.id.releasedCheckBox);
         releasedCheckBox.setChecked(mFish.isReleased());
@@ -183,35 +176,6 @@ public class AddFishFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mFish.setTagged(isChecked);
-            }
-        });
-
-        quantity = (EditText) v.findViewById(R.id.quantityEditText);
-
-        if(mFish.getQuantity() > 1) {
-            quantity.setText(mFish.getQuantity() + "");
-        }
-
-        quantity.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                try
-                {
-                    int qty = Integer.parseInt(quantity.getText().toString());
-                    mFish.setQuantity(qty);
-                }catch(Exception e)
-                {
-                    mFish.setQuantity(1);
-                    quantity.setHint("1");
-                }
             }
         });
 

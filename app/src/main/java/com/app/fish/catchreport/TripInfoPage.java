@@ -11,6 +11,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -43,9 +46,9 @@ public class TripInfoPage extends BaseDrawerActivity {
 
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
 
+
     private TripInfoStorage info;
-    private String[] mn = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    private Exception ex;
+    private EditText temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,7 @@ public class TripInfoPage extends BaseDrawerActivity {
         initializeList();
         initializeCalendar();
         initializeClock();
+        initializeExtras();
         initializeSubmit();
 
     }
@@ -124,7 +128,6 @@ public class TripInfoPage extends BaseDrawerActivity {
         catch(Exception e)
         {
             counties.add("nothing");
-            ex=  e;
             if(help != null)
             {
                 help.close();
@@ -197,6 +200,57 @@ public class TripInfoPage extends BaseDrawerActivity {
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 info.getEndDate().setHours(hourOfDay);
                 info.getEndDate().setMinutes(minute);
+            }
+        });
+    }
+
+    /*
+     * Set behavior of extra features.
+     *
+     * Key extra features include weather and temperature
+     */
+    private void initializeExtras()
+    {
+        ArrayList<String> weathers = new ArrayList<String>();
+        for(int i = 0; i < TripInfoStorage.WEATHER.length; i++)
+            weathers.add(TripInfoStorage.WEATHER[i]);
+        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, R.layout.spinner_layout_ws, weathers);
+        adapt.setDropDownViewResource(R.layout.spinner_layout_ws);
+        Spinner spin = (Spinner)findViewById(R.id.weatherSpinner);
+        spin.setAdapter(adapt);
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                info.setWeather((String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                info.setWeather(TripInfoStorage.WEATHER[TripInfoStorage.DEFAULT]);
+            }
+        });
+
+        temp = (EditText) findViewById(R.id.tempEditText);
+
+        temp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = temp.getText().toString();
+                if(text.equals(""))
+                    info.deleteTemperature();
+                else {
+                    double t = Double.parseDouble(text);
+                    info.setTemperature(t);
+                }
             }
         });
     }
