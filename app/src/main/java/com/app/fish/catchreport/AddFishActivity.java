@@ -114,7 +114,6 @@ public class AddFishActivity extends BaseDrawerActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DisplayTripInfo.class);
-                info.removeFish(info.numFish()-1);
                 updateFishInfoDatabase(info);
                 updateOnlineDatabase();
                 startActivity(intent);
