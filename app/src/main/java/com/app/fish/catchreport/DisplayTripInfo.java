@@ -44,11 +44,24 @@ public class DisplayTripInfo extends BaseDrawerActivity {
             String q = "SELECT location,county,tripdate,starttime,endtime,reportid FROM MainCatch";
             SQLiteCursor cursor = help.runQuery(q, null);
             while(cursor.moveToNext()) {
+                String[] first = cursor.getString(3).split(":");
+                int sHour = Integer.parseInt(first[0]);
+                int sMinute = Integer.parseInt(first[1]);
+                String[] second = cursor.getString(4).split(":");
+                int eHour = Integer.parseInt(second[0]);
+                int eMinute = Integer.parseInt(second[1]);
+                int hourDif = eHour - sHour;
+                int minDif = eMinute - sMinute;
+                if(minDif < 0) {
+                    minDif += 60;
+                    hourDif -= 1;
+                }
                 Displayer temp = new Displayer(
                         cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        (cursor.getInt(4) - cursor.getInt(3)) + "",
+                        hourDif + "",
+                        minDif + "",
                         cursor.getString(5));
                 q = "SELECT species,weight,length,harvest,tags FROM FishCaught WHERE reportid=?";
                 SQLiteCursor otherCursor = help.runQuery(q, new String[]{cursor.getString(5)});
@@ -85,7 +98,8 @@ public class DisplayTripInfo extends BaseDrawerActivity {
         LinearLayout displayLayout = (LinearLayout) findViewById(R.id.DisplayLayout);
         if(reportList.size() > 0) {
             for (Displayer each : reportList) {
-                String tripString = each.reportId + ": " + each.lake + ", " + each.county + "\n" + each.date + ", " + each.time + " hours long";
+                String tripString = each.reportId + ": " + each.lake + ", " + each.county + "\n" + each.date;
+                tripString+=  ", " + each.time + " hours and " +each.minutes+ " minutes long";
                 TextView tripText = new TextView(this);
                 tripText.setText(tripString);
                 TextView fishText = new TextView(this);
@@ -162,14 +176,15 @@ public class DisplayTripInfo extends BaseDrawerActivity {
 
     private class Displayer
     {
-        String lake, county, date, time, reportId;
+        String lake, county, date, time, minutes, reportId;
         ArrayList<FishDisplayer> fishlist;
 
-        public Displayer(String la, String c, String d, String t, String id) {
+        public Displayer(String la, String c, String d, String t, String m, String id) {
             lake = la;
             county = c;
             date = d;
             time = t;
+            minutes = m;
             reportId = id;
             fishlist = new ArrayList<FishDisplayer>();
         }

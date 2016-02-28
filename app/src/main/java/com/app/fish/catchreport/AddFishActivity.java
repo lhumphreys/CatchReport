@@ -186,8 +186,8 @@ public class AddFishActivity extends BaseDrawerActivity {
             vals[4] = lake.getName();
             vals[5] = lake.getCounty();
             vals[6] = sdate.getYear()+"/"+sdate.getMonth()+"/"+sdate.getDay();
-            vals[7] = sdate.getHours()+"";
-            vals[8] = edate.getHours()+"";
+            vals[7] = sdate.getHours()+":"+sdate.getMinutes();
+            vals[8] = edate.getHours()+":"+edate.getMinutes();
             vals[9] = "none";
             vals[10] = "none";
             vals[11] = lake.getLat()+"";
