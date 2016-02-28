@@ -33,6 +33,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -178,6 +179,8 @@ public class AddFishActivity extends BaseDrawerActivity {
             String[] vals = new String[13];
             Lake lake = info.getLake();
             Date sdate = info.getStartDate();
+            SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
+            String date = form.format(sdate);
             Date edate = info.getEndDate();
             vals[0] = tripNum+"";
             vals[1] = vals[0];
@@ -185,7 +188,7 @@ public class AddFishActivity extends BaseDrawerActivity {
             vals[3] = info.numFish()+"";
             vals[4] = lake.getName();
             vals[5] = lake.getCounty();
-            vals[6] = sdate.getYear()+"/"+sdate.getMonth()+"/"+sdate.getDay();
+            vals[6] = date;
             vals[7] = sdate.getHours()+":"+sdate.getMinutes();
             vals[8] = edate.getHours()+":"+edate.getMinutes();
             vals[9] = "none";

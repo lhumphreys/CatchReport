@@ -270,20 +270,30 @@ public class TripInfoPage extends BaseDrawerActivity {
             public void onClick(View v) {
                 Lake lake;
                 try {
-                    DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
-                    db.openDatabase();
-                    LakeEntry lakeEntry = (LakeEntry) ((Spinner)findViewById(R.id.lakeSpinner)).getSelectedItem();
-                    String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
-                    String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
-                    SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
-                    cur.moveToFirst();
-                    lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getDouble(4), cur.getDouble(5));
-                    cur.close();
-                    db.close();
-                    info.setLake(lake);
-                    Intent intent = new Intent(v.getContext(), AddFishActivity.class);
-                    intent.putExtra("TripInfo", info);
-                    startActivity(intent);
+                    int hDif = info.getEndDate().getHours() - info.getStartDate().getHours();
+                    int mDif = info.getEndDate().getMinutes() - info.getStartDate().getMinutes();
+                    if(mDif < 0){
+                        mDif += 60;
+                        hDif -= 1;
+                    }
+                    if(hDif >= 0) {
+                        DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
+                        db.openDatabase();
+                        LakeEntry lakeEntry = (LakeEntry) ((Spinner) findViewById(R.id.lakeSpinner)).getSelectedItem();
+                        String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
+                        String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
+                        SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
+                        cur.moveToFirst();
+                        lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getDouble(4), cur.getDouble(5));
+                        cur.close();
+                        db.close();
+                        info.setLake(lake);
+                        Intent intent = new Intent(v.getContext(), AddFishActivity.class);
+                        intent.putExtra("TripInfo", info);
+                        startActivity(intent);
+                    }
+                    else
+                        Toast.makeText(TripInfoPage.this, "Start time must be before end time", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast t = Toast.makeText(getApplicationContext(), "Database Read Error", Toast.LENGTH_LONG);
                     t.show();
