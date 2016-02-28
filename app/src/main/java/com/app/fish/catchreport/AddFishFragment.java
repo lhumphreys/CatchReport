@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class AddFishFragment extends Fragment {
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
 
+
     private Spinner speciesSpin;
     private EditText weightEditText;
     private EditText lengthEditText;
