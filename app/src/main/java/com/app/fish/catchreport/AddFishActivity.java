@@ -114,10 +114,7 @@ public class AddFishActivity extends BaseDrawerActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DisplayTripInfo.class);
-                updateFishInfoDatabase(info);
-                updateOnlineDatabase();
-                startActivity(intent);
+                confirmDialog(v);
             }
         });
 
@@ -382,6 +379,37 @@ public class AddFishActivity extends BaseDrawerActivity {
             }
             return null;
         }
+    }
+
+    private void confirmDialog(View view){
+
+        final View curview = view;
+        final AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle("Submit?");
+        alert.setMessage("Are you sure you want to submit this report?");
+        alert.setCancelable(false);
+        alert.setCanceledOnTouchOutside(false);
+
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alert.dismiss();
+                        Intent intent = new Intent(curview.getContext(), DisplayTripInfo.class);
+                        updateFishInfoDatabase(info);
+                        updateOnlineDatabase();
+                        startActivity(intent);
+                    }
+                });
+
+        alert.setButton(DialogInterface.BUTTON_NEGATIVE, "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        alert.dismiss();
+                    }
+                });
+
+        alert.show();
     }
 
 }

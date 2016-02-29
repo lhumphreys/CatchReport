@@ -44,8 +44,9 @@ public class RegisterUser extends AppCompatActivity {
 
     private final String EMAIL_VALIDATION = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private final String PASS_VALIDATION = "^([a-zA-Z0-9@*#!$%^&+]{8,15})$";
-    String URL_Register = "http://zoebaker.name/android_login_api/Register.php";
 
+    String URL_Register = "http://zoebaker.name/android_login_api/Register.php";
+    //String URL_Register = "146.187.134.30/home/biodev/android_login_api/Register.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

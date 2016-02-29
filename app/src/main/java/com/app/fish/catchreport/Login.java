@@ -35,7 +35,10 @@ import org.json.JSONObject;
 public class Login extends AppCompatActivity {
 
     SharedPreferences prefs;
+
     String URL_Login = "http://zoebaker.name/android_login_api/Login.php";
+    //String URL_Login = "http://146.187.134.30/android_login_api/Login.php";
+
     private Button button;
     private Button button2;
     private ProgressBar pb;
@@ -126,8 +129,11 @@ public class Login extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(getApplicationContext(),"Something went wrong: " +
                         error.getMessage(), Toast.LENGTH_LONG).show();
+                button.setVisibility(View.VISIBLE);
+                button2.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.INVISIBLE);
             }})
         {
 

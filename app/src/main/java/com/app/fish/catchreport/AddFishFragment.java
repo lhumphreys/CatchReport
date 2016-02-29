@@ -1,6 +1,9 @@
 package com.app.fish.catchreport;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -16,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
