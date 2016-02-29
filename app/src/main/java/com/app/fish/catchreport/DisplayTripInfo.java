@@ -8,9 +8,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,21 +100,34 @@ public class DisplayTripInfo extends BaseDrawerActivity {
         LinearLayout displayLayout = (LinearLayout) findViewById(R.id.DisplayLayout);
         if(reportList.size() > 0) {
             for (Displayer each : reportList) {
-                String tripString = each.reportId + ": " + each.lake + ", " + each.county + "\n" + each.date;
-                tripString+=  ", " + each.time + " hours and " +each.minutes+ " minutes long";
+
+                String tripString = each.reportId + ": " + each.lake + ", " + each.county;
+                String tripSpec = "Date: " + each.date + "\nDuration: " + each.time + " hours " + each.minutes + " minutes";
+
+
                 TextView tripText = new TextView(this);
+                TextView tripSpecText = new TextView(this);
+
                 tripText.setText(tripString);
-                TextView fishText = new TextView(this);
-                for (FishDisplayer fd : each.fishlist) {
-                    String fishString = "\t" + fd.species + "\n\t" + fd.length + "\t" + fd.weight + "\n";
-                    fishText.setText(fishText.getText() + fishString);
-                }
+                tripSpecText.setText(tripSpec);
+
                 tripText.setTextSize(24);
-                fishText.setTextSize(20);
+                tripSpecText.setTextSize(24);
+
+                tripText.setGravity(Gravity.CENTER);
+
+                tripText.setTextColor(getResources().getColor(android.R.color.white));
+                tripSpecText.setBackground(getResources().getDrawable(R.drawable.background_rounded_corners_blue));
+
+                TableRow.LayoutParams tripSpecParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,1.0f);
+                tripSpecParams.setMargins(0,5,0,5);
+                tripSpecText.setLayoutParams(tripSpecParams);
+                tripSpecText.setPadding(15,5,5,5);
+
+
                 //button to delete trip
                 Button delete = new Button(this);
-                delete.setText("-");
-                delete.setTextSize(24);
+
                 delete.setOnClickListener(
                         new View.OnClickListener() {
                             @Override
@@ -128,20 +143,86 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                             }
                         }
                 );
+
+                LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,1.0f);
+                TableRow.LayoutParams textParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,4.0f);
+
+                buttonParams.setMargins(5,0,0,0);
+
+                delete.setLayoutParams(buttonParams);
+                tripText.setLayoutParams(textParams);
+
+                tripText.setBackground(getResources().getDrawable(R.drawable.submit_button_rounded_blue));
+                delete.setBackground(getResources().getDrawable(R.drawable.submit_button_rounded));
+                delete.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_delete,0,0,0);
+                delete.setGravity(Gravity.CENTER);
+
                 LinearLayout row = new LinearLayout(this);
+
                 row.setOrientation(LinearLayout.HORIZONTAL);
                 row.addView(tripText, 0);
-                row.addView(delete, 1);
+                row.addView(delete,1);
+
                 displayLayout.addView(row, 0);
-                displayLayout.addView(fishText, 1);
+                displayLayout.addView(tripSpecText,1);
+
+
+                int i=2;
+
+                for (FishDisplayer fd : each.fishlist) {
+
+                    LinearLayout fishRow = new LinearLayout(this);
+                    fishRow.setOrientation(LinearLayout.HORIZONTAL);
+
+                    TextView fishText = new TextView(this);
+                    TextView specText = new TextView(this);
+                    fishText.setTextSize(20);
+                    specText.setTextSize(20);
+
+
+                    String fishString = fd.species;
+                    String specString = fd.length + " inches\n" + fd.weight + " pounds";
+
+                    fishText.setText(fishText.getText() + fishString);
+                    fishText.setTextColor(getResources().getColor(android.R.color.white));
+                    specText.setText(specText.getText() + specString);
+
+                    TableRow.LayoutParams paramsFish = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,3.0f);
+                    TableRow.LayoutParams paramsSpec = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,2.0f);
+
+                    paramsFish.setMargins(0,0,5,5);
+                    paramsSpec.setMargins(0,0,0,5);
+
+                    fishText.setLayoutParams(paramsFish);
+                    specText.setLayoutParams(paramsSpec);
+
+                    specText.setBackground(getResources().getDrawable(R.drawable.background_rounded_corners_blue));
+                    fishText.setBackground(getResources().getDrawable(R.drawable.selector_background_red));
+
+
+                    fishRow.addView(fishText, 0);
+                    fishRow.addView(specText, 1);
+
+                    fishText.setGravity(Gravity.CENTER);
+                    specText.setGravity(Gravity.CENTER);
+
+                    displayLayout.addView(fishRow, i);
+
+                    i++;
+                }
+
+                TextView whitespace = new TextView(this);
+                whitespace.setText(whitespace.getText()+"\n\n");
+
+                displayLayout.addView(whitespace,i);
+
             }
         }
         else
         {
-            TextView textView = new TextView(this);
+            TextView textView = (TextView)findViewById(R.id.noTripsFound);
             textView.setText("There are no trips");
             textView.setTextSize(24);
-            displayLayout.addView(textView);
         }
     }
 

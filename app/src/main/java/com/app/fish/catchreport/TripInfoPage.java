@@ -245,8 +245,10 @@ public class TripInfoPage extends BaseDrawerActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String text = temp.getText().toString();
-                if(text.equals(""))
+                if(text.equals("")) {
                     info.deleteTemperature();
+                    temp.setHint("Fahrenheit");
+                }
                 else {
                     double t = Double.parseDouble(text);
                     info.setTemperature(t);
