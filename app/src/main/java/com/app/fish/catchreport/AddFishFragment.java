@@ -124,7 +124,7 @@ public class AddFishFragment extends Fragment {
 
         if(mFish.getWeight() > 0){
             weightEditText.setText(mFish.getWeight() + "");
-            mFish.setWeight(Double.parseDouble(lengthEditText.getText().toString()));
+            mFish.setWeight(Double.parseDouble(weightEditText.getText().toString()));
         }
 
         weightEditText.addTextChangedListener(new TextWatcher() {

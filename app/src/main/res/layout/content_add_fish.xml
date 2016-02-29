@@ -30,7 +30,7 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:text="Previous"
+                    android:text="Prev"
                     android:id="@+id/prevButton"
                     android:visibility="gone"
                     android:background="@drawable/left_small_button_drawable_red"
@@ -38,7 +38,7 @@
                     android:drawableLeft="@drawable/ic_action_goleft"
                     android:paddingRight="10dp"
                     android:paddingLeft="10dp"
-                    android:layout_marginRight="5dp"/>
+                    android:layout_marginRight="5dp" />
 
                 <Button
                     android:layout_width="0dp"
