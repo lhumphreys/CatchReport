@@ -186,6 +186,8 @@ public class MainActivity extends BaseDrawerActivity {
 
     @Override
     public void onBackPressed() {
+
+        finish();
     }
 
 }

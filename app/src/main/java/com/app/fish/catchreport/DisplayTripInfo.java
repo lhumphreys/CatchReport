@@ -1,13 +1,13 @@
 package com.app.fish.catchreport;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.app.AlertDialog;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -96,12 +96,20 @@ public class DisplayTripInfo extends BaseDrawerActivity {
     private void displayInfo()
 
     {
+        LinearLayout myDisplayLayout = (LinearLayout)findViewById(R.id.DisplayLayout);
+        int displayLayoutCount = 0;
 
-        LinearLayout displayLayout = (LinearLayout) findViewById(R.id.DisplayLayout);
         if(reportList.size() > 0) {
             for (Displayer each : reportList) {
 
-                String tripString = each.reportId + ": " + each.lake + ", " + each.county;
+                LinearLayout displayLayout = new LinearLayout(this);
+                displayLayout.setOrientation(LinearLayout.VERTICAL);
+                displayLayout.setBackground(getResources().getDrawable(R.drawable.trip_info_background));
+
+                TextView tripID = (TextView)findViewById(R.id.tripID);
+                tripID.setText(each.reportId);
+
+                String tripString = each.lake + ", " + each.county;
                 String tripSpec = "Date: " + each.date + "\nDuration: " + each.time + " hours " + each.minutes + " minutes";
 
 
@@ -111,18 +119,19 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                 tripText.setText(tripString);
                 tripSpecText.setText(tripSpec);
 
-                tripText.setTextSize(24);
-                tripSpecText.setTextSize(24);
+                tripText.setTextSize(20);
+                tripSpecText.setTextSize(20);
 
                 tripText.setGravity(Gravity.CENTER);
 
                 tripText.setTextColor(getResources().getColor(android.R.color.white));
-                tripSpecText.setBackground(getResources().getDrawable(R.drawable.background_rounded_corners_blue));
+                tripSpecText.setBackground(getResources().getDrawable(R.drawable.background_square_corners_blue));
 
                 TableRow.LayoutParams tripSpecParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,1.0f);
-                tripSpecParams.setMargins(0,5,0,5);
+                tripSpecParams.setMargins(0,0,0,12);
                 tripSpecText.setLayoutParams(tripSpecParams);
-                tripSpecText.setPadding(15,5,5,5);
+                tripText.setPadding(15,5,5,5);
+                tripSpecText.setPadding(10,5,5,5);
 
 
                 //button to delete trip
@@ -132,33 +141,26 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                LinearLayout row = (LinearLayout) view.getParent();
-                                String entry = (String) ((TextView) row.getChildAt(0)).getText();
-                                String[] vals = entry.split(":");
-                                String id = vals[0].trim();
-                                databaseDelete(id);
-                                //THEN RELOAD PAGE
-                                Intent i = new Intent(view.getContext(), DisplayTripInfo.class);
-                                startActivity(i);
+
+                                confirmDialog(view);
                             }
                         }
                 );
 
-                LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,1.0f);
-                TableRow.LayoutParams textParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,4.0f);
+                LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,7.0f);
+                TableRow.LayoutParams textParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,1.0f);
 
-                buttonParams.setMargins(5,0,0,0);
+                buttonParams.setMargins(5, 0, 0, 0);
 
                 delete.setLayoutParams(buttonParams);
                 tripText.setLayoutParams(textParams);
 
-                tripText.setBackground(getResources().getDrawable(R.drawable.submit_button_rounded_blue));
-                delete.setBackground(getResources().getDrawable(R.drawable.submit_button_rounded));
-                delete.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_delete,0,0,0);
+                delete.setBackground(getResources().getDrawable(R.drawable.trip_info_header));
+                delete.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_delete, 0, 0, 0);
                 delete.setGravity(Gravity.CENTER);
 
                 LinearLayout row = new LinearLayout(this);
-
+                row.setBackground(getResources().getDrawable(R.drawable.trip_info_header));
                 row.setOrientation(LinearLayout.HORIZONTAL);
                 row.addView(tripText, 0);
                 row.addView(delete,1);
@@ -181,7 +183,7 @@ public class DisplayTripInfo extends BaseDrawerActivity {
 
 
                     String fishString = fd.species;
-                    String specString = fd.length + " inches\n" + fd.weight + " pounds";
+                    String specString = fd.length + " \n" + fd.weight + " ";
 
                     fishText.setText(fishText.getText() + fishString);
                     fishText.setTextColor(getResources().getColor(android.R.color.white));
@@ -190,13 +192,13 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                     TableRow.LayoutParams paramsFish = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,3.0f);
                     TableRow.LayoutParams paramsSpec = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,2.0f);
 
-                    paramsFish.setMargins(0,0,5,5);
-                    paramsSpec.setMargins(0,0,0,5);
+                    paramsFish.setMargins(8,0,5,12);
+                    paramsSpec.setMargins(0,0,0,12);
 
                     fishText.setLayoutParams(paramsFish);
                     specText.setLayoutParams(paramsSpec);
 
-                    specText.setBackground(getResources().getDrawable(R.drawable.background_rounded_corners_blue));
+                    specText.setBackground(getResources().getDrawable(R.drawable.background_fish_specs));
                     fishText.setBackground(getResources().getDrawable(R.drawable.selector_background_red));
 
 
@@ -211,11 +213,13 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                     i++;
                 }
 
+                myDisplayLayout.addView(displayLayout,displayLayoutCount);
+                displayLayoutCount++;
+
                 TextView whitespace = new TextView(this);
-                whitespace.setText(whitespace.getText()+"\n\n");
-
-                displayLayout.addView(whitespace,i);
-
+                whitespace.setText(whitespace.getText() + "\n\n");
+                myDisplayLayout.addView(whitespace, displayLayoutCount);
+                displayLayoutCount++;
             }
         }
         else
@@ -283,5 +287,37 @@ public class DisplayTripInfo extends BaseDrawerActivity {
             harvest = h;
             tags = t;
         }
+    }
+
+    private void confirmDialog(View view){
+
+        final View curview = view;
+        final AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle("Delete?");
+        alert.setMessage("Are you sure you want to delete this report?");
+        alert.setCancelable(false);
+        alert.setCanceledOnTouchOutside(false);
+
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alert.dismiss();
+                        TextView id = (TextView)findViewById(R.id.tripID);
+                        databaseDelete(id.getText().toString());
+                        //THEN RELOAD PAGE
+                        Intent i = new Intent(curview.getContext(), DisplayTripInfo.class);
+                        startActivity(i);
+                    }
+                });
+
+        alert.setButton(DialogInterface.BUTTON_NEGATIVE, "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        alert.dismiss();
+                    }
+                });
+
+        alert.show();
     }
 }
