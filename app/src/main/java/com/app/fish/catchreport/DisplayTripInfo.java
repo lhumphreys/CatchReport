@@ -110,6 +110,7 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                 tripID.setText(each.reportId);
 
                 String tripString = each.lake + ", " + each.county;
+                
                 String tripSpec = "Date: " + each.date + "\nDuration: " + each.time + " hours " + each.minutes + " minutes";
 
 
@@ -213,12 +214,12 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                     i++;
                 }
 
-                myDisplayLayout.addView(displayLayout,displayLayoutCount);
+                myDisplayLayout.addView(displayLayout,0);
                 displayLayoutCount++;
 
                 TextView whitespace = new TextView(this);
                 whitespace.setText(whitespace.getText() + "\n\n");
-                myDisplayLayout.addView(whitespace, displayLayoutCount);
+                myDisplayLayout.addView(whitespace, 1);
                 displayLayoutCount++;
             }
         }
