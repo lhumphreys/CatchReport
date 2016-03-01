@@ -11,6 +11,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -43,9 +46,9 @@ public class TripInfoPage extends BaseDrawerActivity {
 
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
 
+
     private TripInfoStorage info;
-    private String[] mn = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    private Exception ex;
+    private EditText temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,7 @@ public class TripInfoPage extends BaseDrawerActivity {
         initializeList();
         initializeCalendar();
         initializeClock();
+        initializeExtras();
         initializeSubmit();
 
     }
@@ -124,7 +128,6 @@ public class TripInfoPage extends BaseDrawerActivity {
         catch(Exception e)
         {
             counties.add("nothing");
-            ex=  e;
             if(help != null)
             {
                 help.close();
@@ -201,6 +204,59 @@ public class TripInfoPage extends BaseDrawerActivity {
         });
     }
 
+    /*
+     * Set behavior of extra features.
+     *
+     * Key extra features include weather and temperature
+     */
+    private void initializeExtras()
+    {
+        ArrayList<String> weathers = new ArrayList<String>();
+        for(int i = 0; i < TripInfoStorage.WEATHER.length; i++)
+            weathers.add(TripInfoStorage.WEATHER[i]);
+        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, R.layout.spinner_layout_ws, weathers);
+        adapt.setDropDownViewResource(R.layout.spinner_layout_ws);
+        Spinner spin = (Spinner)findViewById(R.id.weatherSpinner);
+        spin.setAdapter(adapt);
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                info.setWeather((String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                info.setWeather(TripInfoStorage.WEATHER[TripInfoStorage.DEFAULT]);
+            }
+        });
+
+        temp = (EditText) findViewById(R.id.tempEditText);
+
+        temp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = temp.getText().toString();
+                if(text.equals("")) {
+                    info.deleteTemperature();
+                    temp.setHint("Fahrenheit");
+                }
+                else {
+                    double t = Double.parseDouble(text);
+                    info.setTemperature(t);
+                }
+            }
+        });
+    }
+
     /**
      * Submit button behavior set
      *
@@ -216,20 +272,30 @@ public class TripInfoPage extends BaseDrawerActivity {
             public void onClick(View v) {
                 Lake lake;
                 try {
-                    DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
-                    db.openDatabase();
-                    LakeEntry lakeEntry = (LakeEntry) ((Spinner)findViewById(R.id.lakeSpinner)).getSelectedItem();
-                    String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
-                    String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
-                    SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
-                    cur.moveToFirst();
-                    lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getDouble(4), cur.getDouble(5));
-                    cur.close();
-                    db.close();
-                    info.setLake(lake);
-                    Intent intent = new Intent(v.getContext(), AddFishActivity.class);
-                    intent.putExtra("TripInfo", info);
-                    startActivity(intent);
+                    int hDif = info.getEndDate().getHours() - info.getStartDate().getHours();
+                    int mDif = info.getEndDate().getMinutes() - info.getStartDate().getMinutes();
+                    if(mDif < 0){
+                        mDif += 60;
+                        hDif -= 1;
+                    }
+                    if(hDif >= 0) {
+                        DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
+                        db.openDatabase();
+                        LakeEntry lakeEntry = (LakeEntry) ((Spinner) findViewById(R.id.lakeSpinner)).getSelectedItem();
+                        String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
+                        String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
+                        SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
+                        cur.moveToFirst();
+                        lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getDouble(4), cur.getDouble(5));
+                        cur.close();
+                        db.close();
+                        info.setLake(lake);
+                        Intent intent = new Intent(v.getContext(), AddFishActivity.class);
+                        intent.putExtra("TripInfo", info);
+                        startActivity(intent);
+                    }
+                    else
+                        Toast.makeText(TripInfoPage.this, "Start time must be before end time", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast t = Toast.makeText(getApplicationContext(), "Database Read Error", Toast.LENGTH_LONG);
                     t.show();

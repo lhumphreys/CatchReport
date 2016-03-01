@@ -10,9 +10,16 @@ import java.util.Date;
  * @version 1.0
  */
 public class TripInfoStorage implements Serializable{
+
+
+    public static final String[] WEATHER = {"Not Specified", "Sunny", "Rainy", "Overcast"};
+    public static final int DEFAULT = 0;
+
     private Date startDate, endDate;
     private Lake lake;
     private ArrayList<Fish> fish;
+    private String weather;
+    private Double temperature;
 
     /**
      * Creates blank TripInfoStorage
@@ -23,6 +30,8 @@ public class TripInfoStorage implements Serializable{
         endDate = null;
         lake = null;
         fish = new ArrayList<Fish>();
+        weather = null;
+        temperature = null;
     }
 
     /**
@@ -108,5 +117,29 @@ public class TripInfoStorage implements Serializable{
         return lake.getLong();
     }
 
+    public void setTemperature(double d)
+    {
+        temperature = d;
+    }
+
+    public Double getTemperature()
+    {
+        return temperature;
+    }
+
+    public void setWeather(String w)
+    {
+        weather = w;
+    }
+
+    public String getWeather()
+    {
+        return weather;
+    }
+
+    public void deleteTemperature()
+    {
+        temperature = null;
+    }
 
 }

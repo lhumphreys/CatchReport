@@ -19,6 +19,18 @@
             android:orientation="vertical"
             android:id="@+id/DisplayLayout">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/noTripsFound"
+                android:text=""/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/tripID"/>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

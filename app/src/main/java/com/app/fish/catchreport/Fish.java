@@ -13,7 +13,7 @@ public class Fish implements Serializable{
     private boolean tagged;
     private int quantity;
 
-    public Fish(String species, double weight, double length, boolean released, boolean tagged, int quantity)
+    public Fish(String species, double weight, double length, boolean released, boolean tagged,int quantity)
     {
         this.species = species;
         this.weight = weight;
@@ -27,6 +27,10 @@ public class Fish implements Serializable{
     {
         this("Lake Trout", 0, 0, false, false,1);
     }
+
+    public int getQuantity(){return this.quantity;}
+
+    public void setQuantity(int quantity){this.quantity = quantity;}
 
     public void setSpecies(String species){
         this.species = species;
@@ -67,10 +71,6 @@ public class Fish implements Serializable{
     public boolean isTagged(){
         return this.tagged;
     }
-
-    public int getQuantity(){return this.quantity;}
-
-    public void setQuantity(int quanitity){this.quantity=quanitity;}
 
     public String displayWeight()
     {

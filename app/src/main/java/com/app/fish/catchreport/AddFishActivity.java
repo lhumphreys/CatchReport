@@ -33,6 +33,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,6 +92,7 @@ public class AddFishActivity extends BaseDrawerActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Fish f;
                 cur++;
                 if(cur == info.numFish())
@@ -112,11 +114,7 @@ public class AddFishActivity extends BaseDrawerActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DisplayTripInfo.class);
-                //info.removeFish(info.numFish()-1);
-                updateFishInfoDatabase(info);
-                updateOnlineDatabase();
-                startActivity(intent);
+                confirmDialog(v);
             }
         });
 
@@ -178,6 +176,8 @@ public class AddFishActivity extends BaseDrawerActivity {
             String[] vals = new String[13];
             Lake lake = info.getLake();
             Date sdate = info.getStartDate();
+            SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
+            String date = form.format(sdate);
             Date edate = info.getEndDate();
             vals[0] = tripNum+"";
             vals[1] = vals[0];
@@ -185,9 +185,9 @@ public class AddFishActivity extends BaseDrawerActivity {
             vals[3] = info.numFish()+"";
             vals[4] = lake.getName();
             vals[5] = lake.getCounty();
-            vals[6] = sdate.getYear()+"/"+sdate.getMonth()+"/"+sdate.getDay();
-            vals[7] = sdate.getHours()+"";
-            vals[8] = edate.getHours()+"";
+            vals[6] = date;
+            vals[7] = sdate.getHours()+":"+sdate.getMinutes();
+            vals[8] = edate.getHours()+":"+edate.getMinutes();
             vals[9] = "none";
             vals[10] = "none";
             vals[11] = lake.getLat()+"";
@@ -196,20 +196,21 @@ public class AddFishActivity extends BaseDrawerActivity {
 
             for(int i = 0; i < info.numFish(); i++)
             {
+
                 Fish f = info.getFish(i);
                 int qty = info.getFish(i).getQuantity();
 
                 for(int j=0; j<qty; j++) {
 
-                SQLiteCursor c2 = handler.runQuery("SELECT MAX(_id) FROM FishCaught", null);
-                int num2 = 1;
-                if(c2.getCount()<=0)
-                    c2.close();
-                else{
-                    c2.moveToFirst();
-                    num2 = c2.getInt(0)+1;
-                    c2.close();
-                }
+                    SQLiteCursor c2 = handler.runQuery("SELECT MAX(_id) FROM FishCaught", null);
+                    int num2 = 1;
+                    if (c2.getCount() <= 0)
+                        c2.close();
+                    else {
+                        c2.moveToFirst();
+                        num2 = c2.getInt(0) + 1;
+                        c2.close();
+                    }
 
                     String fq = "INSERT INTO FishCaught (_id,reportid,fishnum,species,weight,length,harvest,tags,finclip,method,userid) ";
                     fq += "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
@@ -378,6 +379,37 @@ public class AddFishActivity extends BaseDrawerActivity {
             }
             return null;
         }
+    }
+
+    private void confirmDialog(View view){
+
+        final View curview = view;
+        final AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle("Submit?");
+        alert.setMessage("Are you sure you want to submit this report?");
+        alert.setCancelable(false);
+        alert.setCanceledOnTouchOutside(false);
+
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alert.dismiss();
+                        Intent intent = new Intent(curview.getContext(), DisplayTripInfo.class);
+                        updateFishInfoDatabase(info);
+                        updateOnlineDatabase();
+                        startActivity(intent);
+                    }
+                });
+
+        alert.setButton(DialogInterface.BUTTON_NEGATIVE, "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        alert.dismiss();
+                    }
+                });
+
+        alert.show();
     }
 
 }

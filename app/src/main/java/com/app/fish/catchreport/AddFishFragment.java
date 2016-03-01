@@ -1,6 +1,9 @@
 package com.app.fish.catchreport;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -16,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -27,6 +31,7 @@ import java.util.ArrayList;
  */
 public class AddFishFragment extends Fragment {
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
+
 
     private Spinner speciesSpin;
     private EditText weightEditText;
@@ -76,6 +81,7 @@ public class AddFishFragment extends Fragment {
             mFish = new Fish();
         }
 
+
         currentLake = getArguments().getString("lakeID");
     }
 
@@ -96,7 +102,7 @@ public class AddFishFragment extends Fragment {
         int pos = species.indexOf(mFish.getSpecies());
         if(pos<0) {
             pos = 0;
-            mFish.setSpecies((String)speciesSpin.getSelectedItem());
+            mFish.setSpecies((String) speciesSpin.getSelectedItem());
         }
         speciesSpin.setSelection(pos, true);
         speciesSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -108,7 +114,7 @@ public class AddFishFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 int pos = species.indexOf(mFish.getSpecies());
-                if(pos < 0)
+                if (pos < 0)
                     pos = 0;
                 speciesSpin.setSelection(pos, true);
             }
@@ -117,7 +123,8 @@ public class AddFishFragment extends Fragment {
         weightEditText = (EditText) v.findViewById(R.id.weightEditText);
 
         if(mFish.getWeight() > 0){
-            weightEditText.setHint(mFish.getWeight() + "");
+            weightEditText.setText(mFish.getWeight() + "");
+            mFish.setWeight(Double.parseDouble(weightEditText.getText().toString()));
         }
 
         weightEditText.addTextChangedListener(new TextWatcher() {
@@ -131,13 +138,14 @@ public class AddFishFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                try {
-                    double w = Double.parseDouble("0"+weightEditText.getText().toString());
-                    mFish.setWeight(w);
-                }catch(Exception e)
-                {
+                String word = weightEditText.getText().toString();
+                if (word.equals("")) {
                     mFish.setWeight(0);
                     weightEditText.setHint("Weight");
+                }
+                else {
+                    double w = Double.parseDouble("0"+word);
+                    mFish.setWeight(w);
                 }
             }
         });
@@ -146,27 +154,31 @@ public class AddFishFragment extends Fragment {
         lengthEditText = (EditText) v.findViewById(R.id.lengthEditText);
 
         if(mFish.getLength() > 0) {
-            lengthEditText.setHint(mFish.getLength() + "");
+            lengthEditText.setText(mFish.getLength() + "");
+            mFish.setLength(Double.parseDouble(lengthEditText.getText().toString()));
         }
         lengthEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                try {
-                    double l = Double.parseDouble("0"+lengthEditText.getText().toString());
-                    mFish.setLength(l);
-                }catch(Exception e)
-                {
+                String word = lengthEditText.getText().toString();
+                if (word.equals("")) {
                     mFish.setLength(0);
                     lengthEditText.setHint("Length");
+                } else {
+                    double l = Double.parseDouble("0" + word);
+                    mFish.setLength(l);
                 }
             }
         });
+
 
         releasedCheckBox = (CheckBox) v.findViewById(R.id.releasedCheckBox);
         releasedCheckBox.setChecked(mFish.isReleased());
@@ -214,7 +226,6 @@ public class AddFishFragment extends Fragment {
                 }
             }
         });
-
 
         return v;
     }
