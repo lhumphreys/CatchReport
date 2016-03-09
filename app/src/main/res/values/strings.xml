@@ -16,4 +16,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_weekly_stats">WeeklyStats</string>
     <string name="title_activity_weekly_stats_input">WeeklyStatsInput</string>
+    <string name="title_activity_live_trip_main">LiveTripMain</string>
+    <string name="title_activity_live_add_fish">LiveAddFishActivity</string>
 </resources>

@@ -21,6 +21,18 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="380dp"
+        android:layout_height="75dp"
+        android:id="@+id/selectedfish"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/fish_icon"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:maxHeight="75dp"
+        android:maxWidth="500dp" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

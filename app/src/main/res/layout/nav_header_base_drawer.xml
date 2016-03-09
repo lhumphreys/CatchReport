@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="300dp"
         android:layout_height="80dp"
-        android:src="@drawable/shark"
+        android:src="@drawable/fish_banner"
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"/>
 

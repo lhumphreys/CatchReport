@@ -58,7 +58,8 @@ public class MainActivity extends BaseDrawerActivity {
                         @Override
                         public void onAnimationEnd(Animation animation) {
 
-                            /**intent will go here**/
+                            Intent intent = new Intent(getApplicationContext(), LiveTripBegin.class);
+                            startActivity(intent);
 
                         }
                         @Override

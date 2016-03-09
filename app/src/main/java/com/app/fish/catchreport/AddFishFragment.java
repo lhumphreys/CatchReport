@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -215,17 +216,30 @@ public class AddFishFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                try
-                {
+                try {
                     int qty = Integer.parseInt(quantity.getText().toString());
                     mFish.setQuantity(qty);
-                }catch(Exception e)
-                {
+                } catch (Exception e) {
                     mFish.setQuantity(1);
                     quantity.setHint("1");
                 }
             }
         });
+
+        //This block of code sets the starting fish picture
+
+        String startingFish = species.get(0);
+        ImageView selectedFish = (ImageView) v.findViewById(R.id.selectedfish);
+        startingFish = startingFish.toLowerCase();
+        startingFish = startingFish.replaceAll(" ", "_");
+        startingFish = startingFish.replaceAll("-", "_");
+        int pictureId = getResources().getIdentifier(startingFish, "drawable", getActivity().getPackageName());
+        if(pictureId == 0) {
+            pictureId = getResources().getIdentifier("no_picture", "drawable", getActivity().getPackageName());
+        }
+        selectedFish.setImageResource(pictureId);
+
+        //initPictureSelector(v);
 
         return v;
     }
@@ -248,4 +262,33 @@ public class AddFishFragment extends Fragment {
         db.close();
         return lakeNames;
     }
+
+    /*This is the listener for the ListView item being changed which will
+         prompt the image to change when a new fish is selected
+    */
+    /*
+    public void initPictureSelector(View v) {
+        final View temp = v;
+        Spinner speciesSpin =(Spinner) v.findViewById(R.id.speciesSpinner);
+        speciesSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                ImageView selectedFish = (ImageView) temp.findViewById(R.id.selectedfish);
+                String fishname = arg0.getSelectedItem().toString();
+                fishname = fishname.toLowerCase();
+                fishname = fishname.replaceAll(" ", "_");
+                fishname = fishname.replaceAll("-", "_");
+                int pictureId = getResources().getIdentifier(fishname, "drawable", getActivity().getPackageName());
+                if (pictureId == 0) {
+                    pictureId = getResources().getIdentifier("no_picture", "drawable", getActivity().getPackageName());
+                }
+                selectedFish.setImageResource(pictureId);
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                return;
+            }
+        });
+    }
+    */
+
 }

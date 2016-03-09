@@ -6,13 +6,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="Fish N' Trips"
+        android:icon="@drawable/fish_icon"
+        android:label="Fish N&apos; Trips"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="Fish N' Trips"
+            android:label="Fish N&apos; Trips"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,6 +56,18 @@
         <activity
             android:name=".WeeklyStatsInput"
             android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LiveTripBegin"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LiveTripMain"
+            android:label="@string/title_activity_live_trip_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LiveAddFishActivity"
+            android:label="@string/title_activity_live_add_fish"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
