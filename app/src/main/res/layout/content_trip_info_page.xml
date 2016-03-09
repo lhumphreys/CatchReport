@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_trip_info_page"
     tools:context="com.app.fish.catchreport.TripInfoPage">
 
     <ScrollView
@@ -115,6 +114,18 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Find Me"
+                android:id="@+id/findMeButton"
+                android:layout_gravity="right"
+                android:textSize="20sp"
+                android:textAppearance="?android:attr/textAppearanceButton"
+                android:textColor="#ffffff"
+                android:background="@drawable/selector_background_red"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
