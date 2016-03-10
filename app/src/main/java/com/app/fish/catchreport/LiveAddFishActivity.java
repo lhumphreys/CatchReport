@@ -19,6 +19,7 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
     private TripInfoStorage trip;
     private int cur;
     private View v;
+    private boolean isEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +29,18 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
         Intent i = getIntent();
         trip = (TripInfoStorage)i.getSerializableExtra("TripInfo");
         if(i.getIntExtra("Fish", -1) != -1){
+            isEdit = true;
+            cur = i.getIntExtra("Fish",-1);
             AddFishFragment fishFragment = AddFishFragment.newInstance(trip, cur);
             FragmentManager fragmentManager = this.getFragmentManager();
             FragmentTransaction trans = fragmentManager.beginTransaction();
             trans.replace(R.id.fragHolder, fishFragment, "FISH_FRAGMENT");
             trans.commit();
         }else {
+            isEdit = false;
+
             trip.addFish(new Fish());
+            cur = trip.numFish()-1;
 
             Bundle b = new Bundle();
             b.putString("lakeID", trip.getLake().getId() + "");
@@ -52,6 +58,19 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(trip.getFish(cur).getQuantity() > 1)
+                {
+                    int masterFish = trip.getFish(cur).getQuantity();
+                    trip.getFish(cur).setQuantity(1);
+                    Fish originalFish = trip.getFish(cur);
+
+                    for(int i=0; i<masterFish-1;i++)
+                    {
+                        Fish fish = new Fish();
+                        fish.clone(originalFish);
+                        trip.addFish(fish);
+                    }
+                }
                 Intent intent = new Intent(v.getContext(), LiveTripMain.class);
                 intent.putExtra("TripInfo", trip);
                 startActivity(intent);
@@ -81,24 +100,26 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
                         .show();
             }
         });
+
+        Button cancelTrip = (Button)findViewById(R.id.cancelTripButton);
+        cancelTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isEdit)
+                {
+                    trip.removeFish(cur);
+                }
+                Intent intent = new Intent(view.getContext(), LiveTripMain.class);
+                intent.putExtra("TripInfo", trip);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onBackPressed()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Caution")
-                .setMessage("Are you sure you want to return without submitting? Changes will not be saved.")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("No",null)
-                .setCancelable(true)
-                .create()
-                .show();
+
     }
 
 

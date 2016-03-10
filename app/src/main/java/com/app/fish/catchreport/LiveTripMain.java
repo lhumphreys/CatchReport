@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +56,17 @@ public class LiveTripMain extends AppCompatActivity {
         Intent i = getIntent();
         trip = (TripInfoStorage)i.getSerializableExtra("TripInfo");
         initialize();
+
+        LinearLayout editBar = (LinearLayout)findViewById(R.id.editBar);
+
+        if(trip.numFish()==0)
+        {
+            editBar.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            editBar.setVisibility(View.VISIBLE);
+        }
     }
 
     public void initialize(){
@@ -105,7 +117,8 @@ public class LiveTripMain extends AppCompatActivity {
             public void onClick(View v) {
                 Spinner fishList = (Spinner) findViewById(R.id.fishCaughtSpinner);
                 String fishname = fishList.getSelectedItem().toString();
-                int index = getIndex(fishname);
+                int index = fishList.getSelectedItemPosition();
+                //int index = getIndex(fishname);
                 Intent intent = new Intent(v.getContext(), LiveAddFishActivity.class);
                 intent.putExtra("TripInfo", trip);
                 intent.putExtra("Fish", index);
@@ -139,8 +152,10 @@ public class LiveTripMain extends AppCompatActivity {
     }
 
     public int getIndex(String fishName){
-        for(int i = 0; i < fNameList.size(); i++){
-            if(fNameList.get(i).equals(fishName)){
+        for(int i = 0; i < fNameList.size(); i++)
+        {
+            if(fNameList.get(i).equals(fishName))
+            {
                 return i;
             }
         }

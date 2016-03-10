@@ -112,7 +112,7 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                 String tripString = each.lake + ", " + each.county;
                 String[] yearSplit = each.date.split("/");
                 int year = Integer.parseInt(yearSplit[0]);
-                int fixedYear = year-1900;
+                int fixedYear = year;
                 String tripSpec = "Date: " + fixedYear+"/"+yearSplit[1]+"/"+yearSplit[2] + "\nDuration: " + each.time + " hours " + each.minutes + " minutes";
 
 

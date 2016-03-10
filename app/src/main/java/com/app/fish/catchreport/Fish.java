@@ -82,4 +82,14 @@ public class Fish implements Serializable{
         return length + " in";
     }
 
+    public void clone(Fish fish)
+    {
+        this.species = fish.species;
+        this.weight = fish.weight;
+        this.length = fish.length;
+        this.released = fish.released;
+        this.tagged = fish.tagged;
+        this.quantity = fish.quantity;
+    }
+
 }

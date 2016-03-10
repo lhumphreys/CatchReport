@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.app.fish.catchreport.LiveTripMain"
-    tools:showIn="@layout/activity_live_trip_main">
+    tools:showIn="@layout/activity_live_trip_main"
+    android:background="#ffffff">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -94,11 +95,12 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="25dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:id="@+id/editBar">
 
                 <Button
                     android:layout_width="0dp"

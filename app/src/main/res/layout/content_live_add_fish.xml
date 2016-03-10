@@ -8,7 +8,8 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.app.fish.catchreport.LiveAddFishActivity"
-    tools:showIn="@layout/activity_live_add_fish">
+    tools:showIn="@layout/activity_live_add_fish"
+    android:background="#ffffff">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -17,56 +18,49 @@
 
     </FrameLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp">
-
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="Prev"
-            android:id="@+id/prevButton"
-            android:visibility="gone"
-            android:background="@drawable/left_small_button_drawable_red"
-            android:textColor="#FFFFFFFF"
-            android:drawableLeft="@drawable/ic_action_goleft"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:layout_marginRight="5dp" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:text="Delete"
-            android:id="@+id/deleteFishButton"
-            android:background="@color/fishNTripRed"
-            android:textColor="#FFFFFFFF"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"/>
-
-
-
-    </LinearLayout>
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
         android:text="Enter Fish"
         android:id="@+id/submitFishButton"
         android:layout_gravity="center_horizontal"
         android:textColor="#FFFFFFFF"
         android:textSize="20sp"
         android:background="@drawable/submit_button_rounded"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Cencel"
+            android:id="@+id/cancelTripButton"
+            android:background="@drawable/submit_button_rounded_blue"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="5dp"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Delete Fish"
+            android:id="@+id/deleteFishButton"
+            android:background="@drawable/submit_button_rounded_blue"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="16dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
