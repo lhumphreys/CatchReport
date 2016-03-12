@@ -3,6 +3,7 @@ package com.app.fish.catchreport;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class DisplayTripInfo extends BaseDrawerActivity {
 
     public static final String CATCH_DATA_DB = "CatchDatabase.db";
     private ArrayList<Displayer> reportList;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,8 @@ public class DisplayTripInfo extends BaseDrawerActivity {
         super.makeDrawer();
 
 
-
+        final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
+        id = prefs.getString("FishAppId", "0");
         getInfo();
         displayInfo();
         setDoneButton();
@@ -43,8 +46,8 @@ public class DisplayTripInfo extends BaseDrawerActivity {
         try{
             help.createDatabase();
             help.openDatabase();
-            String q = "SELECT location,county,tripdate,starttime,endtime,reportid FROM MainCatch";
-            SQLiteCursor cursor = help.runQuery(q, null);
+            String q = "SELECT location,county,tripdate,starttime,endtime,reportid FROM MainCatch WHERE userid=?";
+            SQLiteCursor cursor = help.runQuery(q, new String[]{id});
             while(cursor.moveToNext()) {
                 String[] first = cursor.getString(3).split(":");
                 int sHour = Integer.parseInt(first[0]);

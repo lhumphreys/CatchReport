@@ -2,6 +2,7 @@ package com.app.fish.catchreport;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -9,6 +10,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.Map;
 
 public class MainActivity extends BaseDrawerActivity {
 
@@ -23,6 +28,8 @@ public class MainActivity extends BaseDrawerActivity {
         final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
         ScrollView sv = (ScrollView)findViewById(R.id.myscrollview);
         sv.fling(10);
+
+        Map<String, ?> map = prefs.getAll();
 
         if(prefs.contains("FishAppAuth")==false)
         {

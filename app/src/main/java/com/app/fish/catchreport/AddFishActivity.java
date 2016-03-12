@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.app.VoiceInteractor;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
@@ -49,12 +50,16 @@ public class AddFishActivity extends BaseDrawerActivity {
     private int cur, tripNum;
     private Button addButton;
     private Button prevButton;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fish);
         super.makeDrawer();
+
+        final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
+        id = prefs.getString("FishAppId", "0");
 
         info = getTripInfo();
         this.cur = 0;
@@ -181,15 +186,15 @@ public class AddFishActivity extends BaseDrawerActivity {
             Date edate = info.getEndDate();
             vals[0] = tripNum+"";
             vals[1] = vals[0];
-            vals[2] = "0";
+            vals[2] = id;
             vals[3] = info.numFish()+"";
             vals[4] = lake.getName();
             vals[5] = lake.getCounty();
             vals[6] = date;
             vals[7] = sdate.getHours()+":"+sdate.getMinutes();
             vals[8] = edate.getHours()+":"+edate.getMinutes();
-            vals[9] = "none";
-            vals[10] = "none";
+            vals[9] = info.getWeather();
+            vals[10] = info.getTemperature()+"";
             vals[11] = lake.getLat()+"";
             vals[12]= lake.getLong()+"";
             handler.getWritableDatabase().execSQL(q, vals);

@@ -3,6 +3,7 @@ package com.app.fish.catchreport;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
@@ -45,6 +46,7 @@ public class LiveTripMain extends AppCompatActivity {
     TripInfoStorage trip;
     ArrayList<Fish> fish = new ArrayList<>();
     ArrayList<String> fNameList = new ArrayList<>();
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,9 @@ public class LiveTripMain extends AppCompatActivity {
         setContentView(R.layout.activity_live_trip_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
+        id = prefs.getString("FishAppId", "0");
 
         Intent i = getIntent();
         trip = (TripInfoStorage)i.getSerializableExtra("TripInfo");
@@ -191,15 +196,15 @@ public class LiveTripMain extends AppCompatActivity {
             Date edate = info.getEndDate();
             vals[0] = tripNum+"";
             vals[1] = vals[0];
-            vals[2] = "0";
+            vals[2] = id;
             vals[3] = info.numFish()+"";
             vals[4] = lake.getName();
             vals[5] = lake.getCounty();
             vals[6] = date;
             vals[7] = sdate.getHours()+":"+sdate.getMinutes();
             vals[8] = edate.getHours()+":"+edate.getMinutes();
-            vals[9] = "none";
-            vals[10] = "none";
+            vals[9] = info.getWeather();
+            vals[10] = info.getTemperature()+"";
             vals[11] = lake.getLat()+"";
             vals[12]= lake.getLong()+"";
             handler.getWritableDatabase().execSQL(q, vals);
