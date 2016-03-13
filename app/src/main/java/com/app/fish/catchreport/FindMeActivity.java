@@ -97,7 +97,8 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
     private void findClosestLake(){
 
         double distance = Double.POSITIVE_INFINITY;
-        Location loc;
+        Location loc = null;
+        double d;
 
         for(Lake l : this.lakes){
             loc = new Location("");
