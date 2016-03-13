@@ -12,11 +12,23 @@
     tools:context="com.app.fish.catchreport.WeeklyStats"
     tools:showIn="@layout/activity_weekly_stats">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weekly Stats"
+        android:id="@+id/textView1"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"/>
+
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dip"
         android:id="@+id/graph"
-        app:seriesType="bar"/>
+        app:seriesType="bar"
+        android:layout_below="@+id/textView1"/>
 
     <TextView
         android:layout_width="wrap_content"

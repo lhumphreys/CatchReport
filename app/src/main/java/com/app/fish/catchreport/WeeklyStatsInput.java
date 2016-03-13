@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class WeeklyStatsInput extends AppCompatActivity {
 
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
+    public String curlake = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class WeeklyStatsInput extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         Intent intent = new Intent(getApplicationContext(), WeeklyStats.class);
+                        intent.putExtra("Lake Name",curlake);
                         startActivity(intent);
                     }
 
@@ -88,6 +90,8 @@ public class WeeklyStatsInput extends AppCompatActivity {
                 ArrayList<LakeEntry> lakeList = fillLakes((String) parent.getItemAtPosition(position));
                 ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
                 lakes.setAdapter(lakeAdapt);
+                LakeEntry cur = lakeList.get(position);
+                curlake = cur.name;
             }
 
             @Override

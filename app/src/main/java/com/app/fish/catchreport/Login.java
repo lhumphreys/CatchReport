@@ -37,7 +37,6 @@ public class Login extends AppCompatActivity {
     SharedPreferences prefs;
 
     String URL_Login = "http://zoebaker.name/android_login_api/Login.php";
-    //String URL_Login = "http://146.187.134.30/android_login_api/Login.php";
 
     private Button button;
     private Button button2;
@@ -83,6 +82,7 @@ public class Login extends AppCompatActivity {
 
         EditText userid = (EditText) findViewById(R.id.editText);
         EditText pass = (EditText) findViewById(R.id.editText2);
+
         final String semail = userid.getText().toString();
         final String spass = pass.getText().toString();
 

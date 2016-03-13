@@ -48,18 +48,25 @@
             android:background="@drawable/background_white_rounded"/>
     </ScrollView>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:id="@+id/submitAskBio"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:text="Compose Email"
-        android:textColor="#ffffff"
-        android:background="@drawable/submit_button_rounded"
-        android:onClick="submitQuestion"
-        android:textSize="20sp"/>
+        android:background="@drawable/submit_button"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Compose Email"
+            android:textColor="#ffffff"
+            android:background="@drawable/submit_button_rounded"
+            android:onClick="submitQuestion"
+            android:textSize="20sp"/>
+    </LinearLayout>
 
 </RelativeLayout>

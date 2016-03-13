@@ -178,6 +178,7 @@ public class AddFishActivity extends BaseDrawerActivity {
             Date sdate = info.getStartDate();
             SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
             String date = form.format(sdate);
+            String[] dateSplit = date.split("/");
             Date edate = info.getEndDate();
             vals[0] = tripNum+"";
             vals[1] = vals[0];
@@ -185,11 +186,11 @@ public class AddFishActivity extends BaseDrawerActivity {
             vals[3] = info.numFish()+"";
             vals[4] = lake.getName();
             vals[5] = lake.getCounty();
-            vals[6] = date;
+            vals[6] = ""+dateSplit[0]+"-"+dateSplit[1]+"-"+dateSplit[2];
             vals[7] = sdate.getHours()+":"+sdate.getMinutes();
             vals[8] = edate.getHours()+":"+edate.getMinutes();
-            vals[9] = "none";
-            vals[10] = "none";
+            vals[9] = ""+info.getTemperature();
+            vals[10] = info.getWeather();
             vals[11] = lake.getLat()+"";
             vals[12]= lake.getLong()+"";
             handler.getWritableDatabase().execSQL(q, vals);
