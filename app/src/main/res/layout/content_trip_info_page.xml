@@ -125,7 +125,8 @@
                 android:textSize="20sp"
                 android:textAppearance="?android:attr/textAppearanceButton"
                 android:textColor="#ffffff"
-                android:background="@drawable/selector_background_red"/>
+                android:background="@drawable/selector_background_red"
+                android:layout_marginRight="15dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

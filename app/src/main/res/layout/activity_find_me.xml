@@ -30,22 +30,32 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/lakeNameTextView"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="#1595A3"
+            android:textSize="25sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/countyTextView"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="#1595A3"
+            android:textSize="18sp"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/submit_button_rounded"
             android:text="Use This"
             android:id="@+id/returnButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp"
+            />
     </LinearLayout>
 </LinearLayout>
