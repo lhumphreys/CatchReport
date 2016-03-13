@@ -258,15 +258,15 @@ public class AddFishFragment extends Fragment {
         return v;
     }
 
-    public ArrayList<String> fillFishList(String lakeName)
+    public ArrayList<String> fillFishList(String lakeID)
     {
         ArrayList<String> lakeNames = new ArrayList<String>();
         DatabaseHandler db = new DatabaseHandler(this.getActivity(), FISH_LAKES_DB);
         db.openDatabase();
         SQLiteCursor cur;
         String[] list = null;
-        if(lakeName != null){
-            list = new String[]{lakeName};
+        if(lakeID != null){
+            list = new String[]{lakeID};
             cur = db.runQuery("SELECT Species FROM FoundIn JOIN Fish ON FoundIn.FishID=Fish._id WHERE WaterBodyID=?", list);
         }
         else{

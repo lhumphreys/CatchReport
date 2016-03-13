@@ -7,7 +7,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.app.fish.catchreport.LiveTripBegin"
-    tools:showIn="@layout/activity_live_trip_begin">
+    tools:showIn="@layout/activity_live_trip_begin"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <ScrollView
         android:layout_width="match_parent"
