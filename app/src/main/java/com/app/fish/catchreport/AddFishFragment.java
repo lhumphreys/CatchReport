@@ -92,7 +92,7 @@ public class AddFishFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_add_fish, container, false);
 
-        final ArrayList<String> species = fillFishList();
+        final ArrayList<String> species = fillFishList(currentLake);
 
         speciesSpin = (Spinner) v.findViewById(R.id.speciesSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.spinner_layout_ws, species);
@@ -109,6 +109,8 @@ public class AddFishFragment extends Fragment {
         speciesSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<String> allSpecies = fillFishList(null);
+
                 mFish.setSpecies(species.get(position));
             }
 
@@ -244,20 +246,24 @@ public class AddFishFragment extends Fragment {
         return v;
     }
 
-    public ArrayList<String> fillFishList()
+    public ArrayList<String> fillFishList(String lakeName)
     {
         ArrayList<String> lakeNames = new ArrayList<String>();
         DatabaseHandler db = new DatabaseHandler(this.getActivity(), FISH_LAKES_DB);
         db.openDatabase();
         SQLiteCursor cur;
+        String[] list = null;
+        if(lakeName != null){
+            list = new String[]{lakeName};
+        }
 
-        cur = db.runQuery("SELECT Species FROM FoundIn JOIN Fish ON FoundIn.FishID=Fish._id WHERE WaterBodyID=?",
-                new String[]{currentLake});
+        cur = db.runQuery("SELECT Species FROM FoundIn JOIN Fish ON FoundIn.FishID=Fish._id WHERE WaterBodyID=?", list);
 
         while(cur.moveToNext())
         {
             lakeNames.add(cur.getString(0));
         }
+        lakeNames.add("Other");
         cur.close();
         db.close();
         return lakeNames;

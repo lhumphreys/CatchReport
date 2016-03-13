@@ -116,7 +116,7 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                 String[] yearSplit = each.date.split("/");
                 int year = Integer.parseInt(yearSplit[0]);
                 int fixedYear = year;
-                String tripSpec = "Date: " + fixedYear+"/"+yearSplit[1]+"/"+yearSplit[2] + "\nDuration: " + each.time + " hours " + each.minutes + " minutes";
+                String tripSpec = "Date: " + yearSplit[1]+"/"+yearSplit[2] + "/" + fixedYear + "\nDuration: " + each.time + " hours " + each.minutes + " minutes";
 
 
                 TextView tripText = new TextView(this);

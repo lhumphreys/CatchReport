@@ -265,14 +265,14 @@ public class AddFishActivity extends BaseDrawerActivity {
             JSONObject job = new JSONObject();
             Date date = info.getStartDate();
             job.put("reportid", tripNum+"");
-            job.put("userid", "0");
+            job.put("userid", id);
             job.put("numfish", info.numFish()+"");
             job.put("location", info.getLake().getName());
             job.put("date", date.getYear()+"/"+date.getMonth()+"/"+date.getDay());
             job.put("starttime", date.getHours()+"");
             job.put("endtime", info.getEndDate().getHours()+"");
-            job.put("weather", "none");
-            job.put("temp", "0");
+            job.put("weather", info.getWeather());
+            job.put("temp", info.getTemperature()+"");
             word += job.toString()+",";
             for(int i = 0; i < info.numFish(); i++)
             {

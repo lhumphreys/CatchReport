@@ -171,7 +171,7 @@ public class TripInfoPage extends BaseDrawerActivity {
         dp.init(mYear, mMonth, mDay, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int month, int dayOfMonth) {
-                info.getStartDate().setYear(year);
+                info.getStartDate().setYear(year-1900);
                 info.getStartDate().setMonth(month);
                 info.getStartDate().setDate(dayOfMonth);
                 info.getEndDate().setYear(year);
