@@ -11,6 +11,8 @@ import android.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -113,7 +115,7 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                 tripID.setText(each.reportId);
 
                 String tripString = each.lake + ", " + each.county;
-                String[] yearSplit = each.date.split("/");
+                String[] yearSplit = each.date.split("-");
                 int year = Integer.parseInt(yearSplit[0]);
                 int fixedYear = year;
                 String tripSpec = "Date: " + yearSplit[1]+"/"+yearSplit[2] + "/" + fixedYear + "\nDuration: " + each.time + " hours " + each.minutes + " minutes";
@@ -258,8 +260,26 @@ public class DisplayTripInfo extends BaseDrawerActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(v.getContext(), MainActivity.class);
-                        startActivity(i);
+                        Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.press);
+                        v.startAnimation(anim);
+                        final View myview = v;
+
+                        /** new intent will be called on animation completion**/
+                        anim.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                Intent i = new Intent(myview.getContext(), MainActivity.class);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
                     }
                 }
         );

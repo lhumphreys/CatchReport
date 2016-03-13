@@ -183,6 +183,7 @@ public class AddFishActivity extends BaseDrawerActivity {
             Date sdate = info.getStartDate();
             SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
             String date = form.format(sdate);
+            String[] dateSplit = date.split("/");
             Date edate = info.getEndDate();
             vals[0] = tripNum+"";
             vals[1] = vals[0];

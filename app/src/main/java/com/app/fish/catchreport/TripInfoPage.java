@@ -1,25 +1,18 @@
 package com.app.fish.catchreport;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
-import android.database.sqlite.SQLiteCursorDriver;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -28,10 +21,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,12 +34,16 @@ import java.util.Date;
  */
 public class TripInfoPage extends BaseDrawerActivity {
 
+
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
+    public static final int FIND_ME_ACTIVITY_REQUEST = 156;
 
-
+    private ArrayList<LakeEntry> lakeList;
+    private ArrayList<String> counties;
     private TripInfoStorage info;
     private EditText temp;
-
+    private String currentCounty;
+    private Lake newClosest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +61,14 @@ public class TripInfoPage extends BaseDrawerActivity {
         initializeExtras();
         initializeSubmit();
 
+        Button findMeButton = (Button)findViewById(R.id.findMeButton);
+        findMeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), FindMeActivity.class);
+                startActivityForResult(intent, FIND_ME_ACTIVITY_REQUEST);
+            }
+        });
     }
 
     /**
@@ -76,7 +78,7 @@ public class TripInfoPage extends BaseDrawerActivity {
      */
     private void initializeList()
     {
-        ArrayList<String> counties;
+
         counties = fillCounties();
         ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, R.layout.spinner_layout_ws, counties);
         adapt.setDropDownViewResource(R.layout.spinner_layout_ws);
@@ -92,9 +94,14 @@ public class TripInfoPage extends BaseDrawerActivity {
 
                 lakes.setVisibility(Spinner.VISIBLE);
                 title.setVisibility(TextView.VISIBLE);
-                ArrayList<LakeEntry> lakeList = fillLakes((String) parent.getItemAtPosition(position));
-                ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
-                lakes.setAdapter(lakeAdapt);
+
+                if(newClosest == null){
+                    lakeList = fillLakes((String) parent.getItemAtPosition(position));
+                    ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
+                    lakes.setAdapter(lakeAdapt);
+                }else{
+                    newClosest = null;
+                }
             }
 
             @Override
@@ -103,6 +110,22 @@ public class TripInfoPage extends BaseDrawerActivity {
                 title.setVisibility(TextView.GONE);
             }
         });
+    }
+
+    private void setLakesSpinner(){
+        Spinner lakes = (Spinner) findViewById(R.id.lakeSpinner);
+
+        lakeList = fillLakes(newClosest.getCounty());
+        ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(this, R.layout.spinner_layout_ws, lakeList);
+        lakes.setAdapter(lakeAdapt);
+
+        String l = newClosest.getName();
+        int p = -1;
+        for(int e = 0; e < lakeList.size(); e ++){
+            if(l.equals(lakeList.get(e).name))
+                p = e;
+        }
+        lakes.setSelection(p);
     }
 
     /**
@@ -270,35 +293,55 @@ public class TripInfoPage extends BaseDrawerActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Lake lake;
-                try {
-                    int hDif = info.getEndDate().getHours() - info.getStartDate().getHours();
-                    int mDif = info.getEndDate().getMinutes() - info.getStartDate().getMinutes();
-                    if(mDif < 0){
-                        mDif += 60;
-                        hDif -= 1;
+
+                final View myview = v;
+                Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.press);
+                v.startAnimation(anim);
+
+                /** new intent will be called on animation completion**/
+                anim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
                     }
-                    if(hDif > 0 || (hDif==0 && mDif>0)) {
-                        DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
-                        db.openDatabase();
-                        LakeEntry lakeEntry = (LakeEntry) ((Spinner) findViewById(R.id.lakeSpinner)).getSelectedItem();
-                        String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
-                        SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
-                        cur.moveToFirst();
-                        lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getDouble(4), cur.getDouble(5));
-                        cur.close();
-                        db.close();
-                        info.setLake(lake);
-                        Intent intent = new Intent(v.getContext(), AddFishActivity.class);
-                        intent.putExtra("TripInfo", info);
-                        startActivity(intent);
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                        Lake lake;
+                        try {
+                            int hDif = info.getEndDate().getHours() - info.getStartDate().getHours();
+                            int mDif = info.getEndDate().getMinutes() - info.getStartDate().getMinutes();
+                            if(mDif < 0){
+                                mDif += 60;
+                                hDif -= 1;
+                            }
+                            if(hDif >= 0) {
+                                DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
+                                db.openDatabase();
+                                LakeEntry lakeEntry = (LakeEntry) ((Spinner) findViewById(R.id.lakeSpinner)).getSelectedItem();
+                                String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
+                                String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
+                                SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
+                                cur.moveToFirst();
+                                lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getDouble(4), cur.getDouble(5));
+                                cur.close();
+                                db.close();
+                                info.setLake(lake);
+                                Intent intent = new Intent(myview.getContext(), AddFishActivity.class);
+                                intent.putExtra("TripInfo", info);
+                                startActivity(intent);
+                            }
+                            else
+                                Toast.makeText(TripInfoPage.this, "Start time must be before end time", Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Toast t = Toast.makeText(getApplicationContext(), "Database Read Error", Toast.LENGTH_LONG);
+                            t.show();
+                        }
                     }
-                    else
-                        Toast.makeText(TripInfoPage.this, "Start time must be before end time", Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    Toast t = Toast.makeText(getApplicationContext(), "Database Read Error", Toast.LENGTH_LONG);
-                    t.show();
-                }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
             }
         });
     }
@@ -321,9 +364,25 @@ public class TripInfoPage extends BaseDrawerActivity {
             id = i;
         }
 
+
         public String toString()
         {
             return name;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode == RESULT_OK){
+            newClosest = (Lake)data.getSerializableExtra("ClosestLake");
+
+            Spinner countySpinner = (Spinner)findViewById(R.id.countySpinner);
+            Spinner lakeSpinner = (Spinner) findViewById(R.id.lakeSpinner);
+
+            int c = this.counties.indexOf(newClosest.getCounty());
+            countySpinner.setSelection(c);
+
+            setLakesSpinner();
         }
     }
 
