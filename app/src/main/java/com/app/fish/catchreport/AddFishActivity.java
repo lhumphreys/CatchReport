@@ -230,7 +230,7 @@ public class AddFishActivity extends BaseDrawerActivity {
                     fvals[7] = f.isTagged() ? "1" : "0";
                     fvals[8] = "0";
                     fvals[9] = "none";
-                    fvals[10] = "0";
+                    fvals[10] = id;
                     handler.getWritableDatabase().execSQL(fq, fvals);
                 }
             }

@@ -278,11 +278,10 @@ public class TripInfoPage extends BaseDrawerActivity {
                         mDif += 60;
                         hDif -= 1;
                     }
-                    if(hDif >= 0) {
+                    if(hDif > 0 || (hDif==0 && mDif>0)) {
                         DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
                         db.openDatabase();
                         LakeEntry lakeEntry = (LakeEntry) ((Spinner) findViewById(R.id.lakeSpinner)).getSelectedItem();
-                        String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
                         String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
                         SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
                         cur.moveToFirst();

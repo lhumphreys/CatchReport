@@ -109,9 +109,13 @@ public class AddFishFragment extends Fragment {
         speciesSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> allSpecies = fillFishList(null);
-
-                mFish.setSpecies(species.get(position));
+                if(speciesSpin.getSelectedItem().equals("Other")) {
+                    ArrayList<String> allSpecies = fillFishList(null);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_layout_ws, allSpecies);
+                    adapter.setDropDownViewResource(R.layout.spinner_layout_ws);
+                    speciesSpin.setAdapter(adapter);
+                }
+                mFish.setSpecies((String)speciesSpin.getSelectedItem());
             }
 
             @Override
@@ -255,9 +259,11 @@ public class AddFishFragment extends Fragment {
         String[] list = null;
         if(lakeName != null){
             list = new String[]{lakeName};
+            cur = db.runQuery("SELECT Species FROM FoundIn JOIN Fish ON FoundIn.FishID=Fish._id WHERE WaterBodyID=?", list);
         }
-
-        cur = db.runQuery("SELECT Species FROM FoundIn JOIN Fish ON FoundIn.FishID=Fish._id WHERE WaterBodyID=?", list);
+        else{
+            cur = db.runQuery("SELECT Species FROM Fish", null);
+        }
 
         while(cur.moveToNext())
         {
