@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,14 +85,19 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
         mLakeNameTextView = (TextView)findViewById(R.id.lakeNameTextView);
         mCountyTextView = (TextView)findViewById(R.id.countyTextView);
 
-
+        ImageButton infoButton = (ImageButton)findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),"Press and hold lake marker to drag to new location.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void findClosestLake(){
 
         double distance = Double.POSITIVE_INFINITY;
-        Location loc = null;
-        double d;
+        Location loc;
 
         for(Lake l : this.lakes){
             loc = new Location("");
