@@ -63,11 +63,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LiveTripMain"
-            android:label="@string/title_activity_live_trip_main"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LiveAddFishActivity"
-            android:label="@string/title_activity_live_add_fish"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

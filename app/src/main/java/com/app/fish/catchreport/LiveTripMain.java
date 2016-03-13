@@ -37,9 +37,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class LiveTripMain extends AppCompatActivity {
+/**
+ * This is the main page for the Live Trip report to sit on. It has the start time, and the list of
+ * the fish that have been caught, which can be edited.
+ * From this page, you can submit the report.
+ */
+public class LiveTripMain extends BaseDrawerActivity {
 
-    private static final String FISH_LAKES_DB = "FishAndLakes.db";
     private static final String WRITE_DATA_DB = "CatchDatabase.db";
     private static final String WRITE_CATCH_PHP = "http://zoebaker.name/android_write_catch/addTripInfo.php";
     private int tripNum;
@@ -48,12 +52,20 @@ public class LiveTripMain extends AppCompatActivity {
     ArrayList<String> fNameList = new ArrayList<>();
     private String id;
 
+
+    /**
+     * onCreate fills the standard operations completed when creating the view, and calls the
+     * initialize function
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_trip_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        super.makeDrawer();
 
         final SharedPreferences prefs = this.getSharedPreferences(this.getPackageName(),this.MODE_PRIVATE);
         id = prefs.getString("FishAppId", "0");
@@ -74,6 +86,10 @@ public class LiveTripMain extends AppCompatActivity {
         }
     }
 
+    /**
+     * Goes through and gets the start time for the trip, and calls methods to set button
+     * listeners
+     */
     public void initialize(){
         setStartTime();
         initializeFinishTrip();
@@ -82,6 +98,9 @@ public class LiveTripMain extends AppCompatActivity {
         checkForFish();
     }
 
+    /**
+     * Gets date from the passed in trip, and displays the start time to the user
+     */
     public void setStartTime(){
         TextView startTimeDisplay = (TextView)findViewById(R.id.tripStartTimeView);
         Date start = trip.getStartDate();
@@ -91,6 +110,10 @@ public class LiveTripMain extends AppCompatActivity {
         startTimeDisplay.setText(sections[3]);
     }
 
+    /**
+     * Sets up the listener for the finish trip button. On click it gets the end date, and
+     * calls the confirmDialog method.
+     */
     public void initializeFinishTrip(){
         Button b = (Button)findViewById(R.id.finishTrip);
         b.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +126,10 @@ public class LiveTripMain extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up the listener for the Add Fish button. On click it creates an intent and
+     * launches the LiveAddFishActivity.
+     */
     public void initializeAddFish(){
         Button b = (Button)findViewById(R.id.addFishButton);
         b.setOnClickListener(new View.OnClickListener() {
@@ -115,15 +142,17 @@ public class LiveTripMain extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up the listener for the Edit button. On click it gets the fish selected on the spinner
+     * and creates an intent with the current trip and selected fish to send to LiveAddFishActivity.
+     */
     public void initializeEdit(){
         Button b = (Button)findViewById(R.id.editFishButton);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Spinner fishList = (Spinner) findViewById(R.id.fishCaughtSpinner);
-                String fishname = fishList.getSelectedItem().toString();
                 int index = fishList.getSelectedItemPosition();
-                //int index = getIndex(fishname);
                 Intent intent = new Intent(v.getContext(), LiveAddFishActivity.class);
                 intent.putExtra("TripInfo", trip);
                 intent.putExtra("Fish", index);
@@ -133,6 +162,11 @@ public class LiveTripMain extends AppCompatActivity {
         });
     }
 
+    /**
+     * This sets up the spinner to hold all of the fish caught.
+     * It checks to see if the trip has any fish, if it does it will add them to the list, and
+     * increment the number if there is more than one fish of the same species
+     */
     public void checkForFish(){
         Spinner fishList = (Spinner)findViewById(R.id.fishCaughtSpinner);
         if(trip.numFish() != 0){
@@ -156,17 +190,11 @@ public class LiveTripMain extends AppCompatActivity {
 
     }
 
-    public int getIndex(String fishName){
-        for(int i = 0; i < fNameList.size(); i++)
-        {
-            if(fNameList.get(i).equals(fishName))
-            {
-                return i;
-            }
-        }
-        return 0;
-    }
 
+    /**
+     * This opens a connection to the database, writes the information from the trip to the Database
+     * @param info - trip to be written the the database
+     */
     private void updateFishInfoDatabase(TripInfoStorage info)
     {
         DatabaseHandler handler = new DatabaseHandler(this, WRITE_DATA_DB);
@@ -258,16 +286,19 @@ public class LiveTripMain extends AppCompatActivity {
         }
     }
 
-
+    /**
+     *Creates new instance of FishPoster, which runs in the background to prevent freezing when
+     *attempting to post to server when out of service
+     */
     private void updateOnlineDatabase()
     {
-        /*
-        Creates new instance of FishPoster, which runs in the background to prevent freezing when
-        attempting to post to server when out of service
-         */
         new FishPoster().execute();
     }
 
+    /**
+     * Constructs the JSON string needed to upload the data to the database
+     * @return - completed JSON string
+     */
     public String makeJString()
     {
         String word = "{\"upload_fishes\":[";
@@ -305,6 +336,9 @@ public class LiveTripMain extends AppCompatActivity {
         return word;
     }
 
+    /**
+     * Confirms if you want to delete the trip before letting you hit the back button.
+     */
     @Override
     public void onBackPressed()
     {
@@ -323,6 +357,9 @@ public class LiveTripMain extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Opens connection to the Database and write the JSON command to it.
+     */
     private class FishPoster extends AsyncTask<String, Void, String>
     {
         protected String doInBackground(String[] urls)
@@ -355,6 +392,11 @@ public class LiveTripMain extends AppCompatActivity {
         }
     }
 
+    /**
+     * Confirms that you want to submit the trip before calling the necessary functions to
+     * write to the database.
+     * @param view - the current view
+     */
     private void confirmDialog(View view){
 
         final View curview = view;

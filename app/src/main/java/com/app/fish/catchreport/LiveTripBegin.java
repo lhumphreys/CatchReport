@@ -22,12 +22,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-/*
+/**
  * This class is the start of the Live Trip sequence. It collects the Location, Date,
  * Starting Time, and any extras from the phone/user, and starts the trip.
+ *
+ * @version 1.0
  */
 
-public class LiveTripBegin extends AppCompatActivity {
+public class LiveTripBegin extends BaseDrawerActivity {
 
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
     private TripInfoStorage trip;
@@ -35,28 +37,33 @@ public class LiveTripBegin extends AppCompatActivity {
     private Date tripDate;
     private EditText temp;
 
+    /**
+     * The standard onCreate functions called as well as creates the nav drawer and calls the init
+     * function to set up the rest.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_trip_begin);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        super.makeDrawer();
 
         init();
     }
 
-    /*
-    * Counties Spinner is filled with values and given behavior
-    *
-            * In case that Counties Spinner has no selected value, Lakes Spinner is made unusable
-    */
+    /**
+     *Counties Spinner is filled with values and given behavior
+     *In case that Counties Spinner has no selected value, Lakes Spinner is made unusable
+     */
     private void initializeList()
     {
         ArrayList<String> counties;
         counties = fillCounties();
         ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, R.layout.spinner_layout_ws, counties);
         adapt.setDropDownViewResource(R.layout.spinner_layout_ws);
-        Spinner spin = (Spinner)findViewById(R.id.countySpinner);
+        Spinner spin = (Spinner) findViewById(R.id.countySpinner);
         spin.setAdapter(adapt);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -135,7 +142,7 @@ public class LiveTripBegin extends AppCompatActivity {
     }
 
     /**
-     * Gets the start time of the trip and sets it to the trip object, and formats the start time before displaying it to the user
+     * Gets the start time of the trip and sets it to the trip object
      */
     public void beginTrip(){
         tripDate = new Date();

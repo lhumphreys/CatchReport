@@ -14,23 +14,38 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+/**
+ * This is the live counterpart of the AddFishActivity. It holds the AddFishFragment.
+ *
+ * @version 1.0
+ */
 public class LiveAddFishActivity extends BaseDrawerActivity {
 
     private TripInfoStorage trip;
     private int cur;
     private View v;
     private boolean isEdit;
+    private ArrayList<Fish> preEditFish;
 
+    /**
+     * Does standard onCreate operations and sets up the listeners for the Submit, Cancel, and delete
+     * buttons on the page.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_add_fish);
-        //super.makeDrawer();
+        super.makeDrawer();
         Intent i = getIntent();
         trip = (TripInfoStorage)i.getSerializableExtra("TripInfo");
         if(i.getIntExtra("Fish", -1) != -1){
             isEdit = true;
             cur = i.getIntExtra("Fish",-1);
+            preEditFish = pullFish(trip);
             AddFishFragment fishFragment = AddFishFragment.newInstance(trip, cur);
             FragmentManager fragmentManager = this.getFragmentManager();
             FragmentTransaction trans = fragmentManager.beginTransaction();
@@ -108,18 +123,33 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
                 if(!isEdit)
                 {
                     trip.removeFish(cur);
+                    Intent intent = new Intent(view.getContext(), LiveTripMain.class);
+                    intent.putExtra("TripInfo", trip);
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(view.getContext(), LiveTripMain.class);
-                intent.putExtra("TripInfo", trip);
-                startActivity(intent);
+                if(isEdit){
+                    trip.setFish(preEditFish);
+                    Intent intent = new Intent(view.getContext(), LiveTripMain.class);
+                    intent.putExtra("TripInfo", trip);
+                    startActivity(intent);
+                }
             }
         });
     }
 
-    @Override
-    public void onBackPressed()
-    {
-
+    /**
+     * Gets the full list of fish
+     * @param t - the trip to pull the list from
+     * @return - the ArrayList of Fish
+     */
+    public ArrayList<Fish> pullFish(TripInfoStorage t){
+        ArrayList<Fish> fishList = new ArrayList<>();
+        for(int i = 0; i < t.numFish(); i++){
+            Fish f = new Fish();
+            f.clone(t.getFish(i));
+            fishList.add(f);
+        }
+        return fishList;
     }
 
 

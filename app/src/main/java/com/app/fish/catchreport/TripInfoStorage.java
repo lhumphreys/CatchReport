@@ -141,5 +141,4 @@ public class TripInfoStorage implements Serializable{
     {
         temperature = null;
     }
-
 }

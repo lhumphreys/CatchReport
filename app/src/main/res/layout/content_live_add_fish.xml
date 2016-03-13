@@ -42,7 +42,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="Cencel"
+            android:text="Cancel"
             android:id="@+id/cancelTripButton"
             android:background="@drawable/submit_button_rounded_blue"
             android:textColor="#FFFFFFFF"

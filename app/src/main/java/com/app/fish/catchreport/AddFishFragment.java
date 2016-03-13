@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
+import android.media.Image;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
@@ -41,6 +42,7 @@ public class AddFishFragment extends Fragment {
     private CheckBox taggedCheckBox;
     private EditText quantity;
     private static String currentLake;
+    private View view;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -115,7 +117,14 @@ public class AddFishFragment extends Fragment {
                     adapter.setDropDownViewResource(R.layout.spinner_layout_ws);
                     speciesSpin.setAdapter(adapter);
                 }
-                mFish.setSpecies((String)speciesSpin.getSelectedItem());
+                mFish.setSpecies((String) speciesSpin.getSelectedItem());
+
+                String fishname = speciesSpin.getSelectedItem().toString();
+                fishname = fishname.toLowerCase();
+                fishname = fishname.replaceAll(" ", "_");
+                fishname = fishname.replaceAll("-", "_");
+                setFishPic(fishname);
+
             }
 
             @Override
@@ -234,7 +243,7 @@ public class AddFishFragment extends Fragment {
 
         //This block of code sets the starting fish picture
 
-        String startingFish = species.get(0);
+        String startingFish = speciesSpin.getSelectedItem().toString();
         ImageView selectedFish = (ImageView) v.findViewById(R.id.selectedfish);
         startingFish = startingFish.toLowerCase();
         startingFish = startingFish.replaceAll(" ", "_");
@@ -245,8 +254,7 @@ public class AddFishFragment extends Fragment {
         }
         selectedFish.setImageResource(pictureId);
 
-        //initPictureSelector(v);
-
+        view = v;
         return v;
     }
 
@@ -275,32 +283,18 @@ public class AddFishFragment extends Fragment {
         return lakeNames;
     }
 
-    /*This is the listener for the ListView item being changed which will
-         prompt the image to change when a new fish is selected
-    */
-    /*
-    public void initPictureSelector(View v) {
-        final View temp = v;
-        Spinner speciesSpin =(Spinner) v.findViewById(R.id.speciesSpinner);
-        speciesSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ImageView selectedFish = (ImageView) temp.findViewById(R.id.selectedfish);
-                String fishname = arg0.getSelectedItem().toString();
-                fishname = fishname.toLowerCase();
-                fishname = fishname.replaceAll(" ", "_");
-                fishname = fishname.replaceAll("-", "_");
-                int pictureId = getResources().getIdentifier(fishname, "drawable", getActivity().getPackageName());
-                if (pictureId == 0) {
-                    pictureId = getResources().getIdentifier("no_picture", "drawable", getActivity().getPackageName());
-                }
-                selectedFish.setImageResource(pictureId);
-            }
-
-            public void onNothingSelected(AdapterView<?> arg0) {
-                return;
-            }
-        });
+    /**
+     * Changes the image shown to the fish that was just selected
+     * @param fname - the passed in name of the fish that was selected
+     */
+    public void setFishPic(String fname){
+        ImageView selectedFish = (ImageView)view.findViewById(R.id.selectedfish);
+        int pictureId = getResources().getIdentifier(fname, "drawable", getActivity().getPackageName());
+        if (pictureId == 0) {
+            pictureId = getResources().getIdentifier("no_picture", "drawable", getActivity().getPackageName());
+        }
+        selectedFish.setImageResource(pictureId);
     }
-    */
+
 
 }
