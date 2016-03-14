@@ -9,6 +9,14 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/fish_banner_white"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal"/>
+
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -18,10 +26,10 @@
         android:width="320dp"
         android:hint="Email"
         android:gravity="center"
-        android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        android:background="@drawable/background_rounded_corners_blue"/>
+        android:layout_marginTop="36dp"
+        android:background="@drawable/background_rounded_corners_blue"
+        android:layout_below="@+id/imageView"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -75,17 +83,6 @@
         android:background="@drawable/submit_button_rounded"
         android:textColor="#ffffff"
         android:textSize="18dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Forgot your password? Click Here"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
-        android:clickable="true"/>
 
 
 </RelativeLayout>
