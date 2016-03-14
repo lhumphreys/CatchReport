@@ -216,6 +216,10 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
                 mMarker = mMap.addMarker(new MarkerOptions().position(mLatLng).draggable(true));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, mZoom));
                 findClosestLake();
+            } else{
+                Intent returnIntent = new Intent();
+                setResult(RESULT_CANCELED, returnIntent);
+                finish();
             }
         }
     }

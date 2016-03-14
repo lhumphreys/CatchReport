@@ -36,14 +36,13 @@ public class TripInfoPage extends BaseDrawerActivity {
 
 
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
-    public static final int FIND_ME_ACTIVITY_REQUEST = 156;
 
     private ArrayList<LakeEntry> lakeList;
     private ArrayList<String> counties;
     private TripInfoStorage info;
     private EditText temp;
     private String currentCounty;
-    private Lake newClosest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,14 +60,7 @@ public class TripInfoPage extends BaseDrawerActivity {
         initializeExtras();
         initializeSubmit();
 
-        Button findMeButton = (Button)findViewById(R.id.findMeButton);
-        findMeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), FindMeActivity.class);
-                startActivityForResult(intent, FIND_ME_ACTIVITY_REQUEST);
-            }
-        });
+
     }
 
     /**
@@ -94,14 +86,9 @@ public class TripInfoPage extends BaseDrawerActivity {
 
                 lakes.setVisibility(Spinner.VISIBLE);
                 title.setVisibility(TextView.VISIBLE);
-
-                if(newClosest == null){
-                    lakeList = fillLakes((String) parent.getItemAtPosition(position));
-                    ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
-                    lakes.setAdapter(lakeAdapt);
-                }else{
-                    newClosest = null;
-                }
+                lakeList = fillLakes((String) parent.getItemAtPosition(position));
+                ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
+                lakes.setAdapter(lakeAdapt);
             }
 
             @Override
@@ -112,21 +99,7 @@ public class TripInfoPage extends BaseDrawerActivity {
         });
     }
 
-    private void setLakesSpinner(){
-        Spinner lakes = (Spinner) findViewById(R.id.lakeSpinner);
 
-        lakeList = fillLakes(newClosest.getCounty());
-        ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(this, R.layout.spinner_layout_ws, lakeList);
-        lakes.setAdapter(lakeAdapt);
-
-        String l = newClosest.getName();
-        int p = -1;
-        for(int e = 0; e < lakeList.size(); e ++){
-            if(l.equals(lakeList.get(e).name))
-                p = e;
-        }
-        lakes.setSelection(p);
-    }
 
     /**
      * Counties read from FishAndLakes.db
@@ -368,21 +341,6 @@ public class TripInfoPage extends BaseDrawerActivity {
         public String toString()
         {
             return name;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(resultCode == RESULT_OK){
-            newClosest = (Lake)data.getSerializableExtra("ClosestLake");
-
-            Spinner countySpinner = (Spinner)findViewById(R.id.countySpinner);
-            Spinner lakeSpinner = (Spinner) findViewById(R.id.lakeSpinner);
-
-            int c = this.counties.indexOf(newClosest.getCounty());
-            countySpinner.setSelection(c);
-
-            setLakesSpinner();
         }
     }
 

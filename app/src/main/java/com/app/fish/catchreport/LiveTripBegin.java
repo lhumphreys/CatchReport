@@ -1,7 +1,9 @@
 package com.app.fish.catchreport;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,6 +38,10 @@ public class LiveTripBegin extends BaseDrawerActivity {
     Exception ex;
     private Date tripDate;
     private EditText temp;
+    private Lake newClosest;
+    private ArrayList<String> counties;
+    private ArrayList<LakeEntry> lakeList;
+    public static final int FIND_ME_ACTIVITY_REQUEST = 156;
 
     /**
      * The standard onCreate functions called as well as creates the nav drawer and calls the init
@@ -51,6 +57,26 @@ public class LiveTripBegin extends BaseDrawerActivity {
         super.makeDrawer();
 
         init();
+
+        Button findMeButton = (Button)findViewById(R.id.findMeButton);
+        findMeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationManager lm = (LocationManager)v.getContext().getSystemService(Context.LOCATION_SERVICE);
+                boolean gps_enabled = false;
+
+                try {
+                    gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                } catch(Exception ex) {}
+                if(gps_enabled) {
+                    Intent intent = new Intent(getBaseContext(), FindMeActivity.class);
+                    startActivityForResult(intent, FIND_ME_ACTIVITY_REQUEST);
+                }
+                else{
+                    Toast.makeText(LiveTripBegin.this, "Must have location turned on", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     /**
@@ -59,7 +85,6 @@ public class LiveTripBegin extends BaseDrawerActivity {
      */
     private void initializeList()
     {
-        ArrayList<String> counties;
         counties = fillCounties();
         ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, R.layout.spinner_layout_ws, counties);
         adapt.setDropDownViewResource(R.layout.spinner_layout_ws);
@@ -75,9 +100,13 @@ public class LiveTripBegin extends BaseDrawerActivity {
 
                 lakes.setVisibility(Spinner.VISIBLE);
                 title.setVisibility(TextView.VISIBLE);
-                ArrayList<LakeEntry> lakeList = fillLakes((String) parent.getItemAtPosition(position));
-                ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
-                lakes.setAdapter(lakeAdapt);
+                if(newClosest==null) {
+                    ArrayList<LakeEntry> lakeList = fillLakes((String) parent.getItemAtPosition(position));
+                    ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
+                    lakes.setAdapter(lakeAdapt);
+                }else{
+                    newClosest = null;
+                }
             }
 
             @Override
@@ -94,7 +123,8 @@ public class LiveTripBegin extends BaseDrawerActivity {
      */
     private ArrayList<String> fillCounties()
     {
-        ArrayList<String> counties = new ArrayList<String>();
+        ArrayList<String> counties;
+        counties = new ArrayList<String>();
         DatabaseHandler help = null;
         try{
             help = new DatabaseHandler(this, FISH_LAKES_DB);
@@ -128,7 +158,8 @@ public class LiveTripBegin extends BaseDrawerActivity {
      */
     public ArrayList<LakeEntry> fillLakes(String county)
     {
-        ArrayList<LakeEntry> lakeNames = new ArrayList<LakeEntry>();
+        ArrayList<LakeEntry> lakeNames;
+        lakeNames = new ArrayList<LakeEntry>();
         DatabaseHandler db = new DatabaseHandler(this, FISH_LAKES_DB);
         db.openDatabase();
         SQLiteCursor cur = db.runQuery("SELECT WaterBodyName, _id FROM Lakes WHERE County=?", new String[]{county});
@@ -271,5 +302,35 @@ public class LiveTripBegin extends BaseDrawerActivity {
         initializeExtras();
         initializeSubmit();
         beginTrip();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode == RESULT_OK){
+            newClosest = (Lake)data.getSerializableExtra("ClosestLake");
+
+            Spinner countySpinner = (Spinner)findViewById(R.id.countySpinner);
+
+            int c = this.counties.indexOf(newClosest.getCounty());
+            countySpinner.setSelection(c);
+
+            setLakesSpinner();
+        }
+    }
+
+    private void setLakesSpinner(){
+        Spinner lakeSpinner = (Spinner) findViewById(R.id.lakeSpinner);
+
+        lakeList = fillLakes(newClosest.getCounty());
+        ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(getApplicationContext(), R.layout.spinner_layout_ws, lakeList);
+        lakeSpinner.setAdapter(lakeAdapt);
+
+        String l = newClosest.getName();
+        int p = -1;
+        for(int e = 0; e < lakeList.size(); e ++){
+            if(l.equals(lakeList.get(e).name))
+                p = e;
+        }
+        lakeSpinner.setSelection(p);
     }
 }
