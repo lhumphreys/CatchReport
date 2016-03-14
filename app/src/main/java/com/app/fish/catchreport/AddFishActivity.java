@@ -261,34 +261,46 @@ public class AddFishActivity extends BaseDrawerActivity {
 
     public String makeJString()
     {
+
         String word = "{\"upload_fishes\":[";
         try {
             JSONObject job = new JSONObject();
+            int totalFish = 0;
+            for(int i =0 ; i < info.numFish(); i++){
+                totalFish += info.getFish(i).getQuantity();
+            }
             Date date = info.getStartDate();
             job.put("reportid", tripNum+"");
             job.put("userid", id);
-            job.put("numfish", info.numFish()+"");
+            job.put("numfish", totalFish+"");
             job.put("location", info.getLake().getName());
-            job.put("date", date.getYear()+"/"+date.getMonth()+"/"+date.getDay());
+            SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
+            String stringDate = form.format(date);
+            job.put("date", stringDate);
             job.put("starttime", date.getHours()+"");
             job.put("endtime", info.getEndDate().getHours()+"");
             job.put("weather", info.getWeather());
             job.put("temp", info.getTemperature()+"");
             word += job.toString()+",";
+
+            int fishCounter = 0;
             for(int i = 0; i < info.numFish(); i++)
             {
-                JSONObject job2 = new JSONObject();
                 Fish cur = info.getFish(i);
-                job2.put("fishnum["+i+"]", (i+1)+"");
-                job2.put("species["+i+"]", cur.getSpecies());
-                job2.put("weight["+i+"]", cur.getWeight()+"");
-                job2.put("length["+i+"]", cur.getLength()+"");
-                job2.put("harvest["+i+"]", cur.isReleased() ? "0" : "1");
-                job2.put("tags["+i+"]", cur.isTagged() ? "1" : "0");
-                job2.put("finclip["+i+"]", "0");
-                job2.put("method["+i+"]", "none");
-                job2.put("timecaught["+i+"]", "0");
-                word += job2.toString() + ",";
+                for(int j = 0; j < cur.getQuantity(); j++) {
+                    JSONObject job2 = new JSONObject();
+                    job2.put("fishnum[" + i + "]", (fishCounter + 1) + "");
+                    job2.put("species[" + i + "]", cur.getSpecies());
+                    job2.put("weight[" + i + "]", cur.getWeight() + "");
+                    job2.put("length[" + i + "]", cur.getLength() + "");
+                    job2.put("harvest[" + i + "]", cur.isReleased() ? "0" : "1");
+                    job2.put("tags[" + i + "]", cur.isTagged() ? "1" : "0");
+                    job2.put("finclip[" + i + "]", "0");
+                    job2.put("method[" + i + "]", "none");
+                    job2.put("timecaught[" + i + "]", "0");
+                    word += job2.toString() + ",";
+                    fishCounter++;
+                }
             }
             word = word.substring(0, word.length()-1);
             word += "]}";
