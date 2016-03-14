@@ -88,6 +88,7 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
                 }
                 Intent intent = new Intent(v.getContext(), LiveTripMain.class);
                 intent.putExtra("TripInfo", trip);
+                intent.putExtra("firstRun",false);
                 startActivity(intent);
             }
         });
@@ -106,6 +107,7 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
                                 trip.removeFish(cur);
                                 Intent intent = new Intent(v.getContext(), LiveTripMain.class);
                                 intent.putExtra("TripInfo", trip);
+                                intent.putExtra("firstRun",false);
                                 startActivity(intent);
                             }
                         })
@@ -125,12 +127,14 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
                     trip.removeFish(cur);
                     Intent intent = new Intent(view.getContext(), LiveTripMain.class);
                     intent.putExtra("TripInfo", trip);
+                    intent.putExtra("firstRun",false);
                     startActivity(intent);
                 }
                 if(isEdit){
                     trip.setFish(preEditFish);
                     Intent intent = new Intent(view.getContext(), LiveTripMain.class);
                     intent.putExtra("TripInfo", trip);
+                    intent.putExtra("firstRun",false);
                     startActivity(intent);
                 }
             }
@@ -152,5 +156,9 @@ public class LiveAddFishActivity extends BaseDrawerActivity {
         return fishList;
     }
 
+    @Override
+    public void onBackPressed()
+    {
 
+    }
 }
