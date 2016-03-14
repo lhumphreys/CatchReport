@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,6 +53,7 @@ public class LiveTripMain extends BaseDrawerActivity {
     ArrayList<Fish> fish = new ArrayList<>();
     ArrayList<String> fNameList = new ArrayList<>();
     private String id;
+    private boolean firstRun;
 
 
     /**
@@ -84,6 +87,25 @@ public class LiveTripMain extends BaseDrawerActivity {
         {
             editBar.setVisibility(View.VISIBLE);
         }
+
+        TextView startTimeDisplay = (TextView)findViewById(R.id.tripStartTimeView);
+        final long start = trip.getStartDate().getTime();
+        final long elapsedRealtimeOffset = System.currentTimeMillis() - SystemClock.elapsedRealtime();
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    final Chronometer myChronometer = (Chronometer) findViewById(R.id.tripElapsedTimeView);
+                    myChronometer.setBase(start - elapsedRealtimeOffset);
+                    myChronometer.start();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
     }
 
     /**
@@ -438,5 +460,4 @@ public class LiveTripMain extends BaseDrawerActivity {
 
         alert.show();
     }
-
 }
