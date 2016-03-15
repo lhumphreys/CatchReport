@@ -32,6 +32,9 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/**
+ * Activity to find the nearest lake to the user.
+ */
 public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerDragListener, GoogleMap.OnMyLocationButtonClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int REQUEST_FINE_LOCATION = 451;
@@ -49,7 +52,10 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
     private TextView mCountyTextView;
     private Marker mMarker;
 
-
+    /**
+     * Instantiates the activity.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +93,9 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
+    /**
+     * Uses either the user's or marker's location to find the nearest lake.
+     */
     private void findClosestLake(){
 
         double distance = Double.POSITIVE_INFINITY;
@@ -115,6 +124,10 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMarkerDrag(Marker marker){ }
 
+    /**
+     * Called after the user drags the marker; sets mLastLocation to marker's location.
+     * @param marker
+     */
     @Override
     public void onMarkerDragEnd(Marker marker){
         this.mLastLocation = new Location("");
@@ -127,12 +140,18 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMarkerDragStart(Marker marker){ }
 
+    /**
+     * Calls to connect to the Google API Client.
+     */
     @Override
     protected void onStart(){
         mGoogleApiClient.connect();
         super.onStart();
     }
 
+    /**
+     * Closes the connection to the Google API Client.
+     */
     @Override
     protected void onStop(){
         mGoogleApiClient.disconnect();
@@ -163,6 +182,9 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * Requests fine location permissions if not already granted (for Android SDK 23+)
+     */
     private void requestFineLocationPermission(){
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
             Snackbar.make(mLayout, "Permission is needed to access fine location", Snackbar.LENGTH_INDEFINITE)
@@ -181,6 +203,10 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * Sets mLastLocation to user's location and calls findClosestLake.
+     * @return
+     */
     @Override
     public boolean onMyLocationButtonClick (){
 
@@ -194,6 +220,13 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
 
         return false;
     }
+
+    /**
+     * Called after user responds to request for permissions.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
         if(requestCode == REQUEST_FINE_LOCATION){
@@ -205,6 +238,10 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * Called after connect to the Google API Client.  Instantiates mLastLocation, mLatLng, and mMarker.
+     * @param bundle
+     */
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
@@ -234,6 +271,10 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
+    /**
+     * Queries the list of all lakes from the database.
+     * @return
+     */
     private ArrayList<Lake> buildLakeList(){
         ArrayList<Lake> lakes = new ArrayList<Lake>();
         DatabaseHandler db = new DatabaseHandler(this, FISH_LAKES_DB);
@@ -252,10 +293,5 @@ public class FindMeActivity extends AppCompatActivity implements OnMapReadyCallb
         return lakes;
     }
 
-    /*
-    @Override
-    public void onBackPressed(){
-
-    }*/
 
 }

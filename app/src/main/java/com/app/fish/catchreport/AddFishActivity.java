@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+
 public class AddFishActivity extends BaseDrawerActivity {
 
     private static final String FISH_LAKES_DB = "FishAndLakes.db";
@@ -52,6 +53,10 @@ public class AddFishActivity extends BaseDrawerActivity {
     private Button prevButton;
     private String id;
 
+    /**
+     * Instantiates the activity and sets up button handlers.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -308,6 +313,10 @@ public class AddFishActivity extends BaseDrawerActivity {
         return word;
     }
 
+    /**
+     * Creates a new AddFishFragment for new fish.
+     * @param f
+     */
     private void switchFish(Fish f){
         AddFishFragment fishFragment = AddFishFragment.newInstance(info, cur);
         FragmentManager fragmentManager = this.getFragmentManager();
@@ -316,6 +325,9 @@ public class AddFishActivity extends BaseDrawerActivity {
         trans.commit();
     }
 
+    /**
+     * Displays warning dialog when back is pressed.
+     */
     @Override
     public void onBackPressed()
     {
@@ -334,6 +346,9 @@ public class AddFishActivity extends BaseDrawerActivity {
                 .show();
     }
 
+    /**
+     * Sets visibility and text of buttons.
+     */
     private void checkButtons(){
         if(this.cur > 0){
             this.prevButton.setVisibility(View.VISIBLE);
@@ -399,6 +414,10 @@ public class AddFishActivity extends BaseDrawerActivity {
         }
     }
 
+    /**
+     * Shows a dialog to confirm that the user wants to submit.
+     * @param view
+     */
     private void confirmDialog(View view){
 
         final View curview = view;

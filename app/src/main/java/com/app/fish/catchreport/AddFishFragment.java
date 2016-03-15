@@ -258,6 +258,11 @@ public class AddFishFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Queries for a list of fish found in the current lake.
+     * @param lakeID
+     * @return
+     */
     public ArrayList<String> fillFishList(String lakeID)
     {
         ArrayList<String> lakeNames = new ArrayList<String>();
