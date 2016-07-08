@@ -1,34 +1,29 @@
 package com.app.fish.catchreport;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
-import android.database.sqlite.SQLiteCursorDriver;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -37,25 +32,34 @@ import java.util.Date;
  *
  * Page used for 'Start Trip' feature. Stores TripInfoStorage object.
  */
-public class TripInfoPage extends AppCompatActivity {
+public class TripInfoPage extends BaseDrawerActivity {
+
 
     public static final String FISH_LAKES_DB = "FishAndLakes.db";
 
+    private ArrayList<LakeEntry> lakeList;
+    private ArrayList<String> counties;
     private TripInfoStorage info;
-    private String[] mn = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    private Exception ex;
+    private EditText temp;
+    private String currentCounty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_info_page);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        super.makeDrawer();
+
+
+        info = new TripInfoStorage();
+        info.setStartDate(new Date());
+        info.setEndDate(new Date());
 
         initializeList();
         initializeCalendar();
         initializeClock();
+        initializeExtras();
         initializeSubmit();
+
 
     }
 
@@ -66,10 +70,10 @@ public class TripInfoPage extends AppCompatActivity {
      */
     private void initializeList()
     {
-        ArrayList<String> counties;
+
         counties = fillCounties();
-        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, counties);
-        adapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, R.layout.spinner_layout_ws, counties);
+        adapt.setDropDownViewResource(R.layout.spinner_layout_ws);
         Spinner spin = (Spinner)findViewById(R.id.countySpinner);
         spin.setAdapter(adapt);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -82,8 +86,8 @@ public class TripInfoPage extends AppCompatActivity {
 
                 lakes.setVisibility(Spinner.VISIBLE);
                 title.setVisibility(TextView.VISIBLE);
-                ArrayList<String> lakeList = fillLakes((String) parent.getItemAtPosition(position));
-                ArrayAdapter<String> lakeAdapt = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_item, lakeList);
+                lakeList = fillLakes((String) parent.getItemAtPosition(position));
+                ArrayAdapter<LakeEntry> lakeAdapt = new ArrayAdapter<LakeEntry>(parent.getContext(), R.layout.spinner_layout_ws, lakeList);
                 lakes.setAdapter(lakeAdapt);
             }
 
@@ -94,6 +98,8 @@ public class TripInfoPage extends AppCompatActivity {
             }
         });
     }
+
+
 
     /**
      * Counties read from FishAndLakes.db
@@ -118,7 +124,6 @@ public class TripInfoPage extends AppCompatActivity {
         catch(Exception e)
         {
             counties.add("nothing");
-            ex=  e;
             if(help != null)
             {
                 help.close();
@@ -133,15 +138,15 @@ public class TripInfoPage extends AppCompatActivity {
      * @param county County which lakes must be contained in to be added to list
      * @return Array of Strings containing all Lake names in given county
      */
-    public ArrayList<String> fillLakes(String county)
+    public ArrayList<LakeEntry> fillLakes(String county)
     {
-        ArrayList<String> lakeNames = new ArrayList<String>();
+        ArrayList<LakeEntry> lakeNames = new ArrayList<LakeEntry>();
         DatabaseHandler db = new DatabaseHandler(this, FISH_LAKES_DB);
         db.openDatabase();
-        SQLiteCursor cur = db.runQuery("SELECT WaterBodyName FROM Lakes WHERE County=?", new String[]{county});
+        SQLiteCursor cur = db.runQuery("SELECT WaterBodyName, _id FROM Lakes WHERE County=?", new String[]{county});
         while(cur.moveToNext())
         {
-            lakeNames.add(cur.getString(0));
+            lakeNames.add(new LakeEntry(cur.getString(0), cur.getInt(1)));
         }
         cur.close();
         db.close();
@@ -153,13 +158,21 @@ public class TripInfoPage extends AppCompatActivity {
      */
     private void initializeCalendar()
     {
-        CalendarView cv = (CalendarView)findViewById(R.id.calendarView);
-        cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        //CalendarView cv = (CalendarView)findViewById(R.id.calendarView);
+        DatePicker dp = (DatePicker)findViewById(R.id.datePicker);
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        dp.init(mYear, mMonth, mDay, new DatePicker.OnDateChangedListener() {
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                info.getDate().setYear(year);
-                info.getDate().setMonth(month);
-                info.getDate().setDate(dayOfMonth);
+            public void onDateChanged(DatePicker view, int year, int month, int dayOfMonth) {
+                info.getStartDate().setYear(year-1900);
+                info.getStartDate().setMonth(month);
+                info.getStartDate().setDate(dayOfMonth);
+                info.getEndDate().setYear(year);
+                info.getEndDate().setMonth(month);
+                info.getEndDate().setDate(dayOfMonth);
             }
         });
     }
@@ -169,12 +182,73 @@ public class TripInfoPage extends AppCompatActivity {
      */
     private void initializeClock()
     {
-        TimePicker tp = (TimePicker)findViewById(R.id.timePicker);
+        TimePicker tp = (TimePicker)findViewById(R.id.timePicker1);
         tp.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                info.getDate().setHours(hourOfDay);
-                info.getDate().setMinutes(minute);
+                info.getStartDate().setHours(hourOfDay);
+                info.getStartDate().setMinutes(minute);
+            }
+        });
+        TimePicker tp2 = (TimePicker)findViewById(R.id.timePicker2);
+        tp2.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                info.getEndDate().setHours(hourOfDay);
+                info.getEndDate().setMinutes(minute);
+            }
+        });
+    }
+
+    /*
+     * Set behavior of extra features.
+     *
+     * Key extra features include weather and temperature
+     */
+    private void initializeExtras()
+    {
+        ArrayList<String> weathers = new ArrayList<String>();
+        for(int i = 0; i < TripInfoStorage.WEATHER.length; i++)
+            weathers.add(TripInfoStorage.WEATHER[i]);
+        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, R.layout.spinner_layout_ws, weathers);
+        adapt.setDropDownViewResource(R.layout.spinner_layout_ws);
+        Spinner spin = (Spinner)findViewById(R.id.weatherSpinner);
+        spin.setAdapter(adapt);
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                info.setWeather((String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                info.setWeather(TripInfoStorage.WEATHER[TripInfoStorage.DEFAULT]);
+            }
+        });
+
+        temp = (EditText) findViewById(R.id.tempEditText);
+
+        temp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = temp.getText().toString();
+                if(text.equals("")) {
+                    info.deleteTemperature();
+                    temp.setHint("Fahrenheit");
+                }
+                else {
+                    double t = Double.parseDouble(text);
+                    info.setTemperature(t);
+                }
             }
         });
     }
@@ -192,28 +266,82 @@ public class TripInfoPage extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Lake lake;
-                try {
-                    DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
-                    db.openDatabase();
-                    String lakeName = (String) ((Spinner) findViewById(R.id.lakeSpinner)).getSelectedItem();
-                    String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
-                    String q = "SELECT _id,WaterBodyName,County,Abbreviation,Restrictions FROM Lakes WHERE WaterBodyName=? AND County=?";
-                    SQLiteCursor cur = db.runQuery(q, new String[]{lakeName, county});
-                    //CHANGE TO QUERY BY PRIMARY KEY, CHANGE HOW THEY ARE STORED IN MEMORY TO ALLOW FOR _id
-                    cur.moveToFirst();
-                    lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getString(4));
-                    cur.close();
-                    db.close();
-                    info.setLake(lake);
-                    Intent intent = new Intent(v.getContext(), AddFishActivity.class);
-                    intent.putExtra("TripInfo", info);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    Toast t = Toast.makeText(getApplicationContext(), "Database Read Error", Toast.LENGTH_LONG);
-                    t.show();
-                }
+
+                final View myview = v;
+                Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.press);
+                v.startAnimation(anim);
+
+                /** new intent will be called on animation completion**/
+                anim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                        Lake lake;
+                        try {
+                            int hDif = info.getEndDate().getHours() - info.getStartDate().getHours();
+                            int mDif = info.getEndDate().getMinutes() - info.getStartDate().getMinutes();
+                            if(mDif < 0){
+                                mDif += 60;
+                                hDif -= 1;
+                            }
+                            if(hDif >= 0) {
+                                DatabaseHandler db = new DatabaseHandler(getApplicationContext(), FISH_LAKES_DB);
+                                db.openDatabase();
+                                LakeEntry lakeEntry = (LakeEntry) ((Spinner) findViewById(R.id.lakeSpinner)).getSelectedItem();
+                                String county = (String) ((Spinner) findViewById(R.id.countySpinner)).getSelectedItem();
+                                String q = "SELECT _id,WaterBodyName,County,Abbreviation,Latitude,Longitude FROM Lakes WHERE _id=?";
+                                SQLiteCursor cur = db.runQuery(q, new String[]{lakeEntry.id + ""});
+                                cur.moveToFirst();
+                                lake = new Lake(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getDouble(4), cur.getDouble(5));
+                                cur.close();
+                                db.close();
+                                info.setLake(lake);
+                                Intent intent = new Intent(myview.getContext(), AddFishActivity.class);
+                                intent.putExtra("TripInfo", info);
+                                startActivity(intent);
+                            }
+                            else
+                                Toast.makeText(TripInfoPage.this, "Start time must be before end time", Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Toast t = Toast.makeText(getApplicationContext(), "Database Read Error", Toast.LENGTH_LONG);
+                            t.show();
+                        }
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
             }
         });
     }
+
+    /*
+    Private class used to just store lake name and id
+
+    id is used for database query after submit, so that correct lake is assured
+
+    name is used for display in spinner
+     */
+    private class LakeEntry
+    {
+        public String name;
+        public int id;
+
+        public LakeEntry(String n, int i)
+        {
+            name = n;
+            id = i;
+        }
+
+
+        public String toString()
+        {
+            return name;
+        }
+    }
+
 }

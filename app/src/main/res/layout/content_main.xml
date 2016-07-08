@@ -6,12 +6,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ffffff"
-    android:id="@+id/myscrollview">
+    android:id="@+id/myscrollview"
+    android:animateLayoutChanges="true">
 
     <LinearLayout  android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:paddingLeft="2dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -21,33 +21,34 @@
         android:orientation="vertical"
         android:visibility="visible"
         >
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:text="Submit Report"
-            android:id="@+id/addFishButton"
-            android:layout_gravity="center_horizontal"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:background="#E84D3C"
-            android:drawableLeft="@drawable/ic_action_submit"
-            android:paddingLeft="30dp"
-            />
-
         <Button
             android:layout_width="fill_parent"
             android:layout_height="100dp"
             android:text="Start Report"
             android:id="@+id/liveReport"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:textSize="20dp"
+            android:textSize="25sp"
             android:textColor="#ffffff"
-            android:background="#1595A3"
+            android:background="@drawable/main_button_drawable_red"
             android:drawableLeft="@drawable/ic_action_start"
             android:paddingLeft="30dp"
             />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:text="Submit Report"
+            android:id="@+id/addFishButton"
+            android:layout_gravity="center_horizontal"
+            android:textSize="25sp"
+            android:textColor="#ffffff"
+            android:background="@drawable/main_button_drawable_blue"
+            android:drawableLeft="@drawable/ic_action_submit"
+            android:paddingLeft="30dp"
+            />
+
+
 
         <Button
         android:layout_width="fill_parent"
@@ -56,9 +57,9 @@
         android:id="@+id/myReports"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
-        android:textSize="20dp"
+        android:textSize="25sp"
         android:textColor="#ffffff"
-        android:background="#1595A3"
+            android:background="@drawable/main_button_drawable_blue"
         android:drawableLeft="@drawable/ic_action_myreports"
         android:paddingLeft="30dp"
         />
@@ -70,9 +71,9 @@
             android:id="@+id/weeklyStats"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:textSize="20dp"
+            android:textSize="25sp"
             android:textColor="#ffffff"
-            android:background="#1595A3"
+            android:background="@drawable/main_button_drawable_blue"
             android:drawableLeft="@drawable/ic_action_line_chart"
             android:paddingLeft="30dp"
             />
@@ -84,9 +85,9 @@
             android:id="@+id/askBiologist"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:textSize="20dp"
+            android:textSize="25sp"
             android:textColor="#ffffff"
-            android:background="#1595A3"
+            android:background="@drawable/main_button_drawable_blue"
             android:drawableLeft="@drawable/ic_action_mail"
             android:paddingLeft="30dp"
             />
@@ -97,10 +98,10 @@
             android:text="Log Out"
             android:id="@+id/logoutbutton"
             android:layout_gravity="center_horizontal"
-            android:textSize="20dp"
+            android:textSize="25sp"
             android:layout_marginTop="8dp"
             android:textColor="#ffffff"
-            android:background="#1595A3"
+            android:background="@drawable/main_button_drawable_blue"
             android:drawableLeft="@drawable/ic_action_logout"
             android:paddingLeft="30dp"/>
 

@@ -13,7 +13,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:inputType="text"
         android:ems="10"
         android:id="@+id/firstname"
@@ -23,11 +23,12 @@
         android:layout_alignLeft="@+id/editText2"
         android:layout_alignStart="@+id/editText2"
         android:layout_marginTop="76dp"
+        android:background="@drawable/background_rounded_corners_blue"
         />
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:inputType="text"
         android:ems="10"
         android:id="@+id/lastname"
@@ -38,11 +39,12 @@
         android:layout_alignLeft="@+id/editText2"
         android:layout_alignStart="@+id/editText2"
         android:layout_marginTop="36dp"
+        android:background="@drawable/background_rounded_corners_blue"
         />
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/editText"
@@ -52,11 +54,12 @@
         android:layout_below="@+id/lastname"
         android:layout_alignLeft="@+id/editText2"
         android:layout_alignStart="@+id/editText2"
-        android:layout_marginTop="36dp" />
+        android:layout_marginTop="36dp"
+        android:background="@drawable/background_rounded_corners_blue"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/editText2"
@@ -65,11 +68,12 @@
         android:gravity="center"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp" />
+        android:layout_marginTop="36dp"
+        android:background="@drawable/background_rounded_corners_blue"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/editText3"
@@ -79,7 +83,8 @@
         android:layout_below="@+id/editText2"
         android:layout_alignLeft="@+id/editText2"
         android:layout_alignStart="@+id/editText2"
-        android:layout_marginTop="36dp" />
+        android:layout_marginTop="36dp"
+        android:background="@drawable/background_rounded_corners_blue"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -90,7 +95,7 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:text="Register"
         android:id="@+id/button8"
         android:onClick="buttonOnClick2"
@@ -100,7 +105,7 @@
         android:layout_below="@+id/editText3"
         android:layout_alignLeft="@+id/editText3"
         android:layout_alignStart="@+id/editText3"
-        android:background="#E84D3C"
+        android:background="@drawable/submit_button_rounded"
         android:textColor="#ffffff"
         android:textSize="18dp"/>
 

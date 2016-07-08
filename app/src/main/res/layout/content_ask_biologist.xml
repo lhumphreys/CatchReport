@@ -11,7 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.app.fish.catchreport.AskBiologist"
     tools:showIn="@layout/activity_ask_biologist"
-    android:background="#ACF0F2">
+    android:background="#ffffff">
 
     <EditText
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         android:paddingLeft="15dp"
         android:hint="Subject"
         android:textColorHint="#44000000"
-        android:background="#ffffff"/>
+        android:background="@drawable/background_rounded_corners_blue"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,30 +32,41 @@
         android:id="@+id/scrollAskBio"
         android:layout_below="@+id/askBioSub"
         android:layout_above="@+id/submitAskBio"
-        android:background="#ffffffff">
+        android:background="@drawable/background_rounded_corners_blue">
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/askBioBod"
             android:hint="Ask Your Question Here!"
             android:textColorHint="#44000000"
-            android:background="#ffffffff"
             android:layout_marginBottom="5dp"
             android:paddingLeft="15dp"
-            android:paddingTop="15dp"/>
+            android:paddingTop="15dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/background_white_rounded"/>
     </ScrollView>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:id="@+id/submitAskBio"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:text="Send Question"
-        android:textColor="#ffffff"
-        android:background="#E84D3C"
-        android:onClick="submitQuestion"/>
+        android:background="@drawable/submit_button"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Compose Email"
+            android:textColor="#ffffff"
+            android:background="@drawable/submit_button_rounded"
+            android:onClick="submitQuestion"
+            android:textSize="20sp"/>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -10,4 +10,13 @@
     <string name="title_activity_register_user">RegisterUser</string>
     <string name="title_activity_display_trip_info">DisplayTripInfo</string>
     <string name="title_activity_ask_biologist">AskBiologist</string>
+    <string name="title_activity_base_drawer">BaseDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_weekly_stats">WeeklyStats</string>
+    <string name="title_activity_weekly_stats_input">WeeklyStatsInput</string>
+    <string name="title_activity_find_me">Map</string>
+    <string name="title_activity_live_trip_main">LiveTripMain</string>
+    <string name="title_activity_live_add_fish">LiveAddFishActivity</string>
 </resources>

@@ -3,120 +3,202 @@
     android:layout_height="match_parent" tools:context="com.app.fish.catchreport.AddFishFragment"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:background="@drawable/header_bar_blue">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:text="Add Fish"
+            android:textSize="25sp"
+            android:textColor="#ffffff"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
     <ImageView
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:id="@+id/imageView"
-        android:src="@drawable/trout"
-        android:layout_weight="0"
-        android:layout_gravity="center_horizontal" />
+        android:layout_width="380dp"
+        android:layout_height="75dp"
+        android:id="@+id/selectedfish"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/fish_icon"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:maxHeight="75dp"
+        android:maxWidth="500dp" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Species:"
-            android:id="@+id/speciesTextView"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/speciesSpinner"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:spinnerMode="dropdown"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Species"
+            android:id="@+id/speciesTextView"
+            android:gravity="center"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/selector_background_red"
+            android:textColor="#ffffff"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="3"
+            android:background="@drawable/selector_background_blue">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/speciesSpinner"
+                android:spinnerMode="dropdown"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop = "15dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Weight:"
+            android:text="Weight"
             android:id="@+id/weightTextView"
-            android:layout_below="@+id/speciesSpinner"
-            android:layout_alignRight="@+id/speciesTextView"
-            android:layout_alignEnd="@+id/speciesTextView" />
+            android:background="@drawable/selector_background_red"
+            android:textColor="#ffffff"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/weightEditText"
-            android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="3"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="lbs"
-            android:id="@+id/textView2" />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:ems="10"
+                android:id="@+id/weightEditText"
+                android:background="@drawable/background_rounded_corners_blue"
+                android:inputType="numberDecimal"
+                android:paddingLeft="10dp"
+                android:hint="Pounds"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop = "15dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Length:"
-            android:id="@+id/lengthTextView" />
+            android:text="Length"
+            android:id="@+id/lengthTextView"
+            android:background="@drawable/selector_background_red"
+            android:textColor="#ffffff"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/lengthEditText"
-            android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="3"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="in"
-            android:id="@+id/textView" />
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:ems="10"
+                    android:id="@+id/lengthEditText"
+                    android:background="@drawable/background_rounded_corners_blue"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="10dp"
+                    android:hint="Inches"/>
+
+            </LinearLayout>
     </LinearLayout>
 
-    <CheckBox
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Released"
-        android:id="@+id/releasedCheckBox"
-        android:checked="false"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop = "15dp">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tagged fish"
-        android:id="@+id/tagCheckBox"
-        android:checked="false"
-        android:layout_marginLeft="20dp" />
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Released"
+            android:id="@+id/releasedCheckBox"
+            android:checked="false"/>
 
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tagged fish"
+            android:id="@+id/tagCheckBox"
+            android:checked="false"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:hint="1"
+                android:background="@drawable/background_rounded_corners_blue"
+                android:id="@+id/quantityEditText"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:textColor="#000000"
+                android:text="Quantity"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

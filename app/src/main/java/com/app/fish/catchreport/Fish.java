@@ -11,20 +11,26 @@ public class Fish implements Serializable{
     private double length;
     private boolean released;
     private boolean tagged;
+    private int quantity;
 
-    public Fish(String species, double weight, double length, boolean released, boolean tagged)
+    public Fish(String species, double weight, double length, boolean released, boolean tagged,int quantity)
     {
         this.species = species;
         this.weight = weight;
         this.length = length;
         this.released = released;
         this.tagged = tagged;
+        this.quantity = quantity;
     }
 
     public Fish()
     {
-        this("Lake Trout", 0, 0, false, false);
+        this("Lake Trout", 0, 0, false, false,1);
     }
+
+    public int getQuantity(){return this.quantity;}
+
+    public void setQuantity(int quantity){this.quantity = quantity;}
 
     public void setSpecies(String species){
         this.species = species;
@@ -74,6 +80,16 @@ public class Fish implements Serializable{
     public String displayLength()
     {
         return length + " in";
+    }
+
+    public void clone(Fish fish)
+    {
+        this.species = fish.species;
+        this.weight = fish.weight;
+        this.length = fish.length;
+        this.released = fish.released;
+        this.tagged = fish.tagged;
+        this.quantity = fish.quantity;
     }
 
 }

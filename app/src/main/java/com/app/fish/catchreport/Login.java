@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,9 @@ import org.json.JSONObject;
 public class Login extends AppCompatActivity {
 
     SharedPreferences prefs;
+
     String URL_Login = "http://zoebaker.name/android_login_api/Login.php";
+
     private Button button;
     private Button button2;
     private ProgressBar pb;
@@ -80,6 +83,7 @@ public class Login extends AppCompatActivity {
 
         EditText userid = (EditText) findViewById(R.id.editText);
         EditText pass = (EditText) findViewById(R.id.editText2);
+
         final String semail = userid.getText().toString();
         final String spass = pass.getText().toString();
 
@@ -95,14 +99,18 @@ public class Login extends AppCompatActivity {
                     // Check for error node in json
                     if (!error) {
                         // user successfully logged in
-                        // Create login session
-                        prefs.edit().putBoolean("FishAppAuth", true).commit();
 
                         // THIS IS WHERE WE SAVE USER IN LOCAL DATABASE
-                        //db.addUser(name, email, uid, created_at);
+                        addUser(semail, spass);
+
+                        // Create login session
+                        prefs.edit().putBoolean("FishAppAuth", true).commit();
+                        String id = getID(semail);
+                        prefs.edit().putString("FishAppId", id).commit();
+
 
                         // Launch main activity
-                        Intent intent = new Intent(Login.this,MainActivity.class);
+                        Intent intent = new Intent(Login.this, MainActivity.class);
                         startActivity(intent);
                         finish();
 
@@ -124,12 +132,14 @@ public class Login extends AppCompatActivity {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                Toast.makeText(getApplicationContext(),
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Something went wrong: " +
                         error.getMessage(), Toast.LENGTH_LONG).show();
-            }})
-        {
+                button.setVisibility(View.VISIBLE);
+                button2.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.INVISIBLE);
+            }
+        }) {
 
             @Override
             protected Map<String, String> getParams() {
@@ -144,6 +154,43 @@ public class Login extends AppCompatActivity {
 
         RequestQueue mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         mRequestQueue.add(strReq);
+    }
+
+    private String getID(String email) {
+        DatabaseHandler db = null;
+        String id = "";
+        try {
+            db = new DatabaseHandler(this, "Users.db");
+            db.createDatabase();
+            db.openDatabase();
+            SQLiteCursor cursor = db.runQuery("SELECT _id FROM UserInfo WHERE Email=?", new String[]{email});
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                id = cursor.getString(0);
+            }
+        } catch (IOException e) {
+            Toast.makeText(Login.this, "ID not found in the local database", Toast.LENGTH_LONG).show();
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return id;
+    }
+
+    private void addUser(String email, String pass)
+    {
+        DatabaseHandler db = null;
+        try{
+            db = new DatabaseHandler(this, "Users.db");
+            db.createDatabase();
+            db.openDatabase();
+            db.getWritableDatabase().execSQL("INSERT INTO UserInfo (Email, Pass) VALUES (?, ?)", new String[]{email, pass});
+        }catch (IOException e){
+            Toast.makeText(Login.this, "ID failed to add to local database", Toast.LENGTH_LONG).show();
+        } finally{
+            if(db!=null)
+                db.close();
+        }
     }
 
     public void buttonOnClick2(View view) {

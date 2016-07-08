@@ -4,16 +4,25 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESdfdS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Fish N&apos; Trips"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="Fish N&apos; Trips"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,29 +31,79 @@
         </activity>
         <activity
             android:name=".AddFishActivity"
-            android:label="@string/title_activity_add_fish"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Menu"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Menu" />
         <activity
             android:name=".TripInfoPage"
-            android:label="@string/title_activity_trip_info_page"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Login"
-            android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RegisterUser"
-            android:label="@string/title_activity_register_user"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DisplayTripInfo"
-            android:label="@string/title_activity_display_trip_info"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BaseDrawerActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AskBiologist"
-            android:label="@string/title_activity_ask_biologist"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WeeklyStats"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".WeeklyStatsInput"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTripBegin"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTripMain"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LiveAddFishActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".FindMeActivity"
+            android:label="@string/title_activity_find_me"></activity>
     </application>
 
 </manifest>
